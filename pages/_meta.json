@@ -1,0 +1,12 @@
+{
+    "index": "Introduction",
+    "another": "Another Page",
+    "advanced": "Advanced (A Folder)",
+    "mano": "The Mano Machine",
+    "Simulator": {
+        "title": "Simulator ↗",
+        "type": "page",
+        "href": "https://quinnjack.github.io/Mano-Machine-Simulator/app/index.html",
+        "newWindow": true
+    }
+}
