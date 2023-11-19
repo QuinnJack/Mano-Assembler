@@ -1,8 +1,9 @@
 {
+    "mano": "The Mano Machine",
+
     "index": "Introduction",
     "another": "Another Page",
     "advanced": "Advanced (A Folder)",
-    "mano": "The Mano Machine",
     "Simulator": {
         "title": "Simulator ↗",
         "type": "page",
