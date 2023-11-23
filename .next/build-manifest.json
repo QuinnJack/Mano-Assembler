@@ -25,15 +25,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/mano": [
+    "/assembly/advanced": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/mano.js"
-    ],
-    "/mano/Addressing": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/mano/Addressing.js"
+      "static/chunks/pages/assembly/advanced.js"
     ],
     "/mano/registers": [
       "static/chunks/webpack.js",

@@ -1,0 +1,10 @@
+# Another Page
+
+```js filename="demo.js" {3} copy
+let a = 1;
+
+console.log(a);
+```
+
+## Component
+

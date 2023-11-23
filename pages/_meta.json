@@ -1,9 +1,9 @@
 {
+
     "mano": "The Mano Machine",
-    "resources": "Resources",
-    "another": "Another Page",
+    "assembly": "Assembly Language",
     "advanced": "Advanced (A Folder)",
-    "hi": "hi copy",
+    "resources": "Resources",
     "Simulator": {
         "title": "Simulator ↗",
         "type": "page",
