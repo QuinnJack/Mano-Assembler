@@ -25,15 +25,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/about": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/about.js"
-    ],
     "/mano": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/mano.js"
+    ],
+    "/mano/Addressing": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/mano/Addressing.js"
+    ],
+    "/mano/registers": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/mano/registers.js"
     ]
   },
   "ampFirstPages": []

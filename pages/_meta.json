@@ -1,9 +1,9 @@
 {
     "mano": "The Mano Machine",
-
-    "index": "Introduction",
+    "resources": "Resources",
     "another": "Another Page",
     "advanced": "Advanced (A Folder)",
+    "hi": "hi copy",
     "Simulator": {
         "title": "Simulator ↗",
         "type": "page",
