@@ -1,15 +1,9 @@
 # Instruction Formatting
-Registers are small, fast storage locations directly within the CPU, used to speed up the execution of computer programs by providing quick access to commonly used values. The basic computer has 8 registers and a common bus system between them.
-| Register symbol | Number of bits | Register name        | Function                         |
-|-----------------|----------------|----------------------|----------------------------------|
-| DR              | 16             | Data register        | Holds memory operand             |
-| AR              | 12             | Address register     | Holds address for memory         |
-| AC              | 16             | Accumulator          | Processor register               |
-| IR              | 16             | Instruction register | Holds instruction code           |
-| PC              | 12             | Program counter      | Holds address of instruction     |
-| TR              | 16             | Temporary register   | Holds temporary data             |
-| INPR            | 8              | Input register       | Holds input character            |
-| OUTR            | 8              | Output register      | Holds output character           |
+An instruction is a binary code that specifies a particular operation to be performed. Each instruction is 16 bits long and is divided into three fields: 
+the address mode, the opcode, and the memory address. The single most significant bit is determines if the instruction is is *direct* (0) or *indirect* (1). 
+The basic computer contains 4096 or 2^12 words. As such, the memory address field is 12 bits long. 
+The remaining 3 bits are taken up by the opcode that specifies the operation to be performed by the instruction.
+| Direct/Indirect | Opcode | Opcode | Opcode | Address | Address | Address | Address | Address | Address | Address | Address | Address | Address | Address | Address |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 
-
-![Basic-computer](/basic-computer.png)
+## Addressing

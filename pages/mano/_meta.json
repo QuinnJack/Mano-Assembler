@@ -1,6 +1,5 @@
 {
     "registers": "Registers",
     "Instructions": "Instructions",
-    "Addressing": "Addresing",
     "fetchdecode": "Fetch & Decode"
 }
