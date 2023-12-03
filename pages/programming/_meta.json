@@ -1,9 +1,6 @@
 {
 
-    "mano": "The Mano Machine",
-    "assembly": "Assembly Language",
-    "programming": "Programming",
-    "resources": "Resources",
+
     "Simulator": {
         "title": "Simulator ↗",
         "type": "page",
