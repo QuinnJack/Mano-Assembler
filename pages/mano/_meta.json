@@ -1,5 +1,8 @@
 {
     "registers": "Registers",
-    "Instructions": "Instructions",
-    "fetchdecode": "Fetch & Decode"
+    "Instructions": "Instruction Formatting",
+    "fetchdecode": "Fetch & Decode",
+    "interupts": "Interupts and I/O",
+    "instructiontypes": "Instruction Types"
+
 }
