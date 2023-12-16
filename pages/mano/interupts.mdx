@@ -1,0 +1,26 @@
+# Interupts and I/O Operations
+The Basic Computer employs a simple model for interupts and input/output (I/O) operations,
+ central to its interaction with various peripheral devices. 
+This model is designed to handle 8-bit character data for both input and output operations.
+## Flags
+
+### Interupts
+The **IEN** (Interrupt-enable flip-flop) can be set or cleared by specific instructions.
+When set, it allows the computer to be interrupted; when cleared, interrupts are disabled.
+### I/O
+FGI (Input Flag) and FGO (Output Flag) are used to synchronize the timing differences between the I/O device and the computer. These flags indicate the readiness of the I/O devices for data transfer, helping to synchronize operations.
+
+ ## Data Transfer
+
+### Registers
+Input Register (INPR): Holds an 8-bit character received from an input device.
+
+Output Register (OUTR): Stores an 8-bit character to be sent to an output device.
+### Serial Communication:
+Input devices send 8-bit character data serially to the processor.
+The processor sends 8-bit character data serially to output devices.
+### Data Handling:
+Serial information from a keyboard is shifted into the INPR.
+Serial information intended for a printer is stored in the OUTR.
+### Parallel Communication:
+INPR and OUTR communicate serially with the terminal and in parallel with the Accumulator (AC).
