@@ -1,18 +1,28 @@
-import React from 'react'
-import { DocsThemeConfig } from 'nextra-theme-docs'
+import React from "react";
+import { DocsThemeConfig } from "nextra-theme-docs";
 
 const config: DocsThemeConfig = {
-  logo: <span>My Project</span>,
+  logo: (
+    <>
+      {" "}
+      <img
+        src="https://see.fontimg.com/api/renderfont4/E447g/eyJyIjoiZHciLCJoIjoxMzAsInciOjIwMDAsImZzIjo2NSwiZmdjIjoiIzAwMDAwMCIsImJnYyI6IiNGRkZGRkYifQ/TWFubyBNYWNoaW5l/public-pixel.png"
+        width="200px"
+        height="200px"
+      />
+    </>
+  ),
   project: {
-    link: 'https://github.com/shuding/nextra-docs-template',
+    link: "https://github.com/QuinnJack/Mano-Assembler",
   },
   chat: {
-    link: 'https://discord.com',
+    link: "https://github.com/QuinnJack/Mano-Assembler",
+    icon: <></>,
   },
-  docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
+  docsRepositoryBase: "https://github.com/QuinnJack/Mano-Assembler/docs",
   footer: {
-    text: 'Nextra Docs Template',
+    text: "Created by Quinn Jackson",
   },
-}
+};
 
-export default config
+export default config;
