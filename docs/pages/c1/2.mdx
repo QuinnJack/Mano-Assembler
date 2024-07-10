@@ -1,0 +1,227 @@
+# Digital Logic Gates
+
+In digital computers, binary information is represented by physical quantities known as signals. These signals, typically in the form of electrical voltages, can exist in one of two states, corresponding to the binary values 0 and 1. For instance, a digital computer might use a voltage of 3 volts to represent binary 1 and 0.5 volts to represent binary 0. The input terminals of digital circuits receive these binary signals, and the circuits respond with output signals of 3 and 0.5 volts to represent binary 1 and 0, respectively.
+
+Binary logic is the foundation of digital circuit design, dealing with binary variables and logical operations. These operations are performed by logic circuits known as gates. Gates are hardware components that produce binary outputs based on specific input conditions. Each type of gate has a unique graphical symbol and can be described algebraically. The relationship between inputs and outputs for each gate can be represented using a truth table.
+
+Below is a detailed explanation of eight fundamental types of logic gates: AND, OR, NOT, Inverter, Buffer, NAND, NOR, XOR, and XNOR.
+
+## AND Gate
+
+### Description
+
+The AND gate performs a logical conjunction operation. It produces an output of 1 only if all its inputs are 1. If any input is 0, the output is 0.
+
+### Symbol
+
+![AND Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/and_gate.jpg)
+
+### Algebraic Function
+
+$ x = A \cdot B $
+
+### Truth Table
+
+| A   | B   | x   |
+| --- | --- | --- |
+| 0   | 0   | 0   |
+| 0   | 1   | 0   |
+| 1   | 0   | 0   |
+| 1   | 1   | 1   |
+
+### Characteristics
+
+- AND gates can have more than two inputs.
+- The output is 1 if and only if all inputs are 1.
+
+## OR Gate
+
+### Description
+
+The OR gate performs a logical disjunction operation. It produces an output of 1 if any of its inputs are 1. The output is 0 only when all inputs are 0.
+
+### Symbol
+
+![OR Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/or_gate.jpg)
+
+### Algebraic Function
+
+$ x = A + B $
+
+### Truth Table
+
+| A   | B   | x   |
+| --- | --- | --- |
+| 0   | 0   | 0   |
+| 0   | 1   | 1   |
+| 1   | 0   | 1   |
+| 1   | 1   | 1   |
+
+### Characteristics
+
+- OR gates can have more than two inputs.
+- The output is 1 if any input is 1.
+
+## NOT Gate
+
+### Description
+
+The NOT gate, also known as an inverter, performs a logical negation operation. It inverts the input signal; if the input is 1, the output is 0, and vice versa.
+
+### Symbol
+
+![NOT Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/not_gate.jpg)
+
+### Algebraic Function
+
+$ x = \overline A $
+
+### Truth Table
+
+| A   | x   |
+| --- | --- |
+| 0   | 1   |
+| 1   | 0   |
+
+# Characteristics
+
+- The NOT gate has only one input and one output.
+- It is used to complement binary signals.
+
+## Buffer
+
+### Description
+
+A buffer is a logic gate that outputs the same value as its input. It does not perform any logical operation but is used for signal amplification and isolation.
+
+### Symbol
+
+![Buffer Symbol](https://www.tutorialspoint.com/digital_circuits/images/buffer.jpg)
+
+### Algebraic Function
+
+$ x = A $
+
+### Truth Table
+
+| A   | x   |
+| --- | --- |
+| 0   | 0   |
+| 1   | 1   |
+
+### Characteristics
+
+- Buffers are used to strengthen signals so they can drive more gates.
+- They provide no logical transformation of the input signal.
+
+## NAND Gate
+
+The NAND gate is the complement of the AND gate. It produces an output of 0 only if all its inputs are 1. If any input is 0, the output is 1.
+
+### Symbol
+
+![NAND Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/nand_gate.jpg)
+
+### Algebraic Function
+
+$ x = \overline A\cdot B $
+
+### Truth Table
+
+| A   | B   | x   |
+| --- | --- | --- |
+| 0   | 0   | 1   |
+| 0   | 1   | 1   |
+| 1   | 0   | 1   |
+| 1   | 1   | 0   |
+
+### Characteristics
+
+- NAND gates can have more than two inputs.
+- The output is the complement of the AND function.
+
+## NOR Gate
+
+### Description
+
+The NOR gate is the complement of the OR gate. It produces an output of 0 if any of its inputs are 1. The output is 1 only when all inputs are 0.
+
+### Symbol![NOR Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/nor_gate.jpg)
+
+### Algebraic Function
+
+$ x = \overline A + B $
+
+### Truth Table
+
+| A   | B   | x   |
+| --- | --- | --- |
+| 0   | 0   | 1   |
+| 0   | 1   | 0   |
+| 1   | 0   | 0   |
+| 1   | 1   | 0   |
+
+### Characteristics
+
+- NOR gates can have more than two inputs.
+- The output is the complement of the OR function.
+
+## XOR Gate
+
+### Description
+
+The XOR (exclusive-OR) gate produces an output of 1 if the inputs are different. If both inputs are the same, the output is 0.
+
+### Symbol
+
+![XOR Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/xor_gate.jpg)
+
+### Algebraic Function
+
+$ x = A \oplus B $
+$ = (A \cdot \overline B) + (\overline A \cdot B) $
+
+### Truth Table
+
+| A   | B   | x   |
+| --- | --- | --- |
+| 0   | 0   | 0   |
+| 0   | 1   | 1   |
+| 1   | 0   | 1   |
+| 1   | 1   | 0   |
+
+### Characteristics
+
+- XOR gates are often used in arithmetic circuits like adders.
+- It is also known as an odd function gate.
+
+## XNOR Gate
+
+### Description
+
+The XNOR (exclusive-NOR) gate is the complement of the XOR gate. It produces an output of 1 if the inputs are the same. If the inputs are different, the output is 0.
+
+### Symbol
+
+![XNOR Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/xnor_gate.jpg)
+
+### Algebraic Function
+
+$ x = \overline A \oplus B $
+$ = (A \cdot B) + (\overline A \cdot \overline B) $
+
+### Truth Table
+
+| A   | B   | x   |
+| --- | --- | --- |
+| 0   | 0   | 1   |
+| 0   | 1   | 0   |
+| 1   | 0   | 0   |
+| 1   | 1   | 1   |
+
+### Characteristics
+
+- XNOR gates are used in equality detectors.
+- The output is 1 when the number of 1's in the input is even.
+
+By understanding these fundamental logic gates, we can design and analyze complex digital circuits that perform a wide range of computational tasks. Each gate's unique properties and behavior make them essential building blocks in digital electronics.

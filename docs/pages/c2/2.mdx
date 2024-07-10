@@ -1,0 +1,94 @@
+# Decoders
+
+Discrete quantities of information are represented in digital computers using binary codes. A binary code of $n$ bits can represent up to $2^n$ distinct elements of the coded information. A decoder is a combinational circuit that converts binary information from the $n$ coded inputs to a maximum of $2^n$ unique outputs. If the $n$-bit coded information has unused bit combinations, the decoder may have fewer than $2^n$ outputs.
+
+The decoders discussed in this section are known as $n$-to-$m$ line decoders, where $m \leq 2^n$. Their purpose is to generate the $2^n$ (or fewer) binary combinations of the $n$ input variables. A decoder has $n$ inputs and $m$ outputs and is also referred to as an $n \times m$ decoder.
+
+## 3-to-8 Line Decoder
+
+Consider a 3-to-8 line decoder, which decodes three data inputs ($A_0$, $A_1$, and $A_2$) into eight outputs. Each output represents one of the combinations of the three binary input variables. The three inverters provide the complement of the inputs, and each of the eight AND gates generates one of the binary combinations.
+
+A common application of this decoder is binary-to-octal conversion. The input variables represent a binary number, and the outputs represent the eight digits of the octal number system. However, a 3-to-8 line decoder can be used for decoding any 3-bit code to provide eight outputs, one for each combination of the binary code.
+
+Commercial decoders often include one or more enable inputs to control the operation of the circuit. The enable input (E) is a control signal that determines whether the decoder is active. The decoder is enabled when E is equal to 1 and disabled when E is equal to 0.
+
+### Truth Table for 3-to-8 Line Decoder
+
+The truth table for a 3-to-8 line decoder with an enable input is shown below:
+
+| E   | $A_2$ | $A_1$ | $A_0$ | $D_7$ | $D_6$ | $D_5$ | $D_4$ | $D_3$ | $D_2$ | $D_1$ | $D_0$ |
+| --- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| 0   | X     | X     | X     | 0     | 0     | 0     | 0     | 0     | 0     | 0     | 0     |
+| 1   | 0     | 0     | 0     | 0     | 0     | 0     | 0     | 0     | 0     | 0     | 1     |
+| 1   | 0     | 0     | 1     | 0     | 0     | 0     | 0     | 0     | 0     | 1     | 0     |
+| 1   | 0     | 1     | 0     | 0     | 0     | 0     | 0     | 0     | 1     | 0     | 0     |
+| 1   | 0     | 1     | 1     | 0     | 0     | 0     | 0     | 1     | 0     | 0     | 0     |
+| 1   | 1     | 0     | 0     | 0     | 0     | 0     | 1     | 0     | 0     | 0     | 0     |
+| 1   | 1     | 0     | 1     | 0     | 0     | 1     | 0     | 0     | 0     | 0     | 0     |
+| 1   | 1     | 1     | 0     | 0     | 1     | 0     | 0     | 0     | 0     | 0     | 0     |
+| 1   | 1     | 1     | 1     | 1     | 0     | 0     | 0     | 0     | 0     | 0     | 0     |
+
+When the enable input (E) is 0, all outputs are 0, regardless of the values of the other three data inputs. When E is 1, the decoder operates normally, with each possible input combination resulting in seven outputs being 0 and only one being 1. The output variable that is 1 represents the octal number equivalent of the binary number on the input lines.
+
+## NAND Gate Decoder
+
+Some decoders are constructed using NAND gates instead of AND gates. Since a NAND gate produces the AND operation with an inverted output, it can be more economical to generate decoder outputs in their complement form. Below is a 2-to-4 line decoder with an enable input, constructed using NAND gates.
+
+The circuit operates with complemented outputs and a complemented enable input (E). The decoder is enabled when E is 0. Only one output is 0 at any given time, and the other three outputs are 1. The output that is 0 represents the binary number in inputs $A_1$ and $A_0$. The circuit is disabled when E is 1, regardless of the values of the other two inputs.
+
+### Truth Table for 2-to-4 Line NAND Gate Decoder
+
+| E   | $A_1$ | $A_0$ | $D_3$ | $D_2$ | $D_1$ | $D_0$ |
+| --- | ----- | ----- | ----- | ----- | ----- | ----- |
+| 1   | X     | X     | 1     | 1     | 1     | 1     |
+| 0   | 0     | 0     | 1     | 1     | 1     | 0     |
+| 0   | 0     | 1     | 1     | 1     | 0     | 1     |
+| 0   | 1     | 0     | 1     | 0     | 1     | 1     |
+| 0   | 1     | 1     | 0     | 1     | 1     | 1     |
+
+When the circuit is disabled, none of the outputs are selected, and all outputs are 1. A decoder may operate with complemented or uncomplemented outputs. The enable input may be activated by a 0 or a 1 signal level. Some decoders have two or more enable inputs that must satisfy a given logic condition to enable the circuit.
+
+## Decoder Expansion
+
+There are situations where a certain size decoder is needed, but only smaller sizes are available. In such cases, it is possible to combine two or more decoders with enable inputs to form a larger decoder. For example, if a 6-to-64 line decoder is needed, it is possible to construct it using four 4-to-16 line decoders.
+
+Consider combining two 2-to-4 line decoders to achieve a 3-to-8 line decoder. The two least significant bits of the input are connected to both decoders. The most significant bit is connected to the enable input of one decoder and through an inverter to the enable input of the other decoder. Each decoder is assumed to be enabled when its E input is 1. When E is 0, the decoder is disabled, and all its outputs are 0. When $A_2 = 0$, the upper decoder is enabled, and the lower decoder is disabled. The outputs of the upper decoder are $D_0$ through $D_3$, depending on the values of $A_1$ and $A_0$. When $A_2 = 1$, the lower decoder is enabled, and the upper decoder is disabled. The outputs of the lower decoder are $D_4$ through $D_7$, representing binary numbers with a 1 in the $A_2$ position.
+
+This example demonstrates the usefulness of the enable input in decoders or other combinational logic components. Enable inputs allow for convenient interconnection of multiple circuits to expand the digital component into a similar function with more inputs and outputs.
+
+## Encoders
+
+An encoder is a digital circuit that performs the inverse operation of a decoder. It has $2^n$ (or fewer) input lines and $n$ output lines. The output lines generate the binary code corresponding to the input value.
+
+## Octal-to-Binary Encoder
+
+An example of an encoder is the octal-to-binary encoder. It has eight inputs, one for each octal digit, and three outputs that generate the corresponding binary number. It is assumed that only one input has a value of 1 at any given time; otherwise, the circuit has no meaningful output.
+
+### Truth Table for Octal-to-Binary Encoder
+
+| $D_7$ | $D_6$ | $D_5$ | $D_4$ | $D_3$ | $D_2$ | $D_1$ | $D_0$ | $A_2$ | $A_1$ | $A_0$ |
+| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| 0     | 0     | 0     | 0     | 0     | 0     | 0     | 1     | 0     | 0     | 0     |
+| 0     | 0     | 0     | 0     | 0     | 0     | 1     | 0     | 0     | 0     | 1     |
+| 0     | 0     | 0     | 0     | 0     | 1     | 0     | 0     | 0     | 1     | 0     |
+| 0     | 0     | 0     | 0     | 1     | 0     | 0     | 0     | 0     | 1     | 1     |
+| 0     | 0     | 0     | 1     | 0     | 0     | 0     | 0     | 1     | 0     | 0     |
+| 0     | 0     | 1     | 0     | 0     | 0     | 0     | 0     | 1     | 0     | 1     |
+| 0     | 1     | 0     | 0     | 0     | 0     | 0     | 0     | 1     | 1     | 0     |
+| 1     | 0     | 0     | 0     | 0     | 0     | 0     | 0     | 1     | 1     | 1     |
+
+The encoder can be implemented with OR gates whose inputs are determined directly from the truth table. The Boolean functions for the outputs are:
+
+$$
+A_0 = D_1 + D_3 + D_5 + D_7
+$$
+
+$$
+A_1 = D_2 + D_3 + D_6 + D_7
+$$
+
+$$
+A_2 = D_4 + D_5 + D_6 + D_7
+$$
+
+These Boolean functions indicate that the encoder can be implemented using three OR gates.

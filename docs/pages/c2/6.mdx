@@ -1,0 +1,107 @@
+# Memory Units in Digital Systems
+
+A memory unit is a collection of storage cells together with the associated circuitry necessary to transfer information in and out of storage. Memory stores binary information in groups of bits called words. A word in memory is a fixed-length sequence of bits, and the size of a word is often determined by the architecture of the system.
+
+### Memory Words and Bytes
+
+A memory word is a group of binary digits (0s and 1s) that can represent a number, an instruction code, one or more alphanumeric characters, or any other binary-coded information. A common group of eight bits is called a byte. Most computer memories use words whose number of bits is a multiple of 8. For example:
+
+- A 16-bit word contains 2 bytes.
+- A 32-bit word contains 4 bytes.
+
+The capacity of memory in commercial computers is typically stated as the total number of bytes that can be stored.
+
+### Memory Structure and Addressing
+
+The internal structure of a memory unit is defined by:
+
+1. **The number of words it contains.**
+2. **The number of bits in each word.**
+
+Special input lines called address lines select a particular word. Each word in memory is assigned an identification number, called an address, starting from 0 and continuing sequentially up to $2^k - 1$, where $k$ is the number of address lines. The selection of a specific word inside the memory is done by applying the $k$-bit binary address to the address lines. A decoder inside the memory accepts this address and opens the paths needed to select the bits of the specified word.
+
+Memory sizes are often referred to using standard prefixes:
+
+- **K (kilo)**: $2^{10}$ (1024) words.
+- **M (mega)**: $2^{20}$ words.
+- **G (giga)**: $2^{30}$ words.
+
+For example:
+
+- 64K = $2^{16}$ words.
+- 2M = $2^{21}$ words.
+- 4G = $2^{32}$ words.
+
+### Types of Memory
+
+Two major types of memories are used in computer systems:
+
+1. **Random-Access Memory (RAM)**
+2. **Read-Only Memory (ROM)**
+
+## Random-Access Memory (RAM)
+
+In random-access memory (RAM), the memory cells can be accessed for information transfer from any desired location, hence the term "random access." The process of locating a word in memory is the same regardless of its physical location, and the time required is constant.
+
+### Communication and Operations in RAM
+
+Communication between a memory and its environment is achieved through:
+
+- **Data input lines**: For the information to be stored in memory.
+- **Data output lines**: For the information coming out of memory.
+- **Address selection lines**: To specify a particular word among the available words inside the memory.
+- **Control lines**: To specify the direction of transfer.
+
+The two primary operations that a RAM can perform are:
+
+- **Write operation**: Specifies a transfer-in operation.
+- **Read operation**: Specifies a transfer-out operation.
+
+### Steps for Writing to RAM
+
+To store a new word in RAM:
+
+1. Apply the binary address of the desired word to the address lines.
+2. Apply the data bits to be stored into the data input lines.
+3. Activate the write control signal.
+
+The memory unit will store the bits present on the input data lines into the word specified by the address lines.
+
+### Steps for Reading from RAM
+
+To read a stored word from RAM:
+
+1. Apply the binary address of the desired word to the address lines.
+2. Activate the read control signal.
+
+The memory unit will transfer the bits from the word selected by the address to the output data lines. The content of the selected word does not change after being read.
+
+## Read-Only Memory (ROM)
+
+A read-only memory (ROM) is a type of memory that only supports read operations; it does not have a write capability. The binary information stored in a ROM is made permanent during the manufacturing process and cannot be altered.
+
+### Structure and Operation of ROM
+
+An $m \times n$ ROM is an array of binary cells organized into $m$ words of $n$ bits each. It has $k$ address input lines to select one of the $2^k = m$ words of memory, and $n$ output lines, one for each bit of the word. An integrated circuit ROM may also have one or more enable inputs for expanding a number of packages into a ROM with larger capacity.
+
+Unlike RAM, a ROM does not need a read-control line since the output lines automatically provide the $n$ bits of the word selected by the address value. A ROM is classified as a combinational circuit because its outputs are a direct function of the present inputs (the address lines). Internally, a ROM is constructed with decoders and a set of OR gates, with no need for storage capabilities as in RAM.
+
+### Applications of ROM
+
+ROMs are used in digital systems for:
+
+- Storing fixed programs that are not to be altered.
+- Storing tables of constants that are not subject to change.
+- Designing control units for digital computers, known as microprogrammed control units, where ROMs store coded information that represents the sequence of internal control variables needed for various operations in the computer.
+
+## Types of ROMs
+
+There are three primary types of ROMs based on their programmability:
+
+1. **Mask Programmed ROM**: The paths are programmed by the semiconductor company during the final fabrication process, according to a truth table provided by the customer. This method is cost-effective for large quantities but expensive for small quantities due to custom masking fees.
+
+2. **Programmable Read-Only Memory (PROM)**: PROM units contain all the fuses intact, giving all 1's in the bits of the stored words. Users can program PROMs by blowing fuses through output terminals for each address, turning specific fuses into 0s. Special instruments called PROM programmers facilitate this procedure. The programming is a hardware process and is irreversible.
+
+3. **Erasable Programmable Read-Only Memory (EPROM)**: EPROMs can be erased and reprogrammed. Exposure to ultraviolet light for a given period of time discharges the internal gates, resetting the EPROM to its initial state. Electrically Erasable Programmable Read-Only Memory (EEPROM) is a variant that can be erased with electrical signals instead of ultraviolet light, allowing for easier reprogramming.
+
+The detailed understanding of these memory types and their functionalities is crucial for the design and optimization of digital systems and computer architectures.

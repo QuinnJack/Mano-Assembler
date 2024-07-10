@@ -1,0 +1,179 @@
+# Flip-Flops
+
+The digital circuits we have discussed so far are combinational, where the outputs at any given time depend entirely on the inputs present at that time. Although every digital system includes a combinational circuit, most systems also incorporate storage elements. These elements require the system to be described in terms of sequential circuits. The most common type of sequential circuit is the synchronous type. Synchronous sequential circuits use signals that affect the storage elements only at discrete instants of time. Synchronization is achieved through a timing device called a clock pulse generator, which produces a periodic train of clock pulses. These clock pulses are distributed throughout the system in such a way that storage elements are affected only with the arrival of the synchronization pulse.
+
+Clocked synchronous sequential circuits are the most frequently encountered in practice. They are less prone to instability problems and their timing can be easily divided into independent discrete steps, each of which can be considered separately.
+
+## Introduction to Flip-Flops
+
+The storage elements employed in clocked sequential circuits are known as flip-flops. A flip-flop is a binary cell capable of storing one bit of information. It has two outputs: one for the normal value and one for the complement value of the bit stored in it. A flip-flop maintains a binary state until directed by a clock pulse to switch states. The different types of flip-flops are distinguished by the number of inputs they have and the manner in which these inputs affect the binary state. The most common types of flip-flops are SR, D, JK, and T flip-flops.
+
+### SR Flip-Flop
+
+The SR (Set-Reset) flip-flop has three inputs: S (set), R (reset), and C (clock). It has an output $Q$ and sometimes a complemented output $\overline{Q}$. The clock input is denoted with an arrowhead-shaped symbol, indicating a dynamic input that responds to a positive transition (from 0 to 1) of the clock signal.
+
+#### Operation of the SR Flip-Flop
+
+- If there is no signal at the clock input $C$, the output remains unchanged regardless of the values at inputs $S$ and $R$.
+- When the clock signal transitions from 0 to 1:
+  - If $S = 1$ and $R = 0$, output $Q$ is set to 1.
+  - If $S = 0$ and $R = 1$, output $Q$ is reset to 0.
+  - If both $S$ and $R$ are 0, the output does not change.
+  - If both $S$ and $R$ are 1, the output is indeterminate and may go to either 0 or 1, depending on internal timing delays within the circuit.
+
+#### Characteristic Table for SR Flip-Flop
+
+| $S$ | $R$ | $Q(t)$ | $Q(t + 1)$         |
+| --- | --- | ------ | ------------------ |
+| 0   | 0   | $Q(t)$ | $Q(t)$ (No change) |
+| 0   | 1   | $Q(t)$ | 0 (Clear to 0)     |
+| 1   | 0   | $Q(t)$ | 1 (Set to 1)       |
+| 1   | 1   | $Q(t)$ | ? (Indeterminate)  |
+
+The SR flip-flop should not be pulsed when $S = R = 1$ as it produces an indeterminate next state. This condition makes the SR flip-flop difficult to manage and therefore it is seldom used in practice.
+
+### D Flip-Flop
+
+The D (Data) flip-flop is a modification of the SR flip-flop. It is constructed by adding an inverter between the S and R inputs and assigning a single input D. The D input is sampled during the clock transition from 0 to 1.
+
+#### Operation of the D Flip-Flop
+
+- If $D = 1$, the output of the flip-flop is set to 1.
+- If $D = 0$, the output of the flip-flop is reset to 0.
+
+#### Characteristic Table for D Flip-Flop
+
+| $D$ | $Q(t)$ | $Q(t + 1)$     |
+| --- | ------ | -------------- |
+| 0   | $Q(t)$ | 0 (Clear to 0) |
+| 1   | $Q(t)$ | 1 (Set to 1)   |
+
+The characteristic equation for the D flip-flop is:
+$$ Q(t+1) = D $$
+
+This means that the $Q$ output of the flip-flop receives its value from the D input whenever the clock signal transitions from 0 to 1. The D flip-flop does not have a "no change" condition; it either sets or resets based on the D input.
+
+### JK Flip-Flop
+
+The JK flip-flop is an improved version of the SR flip-flop, where the indeterminate condition is defined. It has inputs J and K, which behave similarly to the S and R inputs of the SR flip-flop, respectively.
+
+#### Operation of the JK Flip-Flop
+
+- When $J = 1$ and $K = 0$, the output is set to 1.
+- When $J = 0$ and $K = 1$, the output is reset to 0.
+- When both $J$ and $K$ are 0, the output does not change.
+- When both $J$ and $K$ are 1, the output is complemented.
+
+#### Characteristic Table for JK Flip-Flop
+
+| $J$ | $K$ | $Q(t)$ | $Q(t + 1)$                     |
+| --- | --- | ------ | ------------------------------ |
+| 0   | 0   | $Q(t)$ | $Q(t)$ (No change)             |
+| 0   | 1   | $Q(t)$ | 0 (Clear to 0)                 |
+| 1   | 0   | $Q(t)$ | 1 (Set to 1)                   |
+| 1   | 1   | $Q(t)$ | $\overline{Q(t)}$ (Complement) |
+
+### T Flip-Flop
+
+The T (Toggle) flip-flop is derived from the JK flip-flop by connecting the J and K inputs together, providing a single input designated as T.
+
+#### Operation of the T Flip-Flop
+
+- When $T = 0$, the state of the flip-flop does not change.
+- When $T = 1$, the state of the flip-flop is complemented.
+
+#### Characteristic Table for T Flip-Flop
+
+| $T$ | $Q(t)$ | $Q(t + 1)$                     |
+| --- | ------ | ------------------------------ |
+| 0   | $Q(t)$ | $Q(t)$ (No change)             |
+| 1   | $Q(t)$ | $\overline{Q(t)}$ (Complement) |
+
+The characteristic equation for the T flip-flop is:
+$$ Q(t+1) = Q(t) \oplus T $$
+
+### Edge-Triggered Flip-Flops
+
+The most common type of flip-flop used to synchronize state changes during a clock pulse transition is the edge-triggered flip-flop. In this type, output transitions occur at a specific level of the clock pulse, usually at the rising edge (positive-edge transition) or the falling edge (negative-edge transition).
+
+#### Positive-Edge-Triggered D Flip-Flop
+
+- The D input value is transferred to the Q output when the clock makes a positive transition.
+- The output does not change when the clock is at level 1, level 0, or transitions from level 1 to level 0.
+
+#### Negative-Edge-Triggered D Flip-Flop
+
+- The D input value is transferred to the Q output when the clock makes a negative transition.
+
+Edge-triggered flip-flops are preferred because they ensure that the output changes state only at the specified clock edge, reducing the risk of timing-related issues.
+
+### Primary-Secondary Flip-Flop
+
+A primary-secondary flip-flop consists of two flip-flops: the primary responds to the positive level of the clock, and the secondary responds to the negative level. This configuration ensures that the output changes during the transition from 1 to 0 of the clock signal.
+
+import { useState } from "react";
+
+export function InfoText() {
+  return (
+    <sub>
+      <sup>
+        The term "primary-secondary" has replaced the original term used in the
+        textbook to align with <a href="https://www.nytimes.com/2021/04/13/technology/racist-computer-engineering-terms-ietf.html">
+          ongoing efforts </a> to remove racially insensitive
+        terminology from the field of computer engineering.{" "}
+
+      </sup>
+    </sub>
+
+);
+}
+
+<InfoText />
+
+### Asynchronous Inputs
+
+Some flip-flops provide asynchronous inputs for setting or clearing the flip-flop without the need for a clock pulse. These inputs are usually called "preset" and "clear" and are useful for initializing the flip-flop to a known state before normal operation.
+
+## Excitation Tables
+
+The characteristic tables of flip-flops specify the next state when the inputs and present state are known. However, during the design of sequential circuits, we often need to determine the required input conditions to achieve a desired state transition. For this purpose, we use excitation tables.
+
+### Excitation Table for SR Flip-Flop
+
+| $Q(t)$ | $Q(t + 1)$ | $S$ | $R$ |
+| ------ | ---------- | --- | --- |
+| 0      | 0          | 0   | x   |
+| 0      | 1          | 1   | 0   |
+| 1      | 0          | 0   | 1   |
+| 1      | 1          | x   | 0   |
+
+### Excitation Table for D Flip-Flop
+
+| $Q(t)$ | $Q(t + 1)$ | $D$ |
+| ------ | ---------- | --- |
+| 0      | 0          | 0   |
+| 0      | 1          | 1   |
+| 1      | 0          | 0   |
+| 1      | 1          | 1   |
+
+### Excitation Table for JK Flip-Flop
+
+| $Q(t)$ | $Q(t + 1)$ | $J$ | $K$ |
+| ------ | ---------- | --- | --- |
+| 0      | 0          | 0   | x   |
+| 0      | 1          | 1   | 0   |
+| 1      | 0          | 0   | 1   |
+| 1      | 1          | x   | 0   |
+
+### Excitation Table for T Flip-Flop
+
+| $Q(t)$ | $Q(t + 1)$ | $T$ |
+| ------ | ---------- | --- |
+| 0      | 0          | 0   |
+| 0      | 1          | 1   |
+| 1      | 0          | 1   |
+| 1      | 1          | 0   |
+
+The symbol $x$ represents a don't-care condition, meaning the input can be either 0 or 1.
+
+By understanding the operation and characteristics of these flip-flops, we can design more complex sequential circuits that store and manipulate binary data effectively.

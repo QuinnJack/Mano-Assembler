@@ -1,0 +1,87 @@
+# Combinational Circuits
+
+A combinational circuit is a connected arrangement of logic gates with a set of inputs and outputs. At any given time, the binary values of the outputs are a function of the binary combination of the inputs. The block diagram of a combinational circuit is illustrated in the figure below. The `n` binary input variables come from an external source, and the `m` binary output variables are sent to an external destination. Between these inputs and outputs, there is an interconnection of logic gates.
+
+[Block diagram of a combinational circuit](Fig1-15.png)
+
+Combinational circuits are fundamental in digital computers for generating binary control decisions and for providing digital components required for data processing.
+
+A combinational circuit can be described using a truth table that shows the binary relationship between the `n` input variables and the `m` output variables. The truth table lists the corresponding output binary values for each of the $2^n$ input combinations. Additionally, a combinational circuit can be specified with `m` Boolean functions, one for each output variable. Each output function is expressed in terms of the `n` input variables.
+
+### Example: Truth Table and Boolean Functions
+
+For example, if a combinational circuit has 3 input variables (`A`, `B`, `C`) and 2 output variables (`X`, `Y`), the truth table will list all possible combinations of `A`, `B`, and `C` (i.e., $2^3 = 8$ combinations) and the corresponding values of `X` and `Y`. Each output variable (`X` or `Y`) can be expressed as a Boolean function of the input variables (`A`, `B`, and `C`).
+
+## Analysis of Combinational Circuits
+
+The analysis of a combinational circuit begins with a given logic circuit diagram and results in a set of Boolean functions or a truth table. If the digital circuit comes with a verbal explanation of its function, the Boolean functions or the truth table is sufficient for verification. If the function of the circuit is under investigation, it is necessary to interpret the operation of the circuit from the derived Boolean functions or the truth table. Experience and familiarity with digital circuits enhance the success of such an investigation. The ability to correlate a truth table or a set of Boolean functions with an information-processing task is an art that one acquires with experience.
+
+## Design of Combinational Circuits
+
+The design of combinational circuits starts from a verbal outline of the problem and ends in a logic circuit diagram. The procedure involves the following steps:
+
+1. **State the Problem**: Clearly define the problem to be solved by the combinational circuit.
+2. **Assign Input and Output Variables**: Assign letter symbols to the input and output variables.
+3. **Derive the Truth Table**: Construct the truth table that defines the relationship between inputs and outputs.
+4. **Obtain Simplified Boolean Functions**: Simplify the Boolean functions for each output using techniques such as Karnaugh maps or Boolean algebra.
+5. **Draw the Logic Diagram**: Create the logic circuit diagram based on the simplified Boolean functions.
+
+### Example: Half-Adder
+
+The most basic digital arithmetic circuit is the addition of two binary digits. A combinational circuit that performs the arithmetic addition of two bits is called a half-adder. The inputs of a half-adder are the augend and addend bits, and the outputs are the sum and carry.
+
+#### Half-Adder Truth Table
+
+The input variables of a half-adder are `x` and `y`, representing the augend and addend bits. The output variables are `S` (sum) and `C` (carry). The truth table for the half-adder is shown below:
+
+| x   | y   | C   | S   |
+| --- | --- | --- | --- |
+| 0   | 0   | 0   | 0   |
+| 0   | 1   | 0   | 1   |
+| 1   | 0   | 0   | 1   |
+| 1   | 1   | 1   | 0   |
+
+From the truth table, we can derive the Boolean functions for the outputs:
+
+- Sum: $S = x'y + xy' = x \oplus y$
+- Carry: $C = xy$
+
+#### Half-Adder Logic Diagram
+
+The logic diagram for the half-adder consists of an exclusive-OR (XOR) gate and an AND gate. The XOR gate generates the sum (`S`), and the AND gate generates the carry (`C`).
+
+[Half-adder logic diagram picture](Fig1-16.png)
+
+### Example: Full-Adder
+
+A full-adder is a combinational circuit that forms the arithmetic sum of three input bits. It consists of three inputs (`x`, `y`, and `z`) and two outputs (`S` and `C`). The third input, `z`, represents the carry from the previous lower significant position.
+
+#### Full-Adder Truth Table
+
+The truth table for the full-adder is shown below:
+
+| x   | y   | z   | C   | S   |
+| --- | --- | --- | --- | --- |
+| 0   | 0   | 0   | 0   | 0   |
+| 0   | 0   | 1   | 0   | 1   |
+| 0   | 1   | 0   | 0   | 1   |
+| 0   | 1   | 1   | 1   | 0   |
+| 1   | 0   | 0   | 0   | 1   |
+| 1   | 0   | 1   | 1   | 0   |
+| 1   | 1   | 0   | 1   | 0   |
+| 1   | 1   | 1   | 1   | 1   |
+
+#### Simplified Boolean Functions
+
+Using Karnaugh maps, we can derive the simplified Boolean functions for the outputs `S` and `C`:
+
+- Sum: $S = x \oplus y \oplus z$
+- Carry: $C = xy + (x \oplus y)z$
+
+#### Full-Adder Logic Diagram
+
+The logic diagram of the full-adder consists of two half-adders and an OR gate. When used in subsequent designs, the full-adder (FA) is often represented by a block diagram.
+
+[Full-adder logic diagram](Fig1-18.png)
+
+Combinational circuits are a fundamental part of digital logic design. They are used for various purposes, including arithmetic operations, data processing, and control decisions. By understanding the principles of truth tables, Boolean functions, and logic diagrams, one can design and analyze combinational circuits effectively.

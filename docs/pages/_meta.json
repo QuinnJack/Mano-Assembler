@@ -1,8 +1,11 @@
 {
   "index": "Introduction",
-  "another": "Another Page",
-  "advanced": "Advanced (A Folder)",
-
+  "c1": "Digital Logic",
+  "c2": "Digital Components",
+  "c3": "Data Representation",
+  "c4": "Register T ransfer and Microoperations",
+  "c5": "Computer Organization and Design",
+  "c6": "Programming the Basic Computer",
   "contact": {
     "title": "Assembler ↗",
     "type": "page",
