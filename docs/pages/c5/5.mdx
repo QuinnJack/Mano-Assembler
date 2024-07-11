@@ -1,0 +1,95 @@
+# Memory-Reference Instructions
+Memory-reference instructions perform operations that involve accessing and manipulating data stored in memory. These operations are precisely defined using register transfer notation (RTN). Each instruction's execution requires a sequence of microoperations due to the need to read data from memory into a register before processing. This documentation details the function and microoperations of each memory-reference instruction.
+
+## List of Memory-Reference Instructions
+
+The seven memory-reference instructions are:
+
+1. AND (Binary code: 000)
+2. ADD (Binary code: 001)
+3. LDA (Binary code: 010)
+4. STA (Binary code: 011)
+5. BUN (Binary code: 100)
+6. BSA (Binary code: 101)
+7. ISZ (Binary code: 110)
+
+Each instruction is decoded by a specific output from the operation decoder, represented as $ D_i$ for $i = 0, 1, \ldots, 6$. The execution of these instructions begins at timing signal $T_4$. The effective address of the instruction is in the address register (AR), placed there during $T_2$ if $I = 0$, or during $T_3$ if $I = 1$.
+
+### AND to AC
+
+The AND instruction performs a bitwise AND operation between the accumulator (AC) and the memory word specified by the effective address (EA), storing the result in AC.
+
+**Symbolic Description:** $AC \leftarrow AC \land M[AR]$
+
+**Microoperations:**
+$D_0T_4: DR \leftarrow M[AR]$
+$D_0T_5: AC \leftarrow AC \land DR, SC \leftarrow 0$
+
+### ADD to AC
+
+The ADD instruction adds the memory word at EA to the content of AC, storing the sum in AC and the carry out in the E (extended accumulator) flip-flop.
+
+**Symbolic Description:** $AC \leftarrow AC + M[AR]$, $E \leftarrow C_{\text{out}}$
+
+**Microoperations:**
+$D_1T_4: DR \leftarrow M[AR]$
+$D_1T_5: AC \leftarrow AC + DR, E \leftarrow C_{\text{out}}, SC \leftarrow 0$
+
+### LDA: Load to AC
+
+The LDA instruction loads the memory word at EA into AC.
+
+**Symbolic Description:** $AC \leftarrow M[AR]$
+
+**Microoperations:**
+$D_2T_4: DR \leftarrow M[AR]$
+$D_2T_5: AC \leftarrow DR, SC \leftarrow 0$
+
+### STA: Store AC
+
+The STA instruction stores the content of AC into the memory word at EA.
+
+**Symbolic Description:** $M[AR] \leftarrow AC$
+
+**Microoperations:**
+$D_3T_4: M[AR] \leftarrow AC, SC \leftarrow 0$
+
+### BUN: Branch Unconditionally
+
+The BUN instruction branches the program to the instruction specified by EA.
+
+**Symbolic Description:** $PC \leftarrow AR$
+
+**Microoperations:**
+$D_4T_4: PC \leftarrow AR, SC \leftarrow 0$
+
+
+### BSA: Branch and Save Return Address
+
+The BSA instruction saves the return address in memory and branches to a subroutine.
+
+**Symbolic Description:** $M[AR] \leftarrow PC$, $PC \leftarrow AR + 1$
+
+**Microoperations:**
+$D_5T_4: M[AR] \leftarrow PC, AR \leftarrow AR + 1$
+$D_5T_5: PC \leftarrow AR, SC \leftarrow 0$
+### ISZ: Increment and Skip if Zero
+
+The ISZ instruction increments the memory word at EA and skips the next instruction if the incremented value is zero.
+
+**Symbolic Description:** $M[AR] \leftarrow M[AR] + 1$, if $(M[AR] + 1 = 0)$ then $PC \leftarrow PC + 1$
+
+**Microoperations:**
+$D_6T_4: DR \leftarrow M[AR]$
+$D_6T_5: DR \leftarrow DR + 1$
+$D_6T_6: M[AR] \leftarrow DR, if (DR = 0) then (PC \leftarrow PC + 1), SC \leftarrow 0$
+
+## Control Flowchart
+
+The control flowchart for the execution of memory-reference instructions shows the sequence of microoperations for each instruction. Each path corresponds to a specific instruction code value, and the sequence counter (SC) is cleared to 0 at the end of each instruction to initiate the next instruction cycle.
+
+### Timing Signals and Sequence Counter
+
+The longest instruction, ISZ, requires seven timing signals ($T_0$ to $T_6$). Although only seven timing signals are needed, a 4-bit sequence counter (SC) is used to provide additional signals for other instructions and operations.
+
+

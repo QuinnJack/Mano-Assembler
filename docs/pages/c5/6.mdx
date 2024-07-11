@@ -1,0 +1,106 @@
+# Input-Output and Interrupt
+
+A computer system can only perform meaningful tasks if it interacts with the external environment. Instructions and data stored in memory are provided by input devices, and computational results are communicated to the user through output devices. In this section, we will illustrate the fundamental requirements for input and output communication using a terminal unit equipped with a keyboard and a printer. For more extensive details on input-output organization, refer to Chapter 11.
+
+## Input-Output Configuration
+
+The terminal unit sends and receives serial information, where each piece of information consists of eight bits representing an alphanumeric code. The serial information from the keyboard is shifted into the input register (INPR), while the serial information intended for the printer is stored in the output register (OUTR). These two registers interact serially with a communication interface and in parallel with the Accumulator (AC).
+
+### Input Register (INPR)
+
+The input register (INPR) consists of eight bits that hold alphanumeric input information. It is controlled by a 1-bit input flag (FGI). The input flag (FGI) is set to 1 when new information is available in the input device and is cleared to 0 when the information is accepted by the computer. The flag ensures synchronization between the input device and the computer by indicating when new data is available and preventing new data from overwriting the current data before it is read.
+
+### Output Register (OUTR)
+
+The output register (OUTR) similarly holds eight bits of information that are intended for the output device. It is controlled by a 1-bit output flag (FGO). Initially, FGO is set to 1, indicating that the output device is ready to receive data. Once data is transferred from the AC to OUTR, FGO is cleared to 0, and it remains cleared until the output device has processed the data and is ready for new data.
+
+### Data Transfer Process
+
+The data transfer process between the input-output device and the computer involves the following steps:
+
+1. **Input Transfer:**
+    - Initially, FGI is cleared to 0.
+    - When a key is struck on the keyboard, an 8-bit alphanumeric code is shifted into INPR, and FGI is set to 1.
+    - The computer checks the flag bit; if FGI is 1, the information from INPR is transferred in parallel to AC, and FGI is cleared to 0.
+    - New data can then be shifted into INPR by striking another key.
+
+2. **Output Transfer:**
+    - Initially, FGO is set to 1.
+    - The computer checks the flag bit; if FGO is 1, the information from AC is transferred in parallel to OUTR, and FGO is cleared to 0.
+    - The output device processes the data, prints the corresponding character, and upon completion, sets FGO to 1.
+    - The computer does not load new data into OUTR until FGO is set to 1.
+
+## Input-Output Instructions
+
+Input-output instructions are essential for transferring information to and from the AC register, checking the flag bits, and controlling the interrupt facility. These instructions are identified by an operation code of 1111 and are recognized when $D7 = 1$ and $I = 1$. The remaining bits of the instruction specify the specific operation.
+
+### Control Functions and Microoperations
+
+The input-output instructions, their control functions, and the associated microoperations are outlined below. These instructions are executed during the clock transition associated with timing signal $T_3$. Each control function is represented by the Boolean expression $D7IT_3$, denoted as $p$. The specific instruction is distinguished by one of the bits in $IR(6-11)$. Let $B_i$ represent bit $i$ of $IR$.
+
+The input-output instructions are:
+
+- **INP (Input Character):** Transfers the input information from INPR into the low-order eight bits of AC and clears the input flag to 0.
+  $$ pB_6: AC(0-7) \leftarrow INPR, FGI \leftarrow 0 $$
+
+- **OUT (Output Character):** Transfers the eight least significant bits of AC into the output register OUTR and clears the output flag to 0.
+  $$ pB_7: OUTR \leftarrow AC(0-7), FGO \leftarrow 0 $$
+
+- **SKI (Skip on Input Flag):** Skips the next instruction if the input flag (FGI) is set to 1.
+  $$ pB_8: \text{if } (FGI = 1) \text{ then } (PC \leftarrow PC + 1) $$
+
+- **SKO (Skip on Output Flag):** Skips the next instruction if the output flag (FGO) is set to 1.
+  $$ pB_9: \text{if } (FGO = 1) \text{ then } (PC \leftarrow PC + 1) $$
+
+- **ION (Interrupt Enable On):** Enables the interrupt facility.
+  $$ pB_{10}: IEN \leftarrow 1 $$
+
+- **IOF (Interrupt Enable Off):** Disables the interrupt facility.
+  $$ pB_{11}: IEN \leftarrow 0 $$
+
+## Program Interrupt
+
+### Inefficiency of Programmed Control Transfer
+
+In programmed control transfer, the computer continuously checks the flag bit and initiates an information transfer when the flag is set. This method is inefficient, especially when the input-output device operates at a much slower rate compared to the computer. For instance, if the computer's instruction cycle is $1 \mu s$ and the input-output device transfers data at a rate of 10 characters per second (one character every $100,000 \mu s$), the computer would check the flag 50,000 times between each transfer, wasting valuable processing time.
+
+### Interrupt-Driven Transfer
+
+An efficient alternative is to use the interrupt facility, where the external device informs the computer when it is ready for data transfer. This allows the computer to perform other tasks in the meantime. When a flag is set, the computer is interrupted, momentarily pauses its current program, handles the input-output transfer, and then resumes its previous task.
+
+### Interrupt Enable Flip-Flop (IEN)
+
+The interrupt enable flip-flop (IEN) controls whether interrupts are allowed. It can be set to 1 (using the ION instruction) to enable interrupts or cleared to 0 (using the IOF instruction) to disable interrupts. This gives the programmer control over whether to use the interrupt facility.
+
+### Interrupt Cycle
+
+The handling of interrupts can be understood through the following flowchart process:
+
+1. During the execute phase of the instruction cycle, the control checks IEN.
+   - If IEN is 0, interrupts are disabled, and the control proceeds to the next instruction cycle.
+   - If IEN is 1, the control checks the flag bits.
+     - If both flags are 0, no input or output transfer is needed, and the control proceeds to the next instruction cycle.
+     - If either flag is set to 1, the interrupt flip-flop (R) is set to 1.
+
+2. At the end of the execute phase, if R is set to 1, the control initiates an interrupt cycle instead of the next instruction cycle.
+
+### Interrupt Cycle Operations
+
+The interrupt cycle involves saving the current program counter (PC) and branching to the interrupt service routine. The operations are as follows:
+
+- **RT0:** 
+  $$ AR \leftarrow 0, TR \leftarrow PC $$
+
+- **RT1:** 
+  $$ M[AR] \leftarrow TR, PC \leftarrow 0 $$
+
+- **RT2:** 
+  $$ PC \leftarrow PC + 1, IEN \leftarrow 0, R \leftarrow 0, SC \leftarrow 0 $$
+
+In the first timing signal (RT0), AR is cleared to 0, and the content of PC is transferred to a temporary register (TR). During the second timing signal (RT1), the return address is stored in memory location 0, and PC is cleared to 0. The third timing signal (RT2) increments PC to 1, clears IEN and R, and sets SC to 0, returning control to the fetch phase.
+
+### Return from Interrupt
+
+To return from the interrupt, the interrupt service routine must end with a branch indirect instruction (BUN) that has an address part of 0. This instruction causes the computer to read the return address from memory location 0 and resumes the interrupted program.
+
+The complete process ensures that the computer efficiently handles input-output transfers without wasting processing time checking flag bits, allowing it to perform other tasks until an interrupt is triggered.

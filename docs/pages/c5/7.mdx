@@ -1,0 +1,163 @@
+# Complete Computer Description
+
+## Instruction Cycle Flowchart
+
+The instruction cycle of the basic computer, including the interrupt cycle, operates as follows:
+
+1. **Fetch**:
+   - Fetch the instruction from memory.
+   - Increment the Program Counter (PC).
+
+2. **Decode**:
+   - Decode the fetched instruction to determine its type and operands.
+
+3. **Execute**:
+   - If the instruction is a memory-reference instruction, check if it involves an indirect address.
+   - Execute the instruction based on its type.
+
+4. **Interrupt**:
+   - If the interrupt flip-flop (R) is set, initiate the interrupt cycle.
+
+## Register Transfer Statements
+
+The operations of the basic computer can be described using register transfer statements. These statements summarize the control functions and microoperations required to design the computer's logic circuits. 
+
+### Control Functions and Microoperations
+
+The control functions and microoperations are summarized as follows:
+
+- **Fetch Cycle**:
+  - $T0: AR \leftarrow PC$
+  - $T1: IR \leftarrow M[AR], PC \leftarrow PC + 1$
+
+- **Decode Cycle**:
+  - $T2: D0, D1, \ldots, D7 \leftarrow \text{Decode } IR(12-14), AR \leftarrow IR(0-11), I \leftarrow IR(15)$
+
+- **Indirect Cycle**:
+  - $D7 T3: AR \leftarrow M[AR]$
+
+- **Interrupt Cycle**:
+  - $R: AR \leftarrow 0, TR \leftarrow PC$
+  - $T0: M[AR] \leftarrow TR, PC \leftarrow 0$
+  - $T1: PC \leftarrow PC + 1, IEN \leftarrow 0, R \leftarrow 0, SC \leftarrow 0$
+
+- **Memory-Reference Instructions**:
+  - **AND**: $D0 T4: DR \leftarrow M[AR]$
+  - $D0 T5: AC \leftarrow AC \land DR, SC \leftarrow 0$
+  - **ADD**: $D1 T4: DR \leftarrow M[AR]$
+  - $D1 T5: AC \leftarrow AC + DR, E \leftarrow \text{Carry}, SC \leftarrow 0$
+  - **LDA**: $D2 T4: DR \leftarrow M[AR]$
+  - $D2 T5: AC \leftarrow DR, SC \leftarrow 0$
+  - **STA**: $D3 T4: M[AR] \leftarrow AC, SC \leftarrow 0$
+  - **BUN**: $D4 T4: PC \leftarrow AR, SC \leftarrow 0$
+  - **BSA**: $D5 T4: M[AR] \leftarrow PC, AR \leftarrow AR + 1$
+  - $D5 T5: PC \leftarrow AR, SC \leftarrow 0$
+  - **ISZ**: $D6 T4: DR \leftarrow M[AR]$
+  - $D6 T5: DR \leftarrow DR + 1$
+- $D6 T6: M[AR] \leftarrow DR, \: $if (DR = 0) \: $then$ \: (PC \leftarrow PC + 1), SC \leftarrow 0$
+
+- **Register-Reference Instructions**:
+  - **CLA**: $rB0: AC \leftarrow 0$
+  - **CLE**: $rB1: E \leftarrow 0$
+  - **CMA**: $rB2: AC \leftarrow \neg AC$
+  - **CME**: $rB3: E \leftarrow \neg E$
+  - **CIR**: $rB4: AC \leftarrow shr AC, AC(15) \leftarrow E, E \leftarrow AC(0)$
+  - **CIL**: $rB5: AC \leftarrow shl AC, AC(0) \leftarrow E, E \leftarrow AC(15)$
+  - **INC**: $rB6: AC \leftarrow AC + 1$
+  - **SPA**: $rB7: if (AC(15) = 0) \: $then$ \:  (PC \leftarrow PC + 1)$
+  - **SNA**: $rB8: if (AC(15) = 1) \: $then$ \:  (PC \leftarrow PC + 1)$
+  - **SZA**: $rB9: if (AC = 0) \: $then$ \:  (PC \leftarrow PC + 1)$
+  - **SZE**: $rB10: if (E = 0) \: $then$ \:  (PC \leftarrow PC + 1)$
+  - **HLT**: $rB11: S \leftarrow 0$
+
+- **Input-Output Instructions**:
+  - **INP**: $pB0: AC(0-7) \leftarrow INPR, FGI \leftarrow 0$
+  - **OUT**: $pB1: OUTR \leftarrow AC(0-7), FGO \leftarrow 0$
+  - **SKI**: $pB2: if (FGI = 1) \: $then$ \:  (PC \leftarrow PC + 1)$
+  - **SKO**: $pB3: if (FGO = 1) \: $then$ \:  (PC \leftarrow PC + 1)$
+
+  - **ION**: $pB4: IEN \leftarrow 1$
+  - **IOF**: $pB5: IEN \leftarrow 0$
+
+## Design of Basic Computer
+
+The basic computer comprises several hardware components:
+
+1. **Memory Unit**:
+   - 4096 words, each 16 bits.
+
+2. **Registers**:
+   - Nine registers: AR, PC, DR, AC, IR, TR, OUTR, INPR, and SC.
+
+3. **Flip-Flops**:
+   - Seven flip-flops: I, S, E, R, IEN, FGI, and FGO.
+
+4. **Decoders**:
+   - Two decoders: 3x8 operation decoder and 4x16 timing decoder.
+
+5. **Bus**:
+   - 16-bit common bus.
+
+6. **Control Logic Gates**
+
+7. **Adder and Logic Circuit**:
+   - Connected to the input of AC.
+
+### Control Logic Gates
+
+The control logic gates receive inputs from the decoders, flip-flops, and IR bits 0 through 11. They output signals to control the registers, memory, flip-flops, bus, and AC adder and logic circuit.
+
+### Control of Registers and Memory
+
+The registers connected to the common bus system have control inputs LD (load), INR (increment), and CLR (clear). The control functions for AR, for instance, are:
+
+- **Load**: $LD(AR) = R'T0 + R'T2 + D7T3$
+- **Clear**: $CLR(AR) = R'T0$
+- **Increment**: $INR(AR) = D5T4$
+
+### Control of Single Flip-Flops
+
+Flip-flops are controlled similarly. For example, the control gates for IEN are derived from:
+
+- $pB7: IEN \leftarrow 1$
+- $pB6: IEN \leftarrow 0$
+- $RT2: IEN \leftarrow 0$
+
+### Control of Common Bus
+
+The common bus selection is controlled by inputs $S2, S1, S0$. Each register is selected based on a binary encoder which takes Boolean inputs to generate the selection signals.
+
+### Adder and Logic Circuit for AC
+
+The AC register interacts with an adder and logic circuit, which handles operations like AND, ADD, transfer, complement, and shifts. The circuit design is based on the following control functions:
+
+- **AND with DR**: $D0 T5: AC \leftarrow AC \land DR$
+- **Add with DR**: $D1 T5: AC \leftarrow AC + DR$
+- **Transfer from DR**: $D2 T5: AC \leftarrow DR$
+- **Transfer from INPR**: $pB0: AC(0-7) \leftarrow INPR$
+- **Complement**: $rB2: AC \leftarrow \neg AC$
+- **Shift Right**: $rB4: AC \leftarrow shr AC, AC(15) \leftarrow E$
+- **Shift Left**: $rB5: AC \leftarrow shl AC, AC(0) \leftarrow E$
+- **Clear**: $rB11: AC \leftarrow 0$
+- **Increment**: $rB6: AC \leftarrow AC + 1$
+
+Each stage of the adder and logic circuit has specific inputs and outputs to handle these operations, controlled by the relevant microoperations.
+
+### Control of AC Register
+
+The control gates for AC's LD, INR, and CLR inputs are derived from the register transfer statements. For instance:
+
+- $D0 T5: AC \leftarrow AC \land DR$
+- $D1 T5: AC \leftarrow AC + DR$
+- $D2 T5: AC \leftarrow DR$
+- $pB0: AC(0-7) \leftarrow INPR$
+- $rB0: AC \leftarrow 0$
+- $rB6: AC \leftarrow AC + 1$
+
+The gate structure for controlling these inputs ensures that the correct microoperation is performed at the appropriate time.
+
+### Adder and Logic Circuit Stages
+
+The adder and logic circuit is divided into 16 stages, each corresponding to one bit of AC. Each stage includes logic for performing AND, ADD, complement, and shift operations. The stages are connected to handle the full range of operations required by the AC register.
+
+This comprehensive description covers the basic computer's instruction cycle, control logic, and key components necessary for its operation. The use of register transfer statements and Boolean logic provides a clear framework for designing the computer's hardware and understanding its functionality.

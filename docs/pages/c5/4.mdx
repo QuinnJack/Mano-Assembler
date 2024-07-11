@@ -1,57 +1,71 @@
-# Digital Computers
+# Instruction Cycle
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+A program residing in the memory unit of the computer consists of a sequence of instructions. The program is executed by the computer through a cycle for each instruction. Each instruction cycle is subdivided into a sequence of subcycles or phases. In the basic computer, each instruction cycle consists of the following phases:
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+1. Fetch an instruction from memory.
+2. Decode the instruction.
+3. Read  $T$. Upon the completion of step 4, the control returns to step 1 to fetch, decode, and execute the next instruction. This process continues indefinitely unless a HALT instruction is encountered.
 
-## Binary System
+## Fetch and Decode
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+Initially, the program counter (PC) is loaded with the address of the first instruction in the program. The sequence counter (SC) is cleared to 0, providing a decoded timing signal $T_0$. After each clock pulse, SC is incremented by one, so that the timing signals go through a sequence $T_0$, $T_1$, $T_2$, and so on. The micro-operations for the fetch and decode phases can be specified by the following register transfer statements:
 
-### Binary to Decimal Conversion
+$T0: AR \leftarrow PC$
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+$T1: IR \leftarrow M[AR], PC \leftarrow PC + 1$
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+$T2: D0,...,D7 \leftarrow Decode IR(12-14), AR \leftarrow IR(0-11), I \leftarrow IR(15)$
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
 
-\[ = 75 \]
+Since only the address register (AR) is connected to the address inputs of memory, it is necessary to transfer the address from PC to AR during the clock transition associated with timing signal $T_0$. The instruction read from memory is then placed in the instruction register (IR) with the clock transition associated with timing signal $T_1$. At the same time, PC is incremented by one to prepare it for the address of the next instruction in the program. At time $T_2$, the operation code in IR is decoded, the indirect bit is transferred to flip-flop I, and the address part of the instruction is transferred to AR. Note that SC is incremented after each clock pulse to produce the sequence $T_0$, $T_1$, and $T_2$.
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+To provide the data path for the transfer of PC to AR, we must apply timing signal $T_0$ to achieve the following connection:
 
-## Computer System Components
+1. Place the content of PC onto the bus by making the bus selection inputs $S2S1S0$ equal to 010.
+2. Transfer the content of the bus to AR by enabling the LD input of AR.
 
-A computer system is often divided into two main functional entities: hardware and software.
+The next clock transition initiates the transfer from PC to AR since $T_0 = 1$. In timing signal $T_1$, it is necessary to use the following connections in the bus system:
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+1. Enable the read input of memory.
+2. Place the content of memory onto the bus by making $S2S1S0 = 111$.
+3. Transfer the content of the bus to IR by enabling the LD input of IR.
+4. Increment PC by enabling the INR input of PC.
 
-### System Software
+The next clock transition initiates the read and increment operations since $T_1 = 1$.
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
 
-## Major Parts of Computer Hardware
+## Determine the Type of Instruction
 
-The hardware of a computer is typically divided into three major parts:
+The timing signal that is active after the decoding is $T_3$. During time $T_3$, the control unit determines the type of instruction that was just read from memory. The three possible instruction types available in the basic computer are:
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+- Memory-reference instruction
+- Register-reference instruction
+- Input-output instruction
 
-### Distinctions in Computer Hardware
+The decoder output $D_7$ is equal to 1 if the operation code is equal to binary 111. If $D_7 = 1$, the instruction is either a register-reference or input-output type. If $D_7 = 0$, the operation code specifies a memory-reference instruction. Control then inspects the value of the first bit of the instruction, which is now available in flip-flop I. If $D_7 = 0$ and $I = 1$, the instruction is a memory-reference instruction with an indirect address. It is then necessary to read the effective address from memory. The micro-operation for the indirect address condition can be symbolized by the register transfer statement:
+$AR \leftarrow M[AR]$
 
-When dealing with computer hardware, three areas are often distinguished:
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+Initially, AR holds the address part of the instruction. This address is used during the memory read operation. The word at the address given by AR is read from memory and placed on the common bus. The LD input of AR is then enabled to receive the indirect address that resided in the 12 least significant bits of the memory word.
 
-## Overview of the Book
+The three instruction types are subdivided into four separate paths. The selected operation is activated with the clock transition associated with timing signal $T_3$. This can be symbolized as follows:
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+$D7I'T3$: Execute a register-reference instruction
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+$D7I'T3$: Execute an input-output instruction
+
+$D7I'T3$: $AR \leftarrow M[AR]$
+
+
+When a memory-reference instruction with $I = 0$ is encountered, it is not necessary to do anything since the effective address is already in AR. However, the sequence counter SC must be incremented when $D_7T_3 = 1$, so that the execution of the memory-reference instruction can be continued with timing variable $T_4$. A register-reference or input-output instruction can be executed with the clock associated with timing signal $T_3$. After the instruction is executed, SC is cleared to 0, and control returns to the fetch phase with $T_0 = 1$.
+
+Note that the sequence counter SC is either incremented or cleared to 0 with every positive clock transition. We adopt the convention that if SC is incremented, we will not write the statement $SC \leftarrow SC + 1$, but it will be implied that the control goes to the next timing signal in sequence. When SC is to be cleared, we will include the statement $SC \leftarrow 0$.
+
+## Register-Reference Instructions
+
+Register-reference instructions are recognized by the control when $D_7 = 1$ and $I = 0$. These instructions use bits 0 through 11 of the instruction code to specify one of 12 instructions. These 12 bits are available in $IR(0-11)$. They were also transferred to AR during time $T_2$.
+
+The control functions and micro-operations for the register-reference instructions are listed below. These instructions are executed with the clock transition associated with timing variable $T_3$. Each control function needs the Boolean relation $D_7I'T_3$, which we designate for convenience by the symbol $r$. The control function is distinguished by one of the bits in $IR(0-11)$. By assigning the symbol $B_i$ to bit $i$ of IR, all control functions can be simply denoted by $rB_i$. For example, the instruction CLA has the hexadecimal code 7800, which gives the binary equivalent 0111 1000 0000 0000. The first bit is a zero and is equivalent to $I'$. The next three bits constitute the operation code and are recognized from decoder output $D_7$. Bit 11 in IR is 1 and is recognized from $B_{11}$. The control function that initiates the micro-operation for this instruction is $D_7I'T_3B_{11} = rB_{11}$. The execution of a register-reference instruction is completed at time $T_3$. The sequence counter SC is cleared to 0, and the control goes back to fetch the next instruction with timing signal $T_0$.
+
+The first seven register-reference instructions perform clear, complement, circular shift, and increment micro-operations on the AC or E registers. The next four instructions cause a skip of the next instruction in sequence when a stated condition is satisfied. The skipping of the instruction is achieved by incrementing PC once again (in addition to it being incremented during the fetch phase at time $T_1$). The condition control statements must be recognized as part of the control conditions. The AC is positive when the sign bit in $AC(15) = 0$; it is negative when $AC(15) = 1$. The content of AC is zero ($AC = 0$) if all the flip-flops of the register are zero. The HLT instruction clears a start-stop flip-flop S and stops the sequence counter from counting. To restore the operation of the computer, the start-stop flip-flop must be set manually.
+

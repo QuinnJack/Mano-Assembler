@@ -1,57 +1,52 @@
-# Digital Computers
+# Instruction Codes
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+In this section, we introduce a basic computer and demonstrate how its operation can be specified using register transfer statements. The organization of the computer is defined by its internal registers, the timing and control structure, and the set of instructions it uses. The design of the computer is then carried out in detail. Although the basic computer presented here is much smaller compared to commercial computers, it is simple enough to illustrate the design process without excessive complexity.
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+## Internal Organization of a Digital System
 
-## Binary System
+The internal organization of a digital system is defined by the sequence of micro-operations it performs on data stored in its registers. A general-purpose digital computer is capable of executing various micro-operations and, in addition, can be instructed as to the specific sequence of operations it must perform. Users can control this process via a program. A program is a set of instructions that specify the operations, operands, and the sequence in which processing must occur. By specifying a new program with different instructions or the same instructions with different data, the data-processing task can be altered.
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+## Computer Instructions
 
-### Binary to Decimal Conversion
+A computer instruction is a binary code that specifies a sequence of micro-operations for the computer. Both instruction codes and data are stored in memory. The computer reads each instruction from memory, places it in a control register, and then the control unit interprets the binary code of the instruction, executing it by issuing a sequence of micro-operations. Every computer has its own unique instruction set. The ability to store and execute instructions, known as the stored program concept, is the most important property of a general-purpose computer.
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+### Instruction Code Structure
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+An instruction code is a group of bits that instruct the computer to perform a specific operation. It is typically divided into parts, each with its own particular interpretation. The most basic part of an instruction code is the operation code (opcode). The opcode is a group of bits that define operations such as add, subtract, multiply, shift, and complement. The number of bits required for the opcode depends on the total number of operations available in the computer. 
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+For example, consider a computer with 64 distinct operations. The opcode must consist of at least 6 bits since $2^6 = 64$. If the ADD operation is assigned the bit configuration 110010, the control unit decodes this opcode, reads an operand from memory, and adds the operand to a processor register.
 
-\[ = 75 \]
+### Operation and Micro-operations
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+An operation code is part of an instruction stored in computer memory, which tells the computer to perform a specific operation. The control unit receives the instruction from memory, interprets the operation code bits, and issues a sequence of control signals to initiate micro-operations in internal computer registers. For each operation code, the control unit issues a sequence of micro-operations needed for the hardware implementation of the specified operation. Hence, an operation code is sometimes called a macro-operation because it specifies a set of micro-operations.
 
-## Computer System Components
+### Specifying Operands
 
-A computer system is often divided into two main functional entities: hardware and software.
+The operation part of an instruction code specifies the operation to be performed. This operation must be performed on some data stored in processor registers or in memory. Thus, an instruction code must specify not only the operation but also the registers or memory words where the operands are located, as well as the register or memory word where the result will be stored.
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+Memory words can be specified in instruction codes by their address. Processor registers can be specified by assigning another binary code of k bits within the instruction, specifying one of $2^k$ registers. There are many variations for arranging the binary code of instructions, and each computer has its own particular instruction code format.
 
-### System Software
+## Stored Program Organization
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+The simplest way to organize a computer is to have one processor register and an instruction code format with two parts: the opcode and the address. The memory address tells the control unit where to find an operand in memory. This operand is read from memory and used as the data to be operated on, together with the data stored in the processor register.
 
-## Major Parts of Computer Hardware
+For example, in a memory unit with 4096 words, 12 bits are needed to specify an address since $2^{12} = 4096$. If each instruction code is stored in a 16-bit memory word, 4 bits are available for the opcode (specifying one of 16 possible operations), and 12 bits are available to specify the address of an operand. The control unit reads a 16-bit instruction from the program portion of memory, uses the 12-bit address part to read a 16-bit operand from the data portion of memory, and then executes the operation specified by the opcode.
 
-The hardware of a computer is typically divided into three major parts:
+### Accumulator (AC)
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+Computers with a single-processor register typically label it as the accumulator (AC). Operations are performed with the memory operand and the content of the AC. If an instruction's operation does not require a memory operand, the remaining bits in the instruction can be used for other purposes. For instance, operations such as clear AC, complement AC, and increment AC operate on data stored in the AC register and do not need a memory operand. Therefore, the second part of the instruction code (bits 0 through 11) is available for other uses.
 
-### Distinctions in Computer Hardware
+### Indirect Addressing
 
-When dealing with computer hardware, three areas are often distinguished:
+In some cases, it is convenient to use the address bits of an instruction code not as an address but as the actual operand. When the second part of an instruction code specifies an operand, it is an immediate operand. When it specifies the address of an operand, it is a direct address. There is also the possibility of indirect addressing, where the bits in the second part of the instruction designate the address of a memory word that contains the operand's address. A single bit in the instruction code can distinguish between a direct and an indirect address.
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+For example, consider an instruction code with a 3-bit opcode, a 12-bit address, and an indirect address mode bit designated by I. If I = 0, it is a direct address instruction. If I = 1, it is an indirect address instruction. In the case of a direct address instruction, the operand is located in the specified address in memory. In an indirect address instruction, the address part specifies a memory location that contains the address of the operand.
 
-## Overview of the Book
+#### Effective Address
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+The effective address is the address of the operand in a computation-type instruction or the target address in a branch-type instruction. In a direct address instruction, the effective address is the address part of the instruction. In an indirect address instruction, the effective address is found by first going to the address part specified in the instruction to retrieve the operand's address, and then accessing the operand.
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+By using these addressing modes, the basic computer can efficiently handle operations and data stored in memory.
+
+
+

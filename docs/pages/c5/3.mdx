@@ -1,57 +1,142 @@
-# Digital Computers
+# Computer Instructions
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+The basic computer utilizes three distinct instruction code formats, each consisting of 16 bits. The operation code (opcode) part of the instruction contains three bits, and the meaning of the remaining 13 bits varies depending on the opcode. 
 
-## Binary System
+## Instruction Formats
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+### Memory-Reference Instructions
 
-### Binary to Decimal Conversion
+A memory-reference instruction uses 12 bits to specify an address and one bit to specify the addressing mode (denoted as \( I \)). The addressing mode bit (\( I \)) is equal to 0 for direct addressing and 1 for indirect addressing. This format is structured as follows:
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+- **Bits 15-12**: Opcode (000 through 110)
+- **Bit 15**: Addressing mode \( I \) (0 for direct, 1 for indirect)
+- **Bits 11-0**: Address
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+### Register-Reference Instructions
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+Register-reference instructions are identified by the opcode 111 with a 0 in the leftmost bit (bit 15). These instructions specify operations or tests on the AC (Accumulator) register and do not require an operand from memory. The format is:
 
-\[ = 75 \]
+- **Bits 15-12**: 111 (Opcode)
+- **Bit 15**: 0 (Register operation indicator)
+- **Bits 11-0**: Operation or test
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+### Input-Output Instructions
 
-## Computer System Components
+Input-output instructions use the opcode 111 with a 1 in the leftmost bit (bit 15). These instructions specify the type of input-output operation or test. The format is:
 
-A computer system is often divided into two main functional entities: hardware and software.
+- **Bits 15-12**: 111 (Opcode)
+- **Bit 15**: 1 (I/O operation indicator)
+- **Bits 11-0**: Type of I/O operation or test
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+## Instruction Type Recognition
 
-### System Software
+The type of instruction is determined by the computer control unit by examining the four bits in positions 12 through 15 of the instruction. The process is as follows:
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+1. **Memory-Reference Instruction**:
+   - If the opcode bits (12-14) are not equal to 111, the instruction is a memory-reference type.
+   - The bit in position 15 is then interpreted as the addressing mode \( I \).
 
-## Major Parts of Computer Hardware
+2. **Register-Reference Instruction**:
+   - If the opcode bits (12-14) equal 111 and the bit in position 15 is 0, the instruction is a register-reference type.
 
-The hardware of a computer is typically divided into three major parts:
+3. **Input-Output Instruction**:
+   - If the opcode bits (12-14) equal 111 and the bit in position 15 is 1, the instruction is an input-output type.
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+Note that the bit in position 15 is designated as \( I \) but is not used as a mode bit when the opcode equals 111.
 
-### Distinctions in Computer Hardware
+## Instruction Set and Hexadecimal Representation
 
-When dealing with computer hardware, three areas are often distinguished:
+Although only three bits are used for the opcode, the instruction set is not limited to eight operations. Register-reference and input-output instructions utilize the remaining 12 bits as part of their operation code, allowing for a total of 25 distinct instructions in the basic computer.
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+The instructions are listed in the table below:
 
-## Overview of the Book
+| Hexadecimal Code | Symbol | Description |
+|------------------|--------|-------------|
+| 0xxx             | AND    | AND memory word to AC |
+| 1xxx             | ADD    | Add memory word to AC |
+| 2xxx             | LDA    | Load memory word to AC |
+| 3xxx             | STA    | Store content of AC in memory |
+| 4xxx             | BUN    | Branch unconditionally |
+| 5xxx             | BSA    | Branch and save return address |
+| 6xxx             | ISZ    | Increment and skip if zero |
+| 7800             | CLA    | Clear AC |
+| 7400             | CLE    | Clear E |
+| 7200             | CMA    | Complement AC |
+| 7100             | CME    | Complement E |
+| 7080             | CIR    | Circulate right AC and E |
+| 7040             | CIL    | Circulate left AC and E |
+| 7020             | INC    | Increment AC |
+| 7010             | SPA    | Skip next instruction if AC positive |
+| 7008             | SNA    | Skip next instruction if AC negative |
+| 7004             | SZA    | Skip next instruction if AC zero |
+| 7002             | SZE    | Skip next instruction if E is 0 |
+| 7001             | HLT    | Halt computer |
+| F800             | INP    | Input character to AC |
+| F400             | OUT    | Output character from AC |
+| F200             | SKI    | Skip on input flag |
+| F100             | SKO    | Skip on output flag |
+| F080             | ION    | Interrupt on |
+| F040             | IOF    | Interrupt off |
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+The symbol designation is a three-letter abbreviation for the instruction's function. The hexadecimal code reduces the 16 bits of the instruction code to four digits, each representing four bits.
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+### Addressing and Hexadecimal Codes
+
+- Memory-reference instructions have a 12-bit address part, denoted by three x's (xxx), corresponding to the three hexadecimal digits.
+- The last bit of the instruction is designated by \( I \). When \( I = 0 \), the last four bits range from 0 to 6 (hexadecimal). When \( I = 1 \), the range is 8 to E (hexadecimal).
+
+### Register-Reference Instructions
+
+- Use all 16 bits to specify an operation.
+- The leftmost four bits are always 0111 (hexadecimal 7), with the remaining bits specifying the operation.
+
+### Input-Output Instructions
+
+- Also use all 16 bits.
+- The last four bits are always 1111 (hexadecimal F), with the remaining bits specifying the operation.
+
+## Instruction Set Completeness
+
+To ensure that the computer can execute any computable function, it must include a complete set of instructions covering the following categories:
+
+1. Arithmetic, logical, and shift instructions.
+2. Instructions for moving information between memory and processor registers.
+3. Program control instructions and status condition checks.
+4. Input and output instructions.
+
+### Detailed Instruction Functions
+
+- **Arithmetic and Logical Instructions**:
+  - **ADD**: Add memory word to AC.
+  - **CMA**: Complement AC.
+  - **INC**: Increment AC.
+  - **AND**: Perform logical AND on memory word and AC.
+  - **CLA**: Clear AC.
+  - **CLE**: Clear E.
+
+- **Shift Instructions**:
+  - **CIR**: Circulate right AC and E.
+  - **CIL**: Circulate left AC and E.
+
+- **Control and Status Instructions**:
+  - **BUN**: Unconditional branch.
+  - **BSA**: Branch and save return address.
+  - **ISZ**: Increment and skip if zero.
+  - **SPA**: Skip next instruction if AC positive.
+  - **SNA**: Skip next instruction if AC negative.
+  - **SZA**: Skip next instruction if AC zero.
+  - **SZE**: Skip next instruction if E is zero.
+  - **HLT**: Halt the computer.
+
+- **Input and Output Instructions**:
+  - **INP**: Input character to AC.
+  - **OUT**: Output character from AC.
+  - **SKI**: Skip on input flag.
+  - **SKO**: Skip on output flag.
+  - **ION**: Interrupt on.
+  - **IOF**: Interrupt off.
+
+
+The basic computer's instruction set, while minimal, is complete and capable of performing necessary operations for general-purpose computation. Despite its simplicity, it demonstrates fundamental principles of computer organization and design. More efficient and complex instruction sets are found in commercial computers, but the basic set provides a clear foundation for understanding computer architecture.
+

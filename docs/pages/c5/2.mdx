@@ -1,57 +1,65 @@
-# Digital Computers
+# Computer Registers
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+In a basic computer, instructions are stored sequentially in memory locations and are executed one at a time. The control unit reads an instruction from a specific memory address, executes it, and then moves to the next instruction in sequence. This process requires a counter to calculate the address of the next instruction. Additionally, a register in the control unit is needed to store the instruction code after it is read from memory. Processor registers are also necessary for data manipulation and for holding memory addresses. The configuration of these registers is fundamental to the computer's operation.
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+## Register Configuration
 
-## Binary System
+The basic computer has several key registers, each serving a specific function:
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+| Register Symbol | Register Name         | Number of Bits | Function                                                         |
+|-----------------|-----------------------|----------------|------------------------------------------------------------------|
+| DR              | Data Register         | 16             | Holds the operand read from memory                               |
+| AR              | Address Register      | 12             | Holds the address for memory operations                          |
+| AC              | Accumulator           | 16             | A general-purpose register used for arithmetic and logic operations |
+| IR              | Instruction Register  | 16             | Holds the current instruction code                               |
+| PC              | Program Counter       | 12             | Holds the address of the next instruction to be executed         |
+| TR              | Temporary Register    | 16             | Used for holding temporary data during processing                |
+| INPR            | Input Register        | 8              | Receives an 8-bit character from an input device                 |
+| OUTR            | Output Register       | 8              | Holds an 8-bit character to be sent to an output device          |
 
-### Binary to Decimal Conversion
+### Memory Organization
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+The memory unit in the basic computer has a capacity of 4096 words, with each word containing 16 bits. Instructions are 16 bits in length, with 12 bits used for the address of an operand, 3 bits for the operation code, and 1 bit for specifying direct or indirect addressing.
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+### Program Counter (PC)
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+The PC is a 12-bit register that holds the address of the next instruction to be executed. After executing an instruction, the PC is incremented to point to the next instruction in sequence. If a branch instruction is encountered, the address part of the branch instruction is transferred to the PC, allowing the program to continue execution from a non-consecutive memory location.
 
-\[ = 75 \]
+## Common Bus System
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+The basic computer uses a common bus system to transfer information between registers and memory. This system reduces the number of connections required between registers. The bus system consists of 16 lines, connecting the outputs of several registers and memory to the inputs of other registers and memory.
 
-## Computer System Components
+### Bus Selection
 
-A computer system is often divided into two main functional entities: hardware and software.
+The bus selection is controlled by selection variables $S_2$, $S_1$, and $S_0$. For example, the data register (DR) outputs its 16-bit contents to the bus when $S_2S_1S_0 = 011$. The destination register's load (LD) input is enabled to receive data from the bus.
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+### Memory Access
 
-### System Software
+Memory read and write operations are performed through the common bus. The memory address is provided by the AR, while the data is transferred via the bus. For a read operation, the memory places its 16-bit output onto the bus when $S_2S_1S_0 = 111$. For a write operation, the memory receives the contents of the bus.
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+### Register Control
 
-## Major Parts of Computer Hardware
+Registers are controlled by three primary inputs: LD (load), INR (increment), and CLR (clear). These inputs allow the registers to function as binary counters with parallel load and synchronous clear capabilities. The increment operation is achieved by enabling the count input of the counter.
 
-The hardware of a computer is typically divided into three major parts:
+## Arithmetic and Logic Operations
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+The AC register receives inputs from an adder and logic circuit, which has three sets of inputs:
 
-### Distinctions in Computer Hardware
+1. Outputs from the AC for implementing micro-operations like complement and shift.
+2. Outputs from the DR for arithmetic and logic operations such as addition and logical AND.
+3. Outputs from the INPR for input operations.
 
-When dealing with computer hardware, three areas are often distinguished:
+The result of an addition operation is transferred to the AC, and the end carry-out is stored in a flip-flop (E). 
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+### Example Micro-operations
 
-## Overview of the Book
+Consider the micro-operations:
+$$
+\text{DR} \leftarrow \text{AC}
+$$
+$$
+\text{AC} \leftarrow \text{DR}
+$$
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+These can be executed simultaneously by placing the content of the AC on the bus (with $S_2S_1S_0 = 100$), enabling the LD input of the DR, transferring the content of the DR through the adder and logic circuit into the AC, and enabling the LD input of the AC. Both transfers occur at the clock pulse transition at the end of the clock cycle.
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.

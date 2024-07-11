@@ -1,57 +1,117 @@
-# Digital Computers
+# Introduction to Computer Systems
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+A complete computer system includes both hardware and software. Hardware consists of the physical components and all associated equipment, whereas software refers to the programs written for the computer. It is possible to be familiar with various aspects of computer software without concerning oneself with the details of how the computer hardware operates. Conversely, one can design parts of the hardware without knowing its software capabilities. However, those concerned with computer architecture should have a comprehensive understanding of both hardware and software since they influence each other.
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+## Writing Programs for Computers
 
-## Binary System
+Writing a program for a computer involves specifying, either directly or indirectly, a sequence of machine instructions. Machine instructions inside the computer form a binary pattern that is difficult, if not impossible, for people to work with and understand. Therefore, it is preferable to write programs using more familiar alphanumeric symbols. Consequently, there is a need for translating user-oriented symbolic programs into binary programs recognized by the hardware.
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+### Program Dependency
 
-### Binary to Decimal Conversion
+A program written by a user may be either dependent or independent of the physical computer that runs it. For example, a program written in standard Fortran is machine-independent because most computers provide a translator program that converts the standard Fortran program to the binary code of the specific computer in use. However, the translator program itself is machine-dependent because it must translate the Fortran program to the binary code recognized by the hardware of the particular computer used.
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+## Elementary Programming Concepts
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+This section introduces some elementary programming concepts and demonstrates their relation to the hardware representation of instructions. The initial part presents the basic operation and structure of a program that translates a user's symbolic program into an equivalent binary program. The discussion emphasizes the key concepts of the translator rather than the details of actually producing the program itself. The usefulness of various machine instructions is then demonstrated through several basic programming examples.
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+The instruction set of the basic computer, whose hardware organization was explored in a previous chapter, is used in this section to illustrate many of the techniques commonly used to program a computer. This allows us to explore the relationship between a program and the hardware operations that execute the instructions.
 
-\[ = 75 \]
+## Basic Computer Instruction Set
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+The 25 instructions of the basic computer are divided into memory-reference instructions and register-reference and input-output instructions. A memory-reference instruction has three parts: a mode bit, an operation code of three bits, and a 12-bit address. The first hexadecimal digit of a memory-reference instruction includes the mode bit and the operation code, while the other three digits specify the address. In an indirect address instruction, the mode bit is 1 and the first hexadecimal digit ranges from 8 to E. In a direct mode, the range is from 0 to 6. The other 18 instructions have a 16-bit operation code. The code for each instruction is listed as a four-digit hexadecimal number. The first digit of a register-reference instruction is always 7, and for an input-output instruction, it is always F.
 
-## Computer System Components
+### Instruction Set
 
-A computer system is often divided into two main functional entities: hardware and software.
+| Symbol | Hexadecimal Code | Description                       |
+|--------|-------------------|-----------------------------------|
+| AND    | 0 or 8            | AND M to AC                       |
+| ADD    | 1 or 9            | Add M to AC, carry to E           |
+| LDA    | 2 or A            | Load AC from M                    |
+| STA    | 3 or B            | Store AC in M                     |
+| BUN    | 4 or C            | Branch unconditionally to m       |
+| BSA    | 5 or D            | Save return address in m and branch to m + 1 |
+| ISZ    | 6 or E            | Increment M and skip if zero      |
+| CLA    | 7800              | Clear AC                          |
+| CLE    | 7400              | Clear E                           |
+| CMA    | 7200              | Complement AC                     |
+| CME    | 7100              | Complement E                      |
+| CIR    | 7080              | Circulate right E and AC          |
+| CIL    | 7040              | Circulate left E and AC           |
+| INC    | 7020              | Increment AC                      |
+| SPA    | 7010              | Skip if AC is positive            |
+| SNA    | 7008              | Skip if AC is negative            |
+| SZA    | 7004              | Skip if AC is zero                |
+| SZE    | 7002              | Skip if E is zero                 |
+| HLT    | 7001              | Halt computer                     |
+| INP    | F800              | Input information and clear flag  |
+| OUT    | F400              | Output information and clear flag |
+| SKI    | F200              | Skip if input flag is on          |
+| SKO    | F100              | Skip if output flag is on         |
+| ION    | F080              | Turn interrupt on                 |
+| IOF    | F040              | Turn interrupt off                |
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+## Machine Language
 
-### System Software
+A program is a list of instructions or statements that direct the computer to perform a required data-processing task. There are various types of programming languages that one may write for a computer, but the computer can execute programs only when they are represented internally in binary form. Programs written in any other language must be translated to the binary representation of instructions before they can be executed by the computer. Programs written for a computer may be in one of the following categories:
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+1. **Binary Code:** A sequence of instructions and operands in binary that list the exact representation of instructions as they appear in computer memory.
+2. **Octal or Hexadecimal Code:** An equivalent translation of the binary code to octal or hexadecimal representation.
+3. **Symbolic Code:** The user employs symbols (letters, numerals, or special characters) for the operation part, the address part, and other parts of the instruction code. Each symbolic instruction can be translated into one binary-coded instruction by a special program called an assembler. This type of symbolic program is referred to as an assembly language program.
+4. **High-level Programming Languages:** Special languages developed to reflect the procedures used in problem-solving rather than being concerned with computer hardware behavior. An example is Fortran, which employs problem-oriented symbols and formats. The program is written in a sequence of statements in a form that people prefer when solving a problem. Each statement must be translated into a sequence of binary instructions before execution. The program that translates a high-level language program to binary is called a compiler.
 
-## Major Parts of Computer Hardware
+### Binary, Octal, and Hexadecimal Programs
 
-The hardware of a computer is typically divided into three major parts:
+Strictly speaking, a machine language program is a binary program. Due to the simple equivalency between binary and octal or hexadecimal representation, it is customary to refer to octal or hexadecimal codes as machine language. Similarly, due to the one-to-one relationship between a symbolic instruction and its binary equivalent, an assembly language is also considered a machine-level language.
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+### Example Programs
 
-### Distinctions in Computer Hardware
+Below is an example of a binary program for adding two numbers:
 
-When dealing with computer hardware, three areas are often distinguished:
+| Location | Instruction Code       |
+|----------|------------------------|
+| 000      | 0010 0000 0100 (2004)  |
+| 001      | 0001 0000 0101 (1005)  |
+| 010      | 0011 0000 0110 (3006)  |
+| 011      | 0111 0000 0001 (7001)  |
+| 100      | 0000 0101 0011 (0053)  |
+| 101      | 1111 1111 1110 (FFE9)  |
+| 110      | 0000 0000 0000 (0000)  |
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+Here is the same program in symbolic code:
 
-## Overview of the Book
+| Location | Instruction | Comments                     |
+|----------|-------------|------------------------------|
+| 000      | LDA 004     | Load first operand into AC   |
+| 001      | ADD 005     | Add second operand to AC     |
+| 002      | STA 006     | Store sum in location 006    |
+| 003      | HLT         | Halt computer                |
+| 004      | 0053        | First operand                |
+| 005      | FFE9        | Second operand (negative)    |
+| 006      | 0000        | Store sum here               |
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+### Assembly Language Program
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+The following is an assembly language program for adding two numbers:
+
+```asm
+ORG 0
+LDA A        / Load operand from location A
+ADD B        / Add operand from location B
+STA C        / Store sum in location C
+HLT          / Halt computer
+A, DEC 53    / Decimal operand
+B, DEC -23   / Decimal operand
+C, DEC 0     / Sum stored in location C
+END          / End of symbolic program
+```
+The equivalent Fortran program for adding two integer numbers is:
+
+```asm
+INTEGER A, B, C
+DATA A, 53
+DATA B, -23
+C = A + B
+END
+```
+In this example, the Fortran program is translated by a compiler into a binary program that the computer can execute. The compiler assigns memory locations for the variables and converts the arithmetic operation into a sequence of binary instructions.
+
