@@ -1,0 +1,64 @@
+# Reduced Instruction Set Computer (RISC)
+
+The design of the instruction set architecture (ISA) is pivotal in computer architecture. The ISA dictates how machine language programs are constructed and executed. Historically, the complexity of instruction sets has evolved with advancements in digital hardware. Early computers had simple ISAs due to hardware constraints, but as integrated circuits became more cost-effective, ISAs grew in both size and complexity. These complex instruction sets, sometimes exceeding 200 instructions with various data types and addressing modes, are characteristic of Complex Instruction Set Computers (CISC). 
+
+In contrast, the Reduced Instruction Set Computer (RISC) architecture emerged in the early 1980s. RISC architecture aims to simplify instructions to enable faster execution within the CPU, reducing the need for frequent memory access. This document outlines the key characteristics and distinctions between CISC and RISC architectures, followed by a detailed exploration of a typical RISC instruction set and format.
+
+## CISC Characteristics
+
+CISC architectures are designed to minimize the semantic gap between high-level programming languages and machine language. This approach simplifies compilation by providing complex instructions that directly implement high-level language constructs. However, the complexity comes with trade-offs:
+
+1. **Large Number of Instructions**: Typically ranging from 100 to 250.
+2. **Specialized Instructions**: Some instructions perform niche tasks and are used infrequently.
+3. **Multiple Addressing Modes**: A wide variety, usually between 5 to 20 different modes.
+4. **Variable-Length Instructions**: Instructions vary in length, complicating decoding and execution.
+5. **Memory Operand Manipulation**: Many instructions directly manipulate operands in memory, increasing memory references and potentially slowing down execution.
+
+## RISC Characteristics
+
+RISC architectures simplify the instruction set to achieve higher performance through several strategies:
+
+1. **Few Instructions**: A small set of simple instructions.
+2. **Few Addressing Modes**: Limited to the essential modes.
+3. **Load/Store Architecture**: Memory access is restricted to load and store instructions.
+4. **Register-Based Operations**: All operations are performed within CPU registers.
+5. **Fixed-Length Instructions**: Simplifies decoding and aligns instructions on word boundaries.
+6. **Single-Cycle Execution**: Most instructions are executed in a single clock cycle.
+7. **Hardwired Control**: Preferable over microprogrammed control for faster operations.
+
+The simplicity of RISC instructions and their formats allows for streamlined control logic, facilitating pipelining and efficient execution. RISC processors often feature a large number of registers to store intermediate results, minimizing memory access and enhancing performance.
+
+### Overlapped Register Windows
+
+RISC architectures often use overlapped register windows to optimize procedure calls and returns, a common operation in high-level programming languages. Overlapped register windows eliminate the need for saving and restoring register values by allocating a new window of registers for each procedure call. This technique facilitates parameter passing between procedures without moving data, thereby saving execution time.
+
+Each procedure call increments a pointer to activate a new register window, while a return decrements the pointer, reverting to the previous window. Registers within adjacent windows overlap, allowing parameters to be shared seamlessly.
+
+### Example: Berkeley RISC I
+
+The Berkeley RISC I project demonstrated the advantages of RISC architecture. Key features of the Berkeley RISC I include:
+
+- **32-bit CPU**: Supports 32-bit addresses and data.
+- **32-bit Instruction Format**: Facilitates easy decoding.
+- **Three Addressing Modes**: Register addressing, immediate operands, and PC-relative addressing.
+- **138 Registers**: Organized into 10 global registers and 8 windows of 32 registers each.
+- **Instruction Set**: A total of 31 instructions focused on register-to-register operations and simple memory access.
+
+#### Instruction Formats
+
+The RISC I uses three primary instruction formats:
+
+1. **Register Mode**: Specifies two source registers and a destination register.
+2. **Register-Immediate Mode**: One source register, an immediate operand, and a destination register.
+3. **PC-Relative Mode**: Used for branch instructions with a relative address.
+
+#### Example Instructions
+
+- **ADD R22, R21, R23**: `R23 <- R22 + R21`
+- **ADD R22, #150, R23**: `R23 <- R22 + 150`
+- **LOAD R5, (R22)#150**: `R5 <- M[R22 + 150]`
+- **JMP COND, (R22)#150**: Conditional jump based on the contents of `R22 + 150`.
+
+### Summary
+
+The RISC architecture's emphasis on simplicity and efficiency contrasts with the complexity of CISC architectures. By focusing on a small set of instructions, limiting memory access operations, and employing efficient control mechanisms like pipelining and register windows, RISC architectures achieve faster and more predictable performance. The Berkeley RISC I project exemplifies these principles, demonstrating the effectiveness of the RISC approach in practical CPU design.

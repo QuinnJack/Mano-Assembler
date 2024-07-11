@@ -1,0 +1,124 @@
+# Program Control
+
+## Introduction
+Program control instructions alter the normal sequential flow of execution in a computer program. Normally, instructions are fetched and executed in the order they appear in memory, with the program counter (PC) incremented to point to the next instruction. However, program control instructions can change the PC's value, causing the program to branch to a different address and continue execution from there. This capability is essential for implementing decision-making, loops, subroutines, and handling interrupts.
+
+## Typical Program Control Instructions
+
+| Name             | Mnemonic |
+|------------------|----------|
+| Branch           | BR       |
+| Jump             | JMP      |
+| Skip             | SKP      |
+| Call             | CALL     |
+| Return           | RET      |
+| Compare (by subtraction) | CMP  |
+| Test (by ANDing) | TST      |
+
+### Branch and Jump Instructions
+Branch and jump instructions change the flow of control to a specified address. They can be either conditional or unconditional. 
+
+- **Unconditional branch**: Always transfers control to the specified address.
+- **Conditional branch**: Transfers control only if a specified condition is met.
+
+For example, the branch instruction `BR ADR` transfers the address `ADR` into the PC, causing the next instruction to be fetched from `ADR`.
+
+### Skip Instructions
+Skip instructions are zero-address instructions that conditionally skip the next instruction. If the condition is met, the PC is incremented an additional time during the execute phase, effectively skipping the next instruction.
+
+### Call and Return Instructions
+Call and return instructions manage subroutines:
+
+- **Call**: Transfers control to a subroutine and saves the return address.
+- **Return**: Transfers control back to the main program by restoring the return address.
+
+### Compare and Test Instructions
+These instructions set status bits based on the result of an operation without changing the operands:
+
+- **Compare (CMP)**: Performs a subtraction and sets status bits.
+- **Test (TST)**: Performs a logical AND and sets status bits.
+
+## Status Bit Conditions
+Status bits, also known as condition-code or flag bits, provide information about the result of an ALU operation. Typical status bits include:
+
+- **C (Carry)**: Set if there is a carry out of the most significant bit.
+- **S (Sign)**: Set if the result is negative (i.e., the most significant bit is 1).
+- **Z (Zero)**: Set if the result is zero.
+- **V (Overflow)**: Set if there is an arithmetic overflow.
+
+### Example of Status Bits in Use
+Consider an 8-bit ALU operation:
+
+$$
+A = 11110000 \\
+B = 00010100 \\
+A - B = 11011100 \\
+C = 1, S = 1, V = 0, Z = 0
+$$
+
+In this example:
+- `C = 1` indicates a carry out.
+- `S = 1` indicates a negative result.
+- `V = 0` indicates no overflow.
+- `Z = 0` indicates the result is not zero.
+
+## Conditional Branch Instructions
+Conditional branch instructions use status bits to determine whether to branch. For example:
+
+| Mnemonic | Branch Condition      | Tested Condition    |
+|----------|-----------------------|---------------------|
+| BZ       | Branch if zero        | Z = 1               |
+| BNZ      | Branch if not zero    | Z = 0               |
+| BC       | Branch if carry       | C = 1               |
+| BNC      | Branch if no carry    | C = 0               |
+| BP       | Branch if plus        | S = 0               |
+| BM       | Branch if minus       | S = 1               |
+| BV       | Branch if overflow    | V = 1               |
+| BNV      | Branch if no overflow | V = 0               |
+
+### Unsigned and Signed Comparisons
+Unsigned comparisons use terms like "higher" and "lower," while signed comparisons use "greater" and "less." For example:
+
+- **Unsigned**:
+  - `BHI`: Branch if higher (`A > B` without considering sign)
+  - `BLO`: Branch if lower (`A < B` without considering sign)
+
+- **Signed**:
+  - `BGT`: Branch if greater (`A > B` considering sign)
+  - `BLT`: Branch if less (`A < B` considering sign)
+
+## Subroutine Call and Return
+Subroutines allow modular programming. The call instruction saves the return address and transfers control to the subroutine. The return instruction restores the return address, transferring control back to the main program.
+
+### Subroutine Implementation
+Subroutine calls are often implemented using a stack to store return addresses:
+
+```assembly
+SP <- SP - 1
+M[SP] <- PC
+PC <- effective address
+```
+Return from subroutine is implemented by:
+```assembly
+PC <- M[SP]
+SP <- SP + 1
+```
+
+### Recursive Subroutines
+A recursive subroutine calls itself. Using a stack for return addresses allows multiple levels of recursion without losing return information.
+
+## Program Interrupts
+Interrupts handle events that alter the normal program sequence, such as I/O operations or error conditions. 
+
+### Types of Interrupts
+- **External Interrupts**: Triggered by external events (e.g., I/O device requests, power failure).
+- **Internal Interrupts (Traps)**: Triggered by program errors (e.g., division by zero, invalid opcode).
+- **Software Interrupts**: Triggered by special instructions (e.g., supervisor call).
+
+### Interrupt Handling
+When an interrupt occurs, the CPU:
+1. Saves the current state (PC, status bits).
+2. Transfers control to the interrupt service routine.
+3. Restores the state and resumes the main program after the interrupt service routine completes.
+
+Using a stack to save the CPU state allows nested interrupts and ensures the correct program state is restored.Program control instructions, including branches, calls, returns, and interrupts, are essential for managing the flow of execution in a computer program. They enable decision-making, modular programming with subroutines, and efficient handling of events through interrupts.

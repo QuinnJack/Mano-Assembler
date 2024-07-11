@@ -1,0 +1,133 @@
+# Data Transfer and Manipulation
+
+## Introduction
+Computers provide an extensive set of instructions to give the user the flexibility to perform various computational tasks. While the instruction sets of different computers vary mainly in how operands are determined from the address and mode fields, the actual operations are largely similar across different machines. Differences typically arise in the binary code assignments for the operation code field and the symbolic names given to instructions in assembly language. However, most computers include a set of basic operations in their instruction repertoire. This documentation covers the basic set of operations found in a typical computer, focusing on data transfer and manipulation instructions.
+
+## Classification of Instructions
+Most computer instructions can be categorized into three groups:
+1. Data transfer instructions
+2. Data manipulation instructions
+3. Program control instructions
+
+- **Data transfer instructions** move data from one location to another without changing the data's content.
+- **Data manipulation instructions** perform arithmetic, logic, and shift operations on data.
+- **Program control instructions** enable decision-making and change the program's execution path.
+
+The instruction set of a particular computer determines the available register transfer operations and control decisions for the user.
+
+## Data Transfer Instructions
+Data transfer instructions move data within the computer without altering its content. Common transfers include:
+- Between memory and processor registers
+- Between processor registers and input/output devices
+- Between processor registers themselves
+
+### Typical Data Transfer Instructions
+
+| Name       | Mnemonic |
+|------------|----------|
+| Load       | LD       |
+| Store      | ST       |
+| Move       | MOV      |
+| Exchange   | XCH      |
+| Input      | IN       |
+| Output     | OUT      |
+| Push       | PUSH     |
+| Pop        | POP      |
+
+Different computers may use various mnemonics for these instructions.
+
+### Load Instruction with Various Addressing Modes
+
+| Mode              | Assembly Convention | Register Transfer                   |
+|-------------------|---------------------|-------------------------------------|
+| Direct address    | LD ADR              | AC ← M[ADR]                         |
+| Indirect address  | LD @ADR             | AC ← M[M[ADR]]                      |
+| Relative address  | LD $ADR             | AC ← M[PC + ADR]                    |
+| Immediate operand | LD #NBR             | AC ← NBR                            |
+| Index addressing  | LD ADR(X)           | AC ← M[ADR + XR]                    |
+| Register          | LD R1               | AC ← R1                             |
+| Register indirect | LD (R1)             | AC ← M[R1]                          |
+| Autoincrement     | LD (R1)+            | AC ← M[R1], R1 ← R1 + 1             |
+
+In the above table:
+- **ADR** stands for an address.
+- **NBR** is a number or operand.
+- **X** is an index register.
+- **R1** is a processor register.
+- **AC** is the accumulator register.
+
+## Data Manipulation Instructions
+Data manipulation instructions perform operations on data, providing computational capabilities. They can be categorized into three types:
+1. Arithmetic instructions
+2. Logical and bit manipulation instructions
+3. Shift instructions
+
+### Arithmetic Instructions
+
+Typical arithmetic instructions include:
+
+| Name               | Mnemonic |
+|--------------------|----------|
+| Increment          | INC      |
+| Decrement          | DEC      |
+| Add                | ADD      |
+| Subtract           | SUB      |
+| Multiply           | MUL      |
+| Divide             | DIV      |
+| Add with carry     | ADDC     |
+| Subtract with borrow | SUBB   |
+| Negate (2's complement) | NEG  |
+
+Computers may have multiple add instructions for different data types, such as:
+- **ADDI**: Add two binary integers
+- **ADDF**: Add two floating-point numbers
+- **ADDD**: Add two decimal numbers in BCD
+
+### Logical and Bit Manipulation Instructions
+
+Logical instructions operate on binary data at the bit level. Typical instructions include:
+
+| Name               | Mnemonic |
+|--------------------|----------|
+| Clear              | CLR      |
+| Complement         | COM      |
+| AND                | AND      |
+| OR                 | OR       |
+| Exclusive-OR       | XOR      |
+| Clear carry        | CLRC     |
+| Set carry          | SETC     |
+| Complement carry   | COMC     |
+| Enable interrupt   | EI       |
+| Disable interrupt  | DI       |
+
+- **AND**: Used to clear specific bits by masking.
+- **OR**: Used to set specific bits.
+- **XOR**: Used to complement specific bits.
+
+### Shift Instructions
+
+Shift instructions move bits within a word, with variations in how bits are shifted in. Types of shift instructions include:
+
+| Name                      | Mnemonic |
+|---------------------------|----------|
+| Logical shift right       | SHR      |
+| Logical shift left        | SHL      |
+| Arithmetic shift right    | SHRA     |
+| Arithmetic shift left     | SHLA     |
+| Rotate right              | ROR      |
+| Rotate left               | ROL      |
+| Rotate right through carry | RORC    |
+| Rotate left through carry | ROLC     |
+
+Shifts can be logical (inserting 0s), arithmetic (preserving the sign bit), or rotate (circular shifts). Some computers use a multiple-field format for shift instructions, allowing specification of the type, direction, and number of shifts.
+
+### Shift Instruction Format
+A possible format for a shift instruction includes five fields:
+- **OP**: Operation code field
+- **REG**: Register address specifying the operand location
+- **TYPE**: 2-bit field specifying the type of shift
+- **RL**: 1-bit field specifying right or left shift
+- **COUNT**: Field specifying the number of shifts
+
+By using such a format, one instruction can specify the type, direction, and number of shifts.
+

@@ -1,57 +1,92 @@
-# Digital Computers
+# Assembly Language
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+A programming language is defined by a set of rules that users must adhere to for their programs to be translated correctly. Almost every commercial computer has its own particular assembly language, with the rules for writing programs documented in manuals provided by the computer manufacturer. 
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+## Structure of Assembly Language Programs
 
-## Binary System
+The basic unit of an assembly language program is a line of code. The specific language is defined by rules that specify the symbols that can be used and how they may be combined to form a line of code. Below are the rules for writing symbolic programs for the basic computer.
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+### Rules of the Language
 
-### Binary to Decimal Conversion
+Each line of an assembly language program is arranged in three columns called fields. These fields specify the following information:
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+1. **Label Field**: This may be empty or may specify a symbolic address.
+2. **Instruction Field**: This specifies a machine instruction or a pseudoinstruction.
+3. **Comment Field**: This may be empty or include a comment.
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+A symbolic address consists of one to three alphanumeric characters. The first character must be a letter; the next two may be letters or numerals. A symbolic address in the label field is terminated by a comma to be recognized as a label by the assembler.
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+### Instruction Field Specifications
 
-\[ = 75 \]
+The instruction field in an assembly language program may specify one of the following items:
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+1. **Memory-Reference Instruction (MRI)**: This occupies two or three symbols separated by spaces. The first must be a three-letter symbol defining an MRI operation. The second is a symbolic address. The third symbol, which may or may not be present, is the letter `I`. If `I` is missing, the line denotes a direct address instruction. The presence of the symbol `I` denotes an indirect address instruction.
+2. **Non-MRI**: This does not have an address part and is recognized by any one of the three-letter symbols for register-reference and input-output instructions.
+3. **Pseudoinstruction**: This may or may not have an operand.
 
-## Computer System Components
+#### Example of Instructions
 
-A computer system is often divided into two main functional entities: hardware and software.
+```asm
+CLA ; non-MRI
+ADD OPR ; direct address MRI
+ADD PTR I ; indirect address MRI
+```
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+### Symbolic Address
 
-### System Software
+A symbolic address in the instruction field specifies the memory location of an operand. This location must be defined somewhere in the program by appearing as a label in the first column. Each symbolic address mentioned in the instruction field must occur again in the label field to allow proper translation to binary code.
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+### Pseudoinstructions
 
-## Major Parts of Computer Hardware
+A pseudoinstruction is not a machine instruction but rather an instruction to the assembler providing information about some phase of the translation. Four recognized pseudoinstructions are:
 
-The hardware of a computer is typically divided into three major parts:
+1. **ORG N**: Specifies the memory location for the instruction or operand listed in the following line.
+2. **END**: Denotes the end of the symbolic program.
+3. **DEC N**: Signed decimal number to be converted to binary.
+4. **HEX N**: Hexadecimal number to be converted to binary.
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+### Comments
 
-### Distinctions in Computer Hardware
+The third field in a program is reserved for comments. Comments are preceded by a slash (`/`) and are used to explain the program, helping in understanding the step-by-step procedure. Comments are ignored during the binary translation process.
 
-When dealing with computer hardware, three areas are often distinguished:
+## Example Program
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+Here is an example of an assembly language program:
+```asm
+ORG 100 / Origin of program is location 100
+LDA SUB / Load subtrahend to AC
+CMA / Complement AC
+INC / Increment AC
+ADD MIN / Add minuend to AC
+STA DIF / Store difference
+HLT / Halt computer
+MIN, DEC 83 / Minuend
+SUB, DEC -23 / Subtrahend
+DIF, HEX 0 / Difference stored here
+END / End of symbolic program
+```
 
-## Overview of the Book
+When translated to binary code, the program will perform a subtraction between two numbers. The subtraction is performed by adding the minuend to the 2's complement of the subtrahend. For instance, -23 is converted into its 2's complement form and added to 83, resulting in the final difference.
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+### Translation to Binary
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+The translation of the symbolic program into binary is done by an assembler. The assembler performs the translation in two scans:
+
+1. **First Scan**: Assigns a memory location to each machine instruction and operand, forming a table that defines the hexadecimal value of each symbolic address.
+2. **Second Scan**: Translates the program by replacing symbols with their machine code binary equivalents using the address symbol table from the first scan.
+
+Here is the translation of the above program:
+```asm
+Location Content Symbolic Program
+100 2107 ORG 100
+101 7200 LDA SUB
+102 7020 CMA
+103 1106 INC
+104 3108 ADD MIN
+105 7001 STA DIF
+106 0053 HLT
+107 FFE9 MIN, DEC 83
+108 0000 SUB, DEC -23
+109 0000 DIF, HEX 0
+```
+The translation process involves converting symbolic addresses and instructions into their binary equivalents. This example program demonstrates the systematic approach to translating assembly language into machine code.

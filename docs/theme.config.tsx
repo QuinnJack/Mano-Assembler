@@ -4,12 +4,7 @@ import { DocsThemeConfig } from "nextra-theme-docs";
 const config: DocsThemeConfig = {
   logo: (
     <>
-      {" "}
-      <img
-        src="https://see.fontimg.com/api/renderfont4/E447g/eyJyIjoiZHciLCJoIjoxMzAsInciOjIwMDAsImZzIjo2NSwiZmdjIjoiIzAwMDAwMCIsImJnYyI6IiNGRkZGRkYifQ/TWFubyBNYWNoaW5l/public-pixel.png"
-        width="200px"
-        height="200px"
-      />
+      Mano Machine
     </>
   ),
   project: {
@@ -23,6 +18,7 @@ const config: DocsThemeConfig = {
   footer: {
     text: "Created by Quinn Jackson",
   },
+  primaryHue: 34
 };
 
 export default config;

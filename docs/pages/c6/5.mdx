@@ -1,0 +1,123 @@
+# Subroutines in Assembly Language
+
+Subroutines in assembly language allow the reuse of a set of instructions multiple times within a program, eliminating the need to rewrite the same code. A subroutine is a self-contained sequence of instructions that performs a specific task and can be branched to from any part of the main program. Upon completion, the subroutine must return to the point in the main program from which it was called.
+
+## Subroutine Linkage
+
+To effectively manage subroutines, it's essential to address the return point since multiple calls to the subroutine can originate from different locations within the main program. The Mano machine employs the `BSA` (Branch and Save Return Address) instruction for this purpose. This instruction saves the return address and transfers control to the subroutine.
+
+### Example: Subroutine for Shifting
+
+Consider a subroutine that shifts the contents of the accumulator (AC) four times to the left. This operation is useful for processing binary-coded decimal numbers or alphanumeric characters.
+
+```asm
+ORG 100          ; Starting address of the main program
+X, HEX 1234      ; Data location X
+Y, HEX 4321      ; Data location Y
+MSK, HEX FF00    ; Mask for high-order bits
+
+; Main Program
+LDA X            ; Load X into AC
+BSA SH4          ; Branch to subroutine SH4
+STA X            ; Store shifted result back in X
+LDA Y            ; Load Y into AC
+BSA SH4          ; Branch to subroutine SH4 again
+STA Y            ; Store shifted result back in Y
+HLT              ; Halt the program
+
+; Subroutine SH4
+SH4, HEX 0       ; Save return address here
+CIL              ; Circulate left once
+CIL              ; Circulate left once more
+CIL              ; Circulate left again
+CIL              ; Circulate left fourth time
+AND MSK          ; Mask to set AC(13-16) to zero
+BUN SH4 I        ; Return to main program (indirect address)
+END
+```
+In this example, the BSA instruction saves the return address in the location defined by SH4 and sets the program counter to the next instruction in the subroutine. After executing the subroutine, the BUN SH4 I instruction returns control to the main program using the saved return address.
+
+## Subroutine Parameters and Data Linkage
+
+Subroutines often require parameters from the main program and must return results. In the basic computer, data can be transferred via the accumulator or through specific memory locations.
+
+### Example: Logic OR Operation Subroutine
+
+Let's consider a subroutine that performs a logic OR operation on two operands.
+
+
+```asm
+ORG 200          ; Starting address of the main program
+X, HEX 3AF6      ; First operand
+Y, HEX 7B95      ; Second operand
+TMP, HEX 0       ; Temporary storage
+
+; Main Program
+LDA X            ; Load first operand into AC
+BSA OR           ; Branch to subroutine OR
+HEX 7B95         ; Second operand stored here
+STA Y            ; Store result back in Y
+HLT              ; Halt the program
+
+; Subroutine OR
+OR, HEX 0        ; Save return address here
+CMA              ; Complement AC
+STA TMP          ; Store complemented value in TMP
+LDA OR I         ; Load second operand indirectly
+CMA              ; Complement second operand
+AND TMP          ; AND with first operand
+CMA              ; Complement to get OR result
+ISZ OR           ; Increment return address
+BUN OR I         ; Return to main program (indirect address)
+END
+```
+In this example, the first operand is loaded into the AC, and the second operand is placed in the location following the BSA instruction. The subroutine performs the OR operation and stores the result.
+
+
+
+## Handling Multiple Parameters
+
+For more complex subroutines requiring multiple parameters, additional steps are needed to manage data transfer and return addresses.
+
+### Example: Moving a Block of Data
+Consider a subroutine that moves a block of data from one location to another.
+
+```asm
+ORG 300          ; Starting address of the main program
+; Main Program
+BSA MVE          ; Branch to subroutine MVE
+HEX 100          ; Source address
+HEX 200          ; Destination address
+DEC -16          ; Number of items to move
+HLT              ; Halt the program
+
+; Subroutine MVE
+MVE, HEX 0       ; Save return address here
+LDA MVE I        ; Load source address
+STA PT1          ; Store in first pointer
+ISZ MVE          ; Increment return address
+LDA MVE I        ; Load destination address
+STA PT2          ; Store in second pointer
+ISZ MVE          ; Increment return address
+LDA MVE I        ; Load number of items
+STA CTR          ; Store in counter
+ISZ MVE          ; Increment return address
+
+LOP, LDA PT1 I   ; Load item from source
+STA PT2 I        ; Store item in destination
+ISZ PT1          ; Increment source pointer
+ISZ PT2          ; Increment destination pointer
+ISZ CTR          ; Increment counter
+BUN LOP          ; Repeat until all items are moved
+BUN MVE I        ; Return to main program (indirect address)
+
+PT1, HEX 0       ; First pointer
+PT2, HEX 0       ; Second pointer
+CTR, HEX 0       ; Counter
+END
+```
+
+In this example, the subroutine moves a block of data from the source to the destination address, using pointers and a counter to manage the data transfer.
+
+The use of subroutines in assembly language enhances code modularity and reusability, making programs more organized and easier to manage.
+

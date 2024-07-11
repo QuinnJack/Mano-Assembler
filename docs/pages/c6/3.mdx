@@ -1,57 +1,91 @@
-# Digital Computers
+# Assembler Overview
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+An assembler is a program that converts a symbolic language program, known as the source program, into its binary machine language equivalent, referred to as the object program. The assembler processes character strings and translates them into a binary format that can be executed by the computer.
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+## Representation of Symbolic Program in Memory
 
-## Binary System
+Before the assembly process begins, the symbolic program must be loaded into memory. This is typically done by the user typing the symbolic program on a terminal. A loader program then inputs these characters into memory using an alphanumeric character code. Each character is represented by an 8-bit code where the high-order bit is always 0, and the remaining seven bits follow the ASCII standard.
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+A line of code in the symbolic program is stored in consecutive memory locations with two characters per memory word (16 bits per word). Each character occupies 8 bits, enabling two characters to fit in one word. Symbols such as labels, operations, and addresses are terminated by specific codes: labels with a comma, operations and addresses with a space, and the end of a line with a carriage return (CR) code.
 
-### Binary to Decimal Conversion
+### Example
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+Consider the following line of code:
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+```asm
+PL3 LDA SUB I
+```
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+This line will be stored in memory as follows:
 
-\[ = 75 \]
+| Memory Word | Symbol | Hexadecimal Code | Binary Representation               |
+|-------------|--------|------------------|-------------------------------------|
+| 1           | P L    | 50 4C            | 0101 0000 0100 1100                 |
+| 2           | 3 ,    | 33 2C            | 0011 0011 0010 1100                 |
+| 3           | L D    | 4C 44            | 0100 1100 0100 0100                 |
+| 4           | A ' '  | 41 20            | 0100 0001 0010 0000                 |
+| 5           | S U    | 53 55            | 0101 0011 0101 0101                 |
+| 6           | B ' '  | 42 20            | 0100 0010 0010 0000                 |
+| 7           | I CR   | 49 0D            | 0100 1001 0000 1101                 |
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
 
-## Computer System Components
+The CR code is produced when the return key is pressed, signaling the end of the line.
 
-A computer system is often divided into two main functional entities: hardware and software.
+## Assembly Process
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+The assembler program takes the user's symbolic language program in ASCII and processes it in two passes to produce the equivalent binary program.
 
-### System Software
+### First Pass
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+During the first pass, the assembler generates a table correlating all user-defined address symbols with their binary equivalents. This involves:
 
-## Major Parts of Computer Hardware
+1. **Initializing the Location Counter (LC)**: The LC is set to 0 initially and keeps track of the memory location for each instruction or operand being processed.
+2. **Processing Each Line of Code**:
+   - If the line contains a label, it is stored in the address symbol table along with the current LC value.
+   - If the line contains an `ORG` pseudoinstruction, LC is set to the value that follows `ORG`.
+   - If the line contains an `END` pseudoinstruction, the first pass ends.
 
-The hardware of a computer is typically divided into three major parts:
+### Example of Address Symbol Table
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+For a program with labels such as `MIN`, `SUB`, and `DIF`, the address symbol table might look like this:
 
-### Distinctions in Computer Hardware
+| Memory Word | Symbol | Hexadecimal Code | Binary Representation               |
+|-------------|--------|------------------|-------------------------------------|
+| 1           | MI     | 4D 49            | 0100 1101 0100 1001                 |
+| 2           | N,     | 4E 2C            | 0100 1110 0010 1100                 |
+| 3           | (LC)   | 01 06            | 0000 0001 0000 0110                 |
+| 4           | SU     | 53 55            | 0101 0011 0101 0101                 |
+| 5           | B'     | 42 2C            | 0100 0010 0010 1100                 |
+| 6           | (LC)   | 01 07            | 0000 0001 0000 0111                 |
+| 7           | DI     | 44 49            | 0100 0100 0100 1001                 |
+| 8           | F'     | 46 2C            | 0100 0110 0010 1100                 |
+| 9           | (LC)   | 01 08            | 0000 0001 0000 1000      
 
-When dealing with computer hardware, three areas are often distinguished:
+### Second Pass
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+In the second pass, the assembler translates machine instructions using table-lookup procedures. The assembler uses four main tables:
 
-## Overview of the Book
+1. **Pseudoinstruction Table**: Contains symbols like `ORG`, `END`, `DEC`, and `HEX`.
+2. **MRI Table**: Contains memory-reference instruction symbols and their 3-bit opcode equivalents.
+3. **Non-MRI Table**: Contains register-reference and input-output instruction symbols and their 16-bit binary codes.
+4. **Address Symbol Table**: Generated during the first pass, it maps symbolic addresses to their binary equivalents.
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+The assembler processes each line of code, referring to these tables to find and convert symbols to their binary equivalents. Instructions are assembled by combining the opcode with the binary address and any necessary bits.
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+### Error Diagnostics
+
+The assembler also checks for possible errors in the symbolic program:
+
+- **Invalid Machine Code Symbols**: Detected when a symbol is absent in the MRI and non-MRI tables.
+- **Undefined Symbols**: Occur when a symbolic address does not appear as a label in the program.
+
+For each error, the assembler prints an error message indicating the line of code where the error occurred.
+
+## Practical Considerations
+
+While the described assembler provides a basic understanding, practical assemblers are often more complex. They may offer more flexibility, such as allowing addresses to be specified by numbers or symbols, supporting arithmetic expressions in addresses, and including more pseudoinstructions to aid programming. As the sophistication of the assembly language increases, so does the complexity of the assembler.
+
+This documentation provides a comprehensive overview of how an assembler operates, emphasizing its processes, data structures, and error-handling mechanisms.
+
+
+

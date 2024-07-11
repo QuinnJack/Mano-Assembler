@@ -1,6 +1,8 @@
 {
-  "1": "On Computers",
-  "2": "x2",
-  "3": "x3",
-  "4": "x4"
+  "1": "Computer Systems",
+  "2": "Assembly Language",
+  "3": "The Assembler",
+  "4": "Loops",
+  "5": "Subroutines",
+  "6": "I/O"
 }

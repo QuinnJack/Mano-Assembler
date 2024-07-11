@@ -1,0 +1,108 @@
+# Central Processing Unit 
+
+The central processing unit (CPU) is the part of the computer that performs the bulk of data processing operations. It is composed of three major components:
+
+1. **Register Set**: Stores intermediate data used during the execution of instructions.
+2. **Arithmetic Logic Unit (ALU)**: Performs the required micro-operations for executing the instructions.
+3. **Control Unit**: Supervises the transfer of information among the registers and instructs the ALU on which operation to perform.
+
+## CPU Functions and Architecture
+
+The CPU executes a variety of functions dictated by the types of instructions incorporated in the computer's architecture. Computer architecture is defined as the structure and behavior of the computer as perceived by a programmer using machine language instructions. This includes:
+
+- Instruction formats
+- Addressing modes
+- Instruction set
+- Organization of CPU registers
+
+### Instruction Set
+
+The instruction set of a CPU provides the specifications for the design and operation of the CPU. It defines how machine instructions are implemented in hardware. The user programming the computer in machine or assembly language must understand:
+
+- The register set
+- Memory structure
+- Data types supported by the instructions
+- Functions performed by each instruction
+
+## General Register Organization
+
+In programming, memory locations are often used to store pointers, counters, return addresses, temporary results, and partial products during multiplication. Accessing these memory locations is time-consuming. It is more efficient to store intermediate values in processor registers. When a large number of registers are included in the CPU, connecting them through a common bus system is most efficient.
+
+### Bus System
+
+A bus organization for CPU registers facilitates direct data transfers and various micro-operations. Consider a bus system for seven CPU registers:
+
+1. **Multiplexers (MUX)**: The output of each register is connected to two multiplexers to form buses A and B. Selection lines in each multiplexer select one register or input data for the particular bus.
+2. **ALU**: The ALU performs arithmetic or logic micro-operations. The result is available for output data and is also fed back into the input of all registers.
+3. **Decoder**: Selects the register that receives the information from the output bus.
+
+### Example Micro-Operation
+
+To perform the operation $ R1 \leftarrow R2 + R3 $:
+
+1. **MUX A selector (SELA)**: Places the content of $ R2 $ into bus A.
+2. **MUX B selector (SELB)**: Places the content of $ R3 $ into bus B.
+3. **ALU operation selector (OPR)**: Performs the addition $ A + B $.
+4. **Decoder destination selector (SELD)**: Transfers the content of the output bus into $ R1 $.
+
+The control unit generates these selection variables at the beginning of a clock cycle. Data from the source registers propagate through the multiplexers and ALU to the output bus and into the destination register during the clock cycle interval. At the next clock transition, the data is transferred into $ R1 $.
+
+### Control Word
+
+A 14-bit control word specifies a micro-operation in the CPU. It consists of four fields:
+- **SELA**: Selects the source register for the ALU's A input.
+- **SELB**: Selects the source register for the ALU's B input.
+- **SELD**: Selects the destination register using the decoder.
+- **OPR**: Specifies the ALU operation.
+
+For example, the subtract micro-operation $ R1 \leftarrow R2 - R3 $ is specified by the control word `010 011 001 00101`, derived as follows:
+- **SELA (R2)**: `010`
+- **SELB (R3)**: `011`
+- **SELD (R1)**: `001`
+- **OPR (SUB)**: `00101`
+
+### Register and ALU Operation Encoding
+
+#### Register Selection Fields
+| Binary Code | SELA | SELB | SELD |
+|-------------|------|------|------|
+| 000         | Input| Input| None |
+| 001         | R1   | R1   | R1   |
+| 010         | R2   | R2   | R2   |
+| 011         | R3   | R3   | R3   |
+| 100         | R4   | R4   | R4   |
+| 101         | R5   | R5   | R5   |
+| 110         | R6   | R6   | R6   |
+| 111         | R7   | R7   | R7   |
+
+#### ALU Operations Encoding
+| OPR    | Operation Symbol | Description       |
+|--------|------------------|-------------------|
+| 00000  | TSFA             | Transfer A        |
+| 00001  | INCA             | Increment A       |
+| 00010  | ADD              | Add A + B         |
+| 00101  | SUB              | Subtract A - B    |
+| 00110  | DECA             | Decrement A       |
+| 01000  | AND              | AND A and B       |
+| 01010  | OR               | OR A and B        |
+| 01100  | XOR              | XOR A and B       |
+| 01110  | COMA             | Complement A      |
+| 10000  | SHRA             | Shift right A     |
+| 11000  | SHLA             | Shift left A      |
+
+### Examples of Micro-Operations
+
+Examples of control words for various micro-operations:
+| Symbolic Designation | Micro-Operation  | SELA | SELB | SELD | OPR   | Control Word       |
+|----------------------|------------------|------|------|------|-------|--------------------|
+| $ R1 \leftarrow R2 - R3 $ | R2 - R3          | 010  | 011  | 001  | 00101 | `010 011 001 00101` |
+| $ R4 \leftarrow R4 \vee R5 $ | R4 OR R5        | 100  | 101  | 100  | 01010 | `100 101 100 01010` |
+| $ R6 \leftarrow R6 + 1 $ | Increment R6    | 110  | -    | 110  | 00001 | `110 000 110 00001` |
+| $ R7 \leftarrow R1 $ | Transfer R1 to R7 | 001  | -    | 111  | 00000 | `001 000 111 00000` |
+| $Output$ $\leftarrow R2 $ | Output R2        | 010  | -    | -    | 00000 | `010 000 000 00000` |
+| $ R4 \leftarrow \text{SHL } R4 $ | Shift left R4   | 100  | -    | 100  | 11000 | `100 000 100 11000` |
+| $ R5 \leftarrow 0 $ | Clear R5         | 101  | -    | 101  | 01100 | `101 000 101 01100` |
+
+### Microprogrammed Control
+
+The most efficient way to generate control words with a large number of bits is to store them in a memory unit, referred to as control memory. By reading consecutive control words from memory, a desired sequence of micro-operations can be initiated for the CPU. This type of control is known as microprogrammed control.

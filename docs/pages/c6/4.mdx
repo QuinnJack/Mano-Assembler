@@ -1,57 +1,97 @@
-# Digital Computers
+# Program Loops In Assembly Language
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+A program loop is a sequence of instructions that are executed multiple times, each time with a different set of data. In high-level languages like Fortran, loops are specified using constructs such as the `DO` statement. The following example demonstrates a Fortran program that computes the sum of 100 integer numbers:
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+```asm
+DIMENSION A(100)
+INTEGER SUM, A
+SUM = 0
+DO 3 J = 1, 100
+3 SUM = SUM + A(J)
+```
 
-## Binary System
+In this example, statement number 3 is executed 100 times, each time with a different operand A(J) for J = 1, 2, ..., 100.
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+A compiler translates high-level language programs like the one above into machine language. This involves more complexity compared to an assembler because it requires understanding of system programming. To illustrate this, we will demonstrate the translation of the Fortran program to an assembly language program.
 
-### Binary to Decimal Conversion
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+## Memory Allocation and Initialization
+The DIMENSION statement instructs the compiler to reserve memory for 100 operands. Assuming the compiler reserves memory locations from 0x150 to 0x1B3 for these operands, it will generate the following initialization in the assembly language:
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+```asm
+ORG 100
+LDA ADS
+STA PTR
+LDA NBR
+STA CTR
+CLA
+ADD PTR I
+ISZ PTR
+ISZ CTR
+BUN LOP
+STA SUM
+HLT
+```
+## Assembly Program Breakdown
 
-\[ = 75 \]
+### Memory Origin
+```asm
+ORG 100
+```
+Specifies that the origin of the program is at address 0x100.
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
 
-## Computer System Components
+### Load First Operand Address
+```asm
+LDA ADS
+STA PTR
+```
+Loads the first address of the operands into a pointer register.
 
-A computer system is often divided into two main functional entities: hardware and software.
+### Initialize Counter
+```asm
+LDA NBR
+STA CTR
+```
+Loads -100 (number of iterations) into the counter register.
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
 
-### System Software
+### Clear Accumulator
+```asm
+CLA
+```
+Clears the accumulator to prepare for summing the values.
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+### Loop Body
+```asm
+LOP, ADD PTR I
+ISZ PTR
+ISZ CTR
+BUN LOP
+```
+- ADD PTR I: Adds the current operand to the accumulator.
+- ISZ PTR: Increments the pointer to the next operand.
+- ISZ CTR: Increments the counter. If the counter is not zero, the next instruction is skipped.
+- BUN LOP: Branches back to the loop start if the counter has not reached zero.
 
-## Major Parts of Computer Hardware
+### Store Result and Halt
+```asm
+STA SUM
+HLT
+```
+## Data and Pointers
+```asm
+ADS, HEX 150  ; Address of first operand
+PTR, HEX 0    ; Pointer initialization
+NBR, DEC -100 ; Loop counter initialization
+CTR, HEX 0    ; Counter
+SUM, HEX 0    ; Sum storage
+ORG 150
+```
+Here, ADS is initialized to 0x150, the first operand's address, and NBR to -100, representing the number of iterations. The pointer and counter (PTR and CTR) and the final sum (SUM) are also initialized.
 
-The hardware of a computer is typically divided into three major parts:
+## Indirect Addressing and Pointer Logic
+In the loop body, the ADD PTR I instruction uses indirect addressing to fetch the operand from memory. The pointer is incremented using ISZ PTR to move to the next operand. This ensures that each operand is accessed sequentially.
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
-
-### Distinctions in Computer Hardware
-
-When dealing with computer hardware, three areas are often distinguished:
-
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
-
-## Overview of the Book
-
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
-
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+This example illustrates how high-level loop constructs are translated into low-level assembly instructions. The assembly program leverages pointers and counters to replicate the functionality of the Fortran DO loop, iterating over a set of data and accumulating the results in the accumulator. This approach is fundamental in understanding how high-level abstractions are broken down into machine-level operations.

@@ -1,0 +1,180 @@
+# Input-Output Programming in Mano Machine
+
+## Introduction
+
+Users write programs using symbols defined by the employed programming language. These symbols are strings of characters, each assigned an 8-bit code for storage in computer memory. Binary-coded characters enter the computer when an INP (input) instruction is executed and are transferred to the output device using an OUT (output) instruction. The output device detects the binary code and types the corresponding character.
+
+## Input Character Handling
+
+To input a character and store it in memory, the following steps and instructions are used:
+
+1. **Check Input Flag (SKI)**: The SKI instruction checks the input flag to see if a character is available for transfer. If the flag bit is 1, the next instruction is skipped. If the flag bit is 0, the program branches back to check the flag again, forming a loop.
+
+2. **Input Character (INP)**: When the input flag is set, the INP instruction transfers the binary-coded character into the accumulator (AC) from bits 0 to 7.
+
+3. **Output Character (OUT)**: The OUT instruction sends the character to the output device, ensuring the correct transfer.
+
+4. **Store Character (STA)**: The character is stored in a specified memory location.
+
+### Example Program to Input a Character
+
+```asm
+CIF, SKI
+BUN CIF
+INP
+OUT
+STA CHR
+HLT
+CHR, HEX 0000
+```
+- CIF: Check input flag.
+- SKI: Skip if input flag is 1.
+- BUN CIF: Branch back to CIF if the flag is 0.
+- INP: Input character into AC (0-7).
+- OUT: Output the character.
+- STA CHR: Store character in memory location CHR.
+- HLT: Halt the program.
+- CHR: Memory location for the character.
+
+## Output Character Handling
+
+1. **Load Character (LDA)**: Load the character from memory into the AC.
+
+2. **Check Output Flag (SKO)**: The SKO instruction checks the output flag. If the flag is 0, the program forms a loop until the flag is set.
+
+3. **Output Character (OUT)**: When the output flag is set, the OUT instruction transfers the character from the AC to the printer.
+
+### Example Program to Output a Character
+
+```asm
+LDA CHR
+COF, SKO
+BUN COF
+OUT
+HLT
+CHR, HEX 0057
+```
+- LDA CHR: Load character from memory location CHR.
+- COF, SKO: Check output flag.
+- BUN COF: Branch back to COF if the flag is 0.
+- OUT: Output the character.
+- HLT: Halt the program.
+- CHR: Memory location with the character to be output (example contains HEX 0057, character "W").
+
+## Character Manipulation
+
+Computers can manipulate symbols represented by binary-coded characters to achieve various data-processing tasks. For example, two 8-bit characters can be packed into a single 16-bit word.
+
+### Subroutine to Input and Pack Two Characters
+A subroutine named IN2 inputs two characters and packs them into one 16-bit word stored in the AC.
+
+```asm
+IN2,
+FST, SKI
+BUN FST
+INP
+OUT
+BSA SH4
+BSA SH4
+SCD, SKI
+BUN SCD
+INP
+OUT
+BUN IN2 I
+```
+- IN2: Subroutine entry.
+- FST, SKI: Check input flag for the first character.
+- BUN FST: Branch if flag is 0.
+- INP: Input first character.
+- OUT: Output first character.
+- BSA SH4: Call subroutine to shift AC left four times.
+- SCD, SKI: Check input flag for the second character.
+- BUN SCD: Branch if flag is 0.
+- INP: Input second character.
+- OUT: Output second character.
+- BUN IN2 I: Return from subroutine.
+
+## Program to Store Input Characters in a Buffer
+
+This program inputs a symbolic program from the keyboard, packs two characters in one word, and stores them in a buffer starting at address 500.
+
+```asm
+LOP,
+ADS, PTR,
+LDA ADS
+STA PTR
+BSA IN2
+STA PTR I
+ISZ PTR
+BUN LOP
+HLT
+ADS, HEX 500
+PTR, HEX 0000
+```
+- LOP: Loop label.
+- ADS, PTR: Buffer addresses and pointer.
+- LDA ADS: Load the first address of the buffer.
+- STA PTR: Initialize the pointer.
+- BSA IN2: Go to subroutine IN2 to input and pack two characters.
+- STA PTR I: Store the packed word in the buffer.
+- ISZ PTR: Increment the pointer.
+- BUN LOP: Branch to input more characters.
+- HLT: Halt the program.
+- ADS: First address of the buffer.
+- PTR: Pointer location.
+
+## Program Interrupts
+
+Interrupts eliminate the waiting time in I/O operations by notifying the computer when a flag is set, allowing the CPU to perform other tasks.
+
+### Example Program to Service an Interrupt
+
+This example demonstrates handling an interrupt with saving and restoring processor state, checking flags, and performing data transfer.
+
+```asm
+ZRO,
+1 BUN SRV
+100 CLA
+101 ION
+102 LDA X
+103 ADD Y
+104 STA Z
+200 SRV,
+STA SAC
+CIR
+STA SE
+SKI
+BUN NXT
+INP
+OUT
+STA PT1 I
+ISZ PT1
+NXT, SKO
+BUN EXT
+LDA PT2 I
+OUT
+ISZ PT2
+EXT, LDA SE
+CIL
+LDA SAC
+ION
+BUN ZRO I
+SAC, HEX 0000
+SE, HEX 0000
+PT1, HEX 0000
+PT2, HEX 0000
+```
+- ZRO: Location for return address.
+- 1 BUN SRV: Branch to service routine SRV.
+- CLA: Clear AC.
+- ION: Turn on interrupts.
+- LDA X, ADD Y, STA Z: Part of running program.
+- SRV: Service routine.
+- STA SAC: Store AC content.
+- CIR: Clear right instruction.
+- STA SE: Store E register content.
+- SKI, BUN NXT, INP, OUT, STA PT1 I, ISZ PT1: Handle input flag and data.
+- NXT, SKO, BUN EXT, LDA PT2 I, OUT, ISZ PT2: Handle output flag and data.
+- EXT, LDA SE, CIL, LDA SAC, ION, BUN ZRO I: Restore state and return.
+- SAC, SE, PT1, PT2: Memory locations for saving states.
+

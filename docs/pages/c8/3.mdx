@@ -1,0 +1,131 @@
+# Instruction Formats
+
+## Introduction
+
+The physical and logical structure of computers is described in reference manuals provided with the system. These manuals explain the internal construction of the CPU, including the processor registers and their logical capabilities. They list all hardware-implemented instructions, specify their binary code format, and provide precise definitions of each instruction. A computer typically has a variety of instruction code formats, which the control unit within the CPU interprets to provide the necessary control functions to process each instruction.
+
+## Instruction Format Structure
+
+An instruction format is usually depicted in a rectangular box symbolizing the bits of the instruction as they appear in memory words or in a control register. The bits of the instruction are divided into groups called fields. The most common fields found in instruction formats are:
+
+1. **Operation Code Field (Opcode)**: Specifies the operation to be performed.
+2. **Address Field**: Designates a memory address or a processor register.
+3. **Mode Field**: Specifies the way the operand or the effective address is determined.
+
+Other special fields may be employed under certain circumstances, such as a field that indicates the number of shifts in a shift-type instruction.
+
+## Operation Code Field
+
+The operation code field of an instruction is a group of bits that define various processor operations, such as add, subtract, complement, and shift. The most common operations available in computer instructions are discussed in detail in subsequent sections. The mode field bits specify a variety of alternatives for choosing the operands from the given address.
+
+## Address Fields and CPU Organization
+
+Operations specified by computer instructions are executed on data stored in memory or processor registers. Operands residing in memory are specified by their memory address, while those in processor registers are specified with a register address. A register address is a binary number of \( k \) bits that defines one of \( 2^k \) registers in the CPU. For instance, a CPU with 16 processor registers (\( R0 \) through \( R15 \)) will have a register address field of four bits, where the binary number 0101 designates register \( R5 \).
+
+## Types of CPU Organizations
+
+Computers may have instructions of several different lengths containing a varying number of addresses. The number of address fields in the instruction format depends on the internal organization of its registers. Most computers fall into one of three types of CPU organizations:
+
+1. **Single Accumulator Organization**
+2. **General Register Organization**
+3. **Stack Organization**
+
+### Single Accumulator Organization
+
+An example of an accumulator-type organization is a basic computer where all operations are performed with an implied accumulator register. The instruction format in this type of computer uses one address field. For example, an arithmetic addition instruction can be defined as:
+```asm
+ADD X
+```
+where \( X \) is the address of the operand. The `ADD` instruction results in the operation \( AC \leftarrow AC + M[X] \), where \( AC \) is the accumulator register and \( M[X] \) symbolizes the memory word located at address \( X \).
+
+### General Register Organization
+
+A general register-type organization uses multiple registers for operations, necessitating multiple address fields. For example, an arithmetic addition instruction may be written as:
+```asm
+ADD R1, R2, R3
+```
+denoting the operation \( R1 \leftarrow R2 + R3 \). The number of address fields can be reduced if the destination register is one of the source registers:
+```asm
+ADD R1, R2
+```
+denoting \( R1 \leftarrow R1 + R2 \). Instructions transferring data among registers use a mnemonic like `MOV`:
+```asm
+MOV R1, R2
+```
+denotes the transfer \( R1 \leftarrow R2 \).
+
+### Stack Organization
+
+In a stack-organized CPU, operations are performed on the two items on top of the stack. Instructions like `PUSH` and `POP` require an address field, while operation-type instructions do not. For example:
+
+
+
+```asm
+PUSH X
+```
+
+pushes the word at address \( X \) to the top of the stack. An `ADD` instruction in a stack computer consists only of an operation code, implying the operation on the top two stack items.
+
+## Examples of Different Instruction Formats
+
+### Three-Address Instructions
+
+In computers with three-address instruction formats, each address field can specify either a processor register or a memory operand. For instance, evaluating $X = (A + B) \times (C + D)$
+
+   
+```asm
+ADD R1, A, B    ; R1 <-- M[A] + M[B]
+ADD R2, C, D    ; R2 <-- M[C] + M[D]
+MUL X, R1, R2   ; M[X] <-- R1 * R2
+```
+
+### Two-Address Instructions
+
+Two-address instructions are common in commercial computers, where each address field specifies either a processor register or a memory word. For example, evaluating $ X = (A + B) \times (C + D) $:
+```asm
+MOV R1, A      ; R1 <-- M[A]
+ADD R1, B      ; R1 <-- R1 + M[B]
+MOV R2, C      ; R2 <-- M[C]
+ADD R2, D      ; R2 <-- R2 + M[D]
+MUL R1, R2     ; R1 <-- R1 * R2
+MOV X, R1      ; M[X] <-- R1
+```
+### One-Address Instructions
+
+One-address instructions use an implied accumulator (AC) register for data manipulation. For example, evaluating $ X = (A + B) \times (C + D) $:
+```asm
+LOAD A        ; AC <-- M[A]
+ADD B         ; AC <-- AC + M[B]
+STORE T       ; M[T] <-- AC
+LOAD C        ; AC <-- M[C]
+ADD D         ; AC <-- AC + M[D]
+MUL T         ; AC <-- AC * M[T]
+STORE X       ; M[X] <-- AC
+```
+### Zero-Address Instructions
+Stack-organized computers do not use an address field for operations like ADD and MUL. For example, evaluating $ X = (A + B) \times (C + D) $:
+```asm
+PUSH A        ; TOS <-- A
+PUSH B        ; TOS <-- B
+ADD           ; TOS <-- (A + B)
+PUSH C        ; TOS <-- C
+PUSH D        ; TOS <-- D
+ADD           ; TOS <-- (C + D)
+MUL           ; TOS <-- (A + B) * (C + D)
+POP X         ; M[X] <-- TOS
+```
+### RISC Instructions
+RISC (Reduced Instruction Set Computer) architecture uses a limited set of instructions, emphasizing load/store operations for memory access and performing arithmetic within CPU registers. For example, evaluating $ X = (A + B) \times (C + D) $:
+```asm
+LOAD R1, A    ; R1 <-- M[A]
+LOAD R2, B    ; R2 <-- M[B]
+LOAD R3, C    ; R3 <-- M[C]
+LOAD R4, D    ; R4 <-- M[D]
+ADD R1, R1, R2; R1 <-- R1 + R2
+ADD R3, R3, R4; R3 <-- R3 + R4
+MUL R1, R1, R3; R1 <-- R1 * R3
+STORE X, R1   ; M[X] <-- R1
+```
+
+The instruction format plays a crucial role in determining the efficiency and complexity of computer programs. Each type of CPU organization and instruction format offers different advantages and trade-offs, which influence the design and functionality of a computer system.
+
