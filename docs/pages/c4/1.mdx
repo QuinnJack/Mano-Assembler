@@ -1,57 +1,89 @@
-# Digital Computers
+# Register Transfer Language
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+A digital system is an interconnected collection of digital hardware modules designed to accomplish specific information-processing tasks. These systems vary in size and complexity, from a few integrated circuits to complex interconnected digital computers. Digital system design invariably uses a modular approach, where modules are constructed from components such as registers, decoders, arithmetic elements, and control logic. These modules are interconnected with common data and control paths to form a digital computer system.
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+Digital modules are best defined by the registers they contain and the operations performed on the data stored in them. The operations executed on the data stored in registers are called microoperations. A microoperation is an elementary operation performed on the information stored in one or more registers. The result of the operation may replace the previous binary information in a register or may be transferred to another register. Examples of microoperations include shift, count, clear, and load. Some digital components, such as a counter with parallel load, are capable of performing multiple microoperations, including increment and load. A bidirectional shift register, for example, can perform both shift right and shift left microoperations.
 
-## Binary System
+## Internal Hardware Organization of Digital Computers
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+The internal hardware organization of a digital computer is best defined by specifying:
+1. The set of registers it contains and their functions.
+2. The sequence of microoperations performed on the binary information stored in the registers.
+3. The control mechanisms that initiate the sequence of microoperations.
 
-### Binary to Decimal Conversion
+While it is possible to describe the sequence of microoperations in a computer using lengthy narrative explanations, it is more convenient to adopt a suitable symbology. This symbology concisely describes the sequence of transfers between registers and the various arithmetic and logic microoperations associated with the transfers. The symbolic notation used to describe these transfers is called a **register transfer language**.
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+## Register Transfer Language
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+The term "register transfer" implies the availability of hardware logic circuits that can perform a stated microoperation and transfer the result to the same or another register. The term "language" is borrowed from programming languages, which use symbols to specify computational processes. Similarly, a register transfer language (RTL) is a system for expressing in symbolic form the microoperation sequences among the registers of a digital module. It is a convenient tool for describing the internal organization of digital computers in a concise and precise manner and facilitates the design process of digital systems.
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+### Symbols in Register Transfer Language
 
-\[ = 75 \]
+In RTL, computer registers are designated by capital letters (sometimes followed by numerals) to denote their function. For example, the register that holds an address for the memory unit is usually called the Memory Address Register (MAR). Other examples include the Program Counter (PC), the Instruction Register (IR), and general-purpose registers like R1. The individual flip-flops in an $n$-bit register are numbered in sequence from 0 through $n-1$, starting from 0 at the rightmost position and increasing towards the left.
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+Information transfer from one register to another is denoted in symbolic form by a replacement operator. For example:
 
-## Computer System Components
+$$R2 \leftarrow R1$$
 
-A computer system is often divided into two main functional entities: hardware and software.
+This denotes a transfer of the content of register R1 into register R2, replacing the content of R2 with that of R1. By definition, the content of the source register R1 does not change after the transfer.
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+A statement specifying a register transfer implies that circuits are available from the outputs of the source register to the inputs of the destination register and that the destination register has a parallel load capability. The transfer operation typically occurs under a predetermined control condition, which can be shown using an if-then statement:
 
-### System Software
+$$ \text{If (P = 1) then (R2} \leftarrow \text{R1)} $$
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+Where $ P $ is a control signal generated in the control section. It is often convenient to separate the control variables from the register transfer operation by specifying a control function, a Boolean variable that equals 1 or 0. The control function can be included in the statement as follows:
 
-## Major Parts of Computer Hardware
+$$ P: R2 \leftarrow R1 $$
 
-The hardware of a computer is typically divided into three major parts:
+The colon indicates that the transfer operation should be executed by the hardware only if $ P = 1 $.
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+### Timing and Control
 
-### Distinctions in Computer Hardware
+Every register transfer statement implies a hardware construction for implementing the transfer. For example, consider the transfer from R1 to R2:
 
-When dealing with computer hardware, three areas are often distinguished:
+1. The $ n $ outputs of register R1 are connected to the $ n $ inputs of register R2.
+2. Register R2 has a load input activated by the control variable $ P $.
+3. It is assumed that $ P $ is synchronized with the same clock as the one applied to the register.
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+When $ P $ is activated by the rising edge of a clock pulse at time $ t $, the next positive transition of the clock at time $ t + 1 $ finds the load input active, and the data inputs of R2 are then loaded into the register in parallel. $ P $ may return to 0 at time $ t + 1 $; otherwise, the transfer will occur with every clock pulse transition while $ P $ remains active.
 
-## Overview of the Book
+Note that the clock is not explicitly included as a variable in register transfer statements. It is assumed that all transfers occur during a clock edge transition.
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+### Basic Symbols of Register Transfer Notation
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+The basic symbols used in register transfer notation are summarized below:
+
+| Symbol       | Description                                     | Examples                    |
+|--------------|-------------------------------------------------|-----------------------------|
+| Letters      | Denotes a register                              | MAR, R2                     |
+| Parentheses  | Denotes a part of a register                    | R2(0-7), R2(L)              |
+| Arrow (←)    | Denotes transfer of information                 | R2 ← R1                     |
+| Comma (,)    | Separates two microoperations                   | R2 ← R1, R1 ← R2            |
+
+For example, the statement:
+
+$$ T: R2 \leftarrow R1, R1 \leftarrow R2 $$
+
+denotes an operation that exchanges the contents of two registers during one common clock pulse, provided that $ T = 1 $. This simultaneous operation is possible with registers that have edge-triggered flip-flops.
+
+### Example Microoperation Descriptions
+
+Let's define symbols for various types of microoperations and describe the associated hardware that can implement these microoperations. These symbolic designations will be used to specify register transfers, microoperations, and control functions that describe the internal hardware organization of digital computers.
+
+- **Shift Microoperation**: 
+    - Symbol: $ R \leftarrow R \ll 1 $ (shift left), $ R \leftarrow R \gg 1 $ (shift right)
+    - Description: Shifts the bits in register $ R $ left or right by one position.
+
+- **Count Microoperation**: 
+    - Symbol: $ R \leftarrow R + 1 $
+    - Description: Increments the value stored in register $ R $ by one.
+
+- **Clear Microoperation**: 
+    - Symbol: $ R \leftarrow 0 $
+    - Description: Clears the contents of register $ R $, setting all bits to 0.
+
+- **Load Microoperation**: 
+    - Symbol: $ R \leftarrow D $
+    - Description: Loads the value $ D $ into register $ R $.
+
+By adopting a consistent and concise register transfer language, the internal organization and operations of digital computers can be described clearly and precisely, aiding in both design and analysis.

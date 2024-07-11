@@ -1,57 +1,165 @@
-# Digital Computers
+# Complements in Digital Computers
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+Complements are essential in digital computers for simplifying subtraction operations and performing logical manipulations. In any base $ r $ system, there are two types of complements: the $ r $'s complement and the $(r-1)$'s complement. These complements play a significant role in computer arithmetic.
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+## 9's Complement and 1's Complement
 
-## Binary System
+### Definition
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+Given a number $ N $ in base $ r $ with $ n $ digits, the $(r-1)$'s complement of $ N $ is defined as:
 
-### Binary to Decimal Conversion
+$$(r^n - 1) - N$$
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+For decimal numbers, $ r = 10 $ and $ r-1 = 9 $, so the 9's complement of $ N $ is:
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+$$10^n - 1 - N$$
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+Here, $ 10^n $ represents a number that consists of a single 1 followed by $ n $ zeros. For example, with $ n = 4 $, $ 10^4 = 10000 $ and $ 10^4 - 1 = 9999 $. Therefore, the 9's complement of a decimal number is obtained by subtracting each digit from 9.
 
-\[ = 75 \]
+### Example
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+- The 9's complement of 5467 is:
 
-## Computer System Components
+  $$9999 - 5467 = 4532$$
 
-A computer system is often divided into two main functional entities: hardware and software.
+- The 9's complement of 12389 is:
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+  $$99999 - 12389 = 87610$$
 
-### System Software
+### Generalization to Other Bases
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+For octal (base 8) and hexadecimal (base 16) numbers, the $(r-1)$'s complement is obtained by subtracting each digit from 7 or 15 (F in hexadecimal), respectively.
 
-## Major Parts of Computer Hardware
+## 10's Complement and 2's Complement
 
-The hardware of a computer is typically divided into three major parts:
+### Definition
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+The $ r $'s complement of an $ n $-digit number $ N $ in base $ r $ is defined as:
 
-### Distinctions in Computer Hardware
+$$r^n - N \text{ for } N \neq 0$$
+$$0 \text{ for } N = 0$$
 
-When dealing with computer hardware, three areas are often distinguished:
+This can be viewed as adding 1 to the $(r-1)$'s complement:
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+$$r^n - N = [(r^n - 1) - N] + 1$$
 
-## Overview of the Book
+Thus, the 10's complement of the decimal number 2389 is:
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+$$7610 + 1 = 7611$$
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+Similarly, the 2's complement of the binary number 1010 is:
+
+$$0101 + 1 = 0110$$
+
+### Alternative Formation
+
+For forming the $ r $'s complement of $ N $, you can leave all the least significant zeros unchanged, subtract the first non-zero least significant digit from $ r $, and then subtract all higher significant digits from $ r-1 $.
+
+### Example
+
+- The 10's complement of 246700 is obtained by leaving the two zeros unchanged, subtracting 7 from 10, and subtracting the other three digits from 9:
+
+  $$753300$$
+
+- The 2's complement of the binary number 11001100 is obtained by leaving the two low-order 0's and the first 1 unchanged, then flipping the other bits:
+
+  $$00110100$$
+
+## Subtraction Using Complements
+
+### General Procedure
+
+To subtract two $ n $-digit unsigned numbers $ M $ and $ N $ in base $ r $:
+
+1. **Add the minuend $ M $ to the $ r $'s complement of the subtrahend $ N $:**
+   
+   $$M + (r^n - N) = M - N + r^n$$
+
+2. **Discard the end carry $ r^n $:**
+
+   - If $ M \geq N $, the sum will produce an end carry $ r^n $, which is discarded, and the result is $ M - N $.
+   
+   - If $ M < N $, the sum does not produce an end carry. The result is $ r^n - (N - M) $, which is the $ r $'s complement of $ N - M $. To obtain the answer in a familiar form, take the $ r $'s complement of the sum and place a negative sign in front.
+
+### Example
+
+- **Subtraction with $ M \geq N $:**
+
+  $ 72532 - 13250 $
+
+  - 10's complement of 13250 is 86750.
+  
+  - Add:
+
+    $$72532 + 86750 = 159282$$
+
+  - Discard the end carry:
+
+    $$159282 - 100000 = 59282$$
+
+- **Subtraction with $ M < N $:**
+
+  $ 13250 - 72532 $
+
+  - 10's complement of 72532 is 27468.
+  
+  - Add:
+
+    $$13250 + 27468 = 40718$$
+
+  - Result is negative since there is no end carry. The 10's complement of 40718 is 59282:
+
+    $$\text{Answer: } -59282$$
+
+### Binary Subtraction
+
+Using 2's complement for binary subtraction follows the same principles:
+
+- **Example: $ X - Y $ and $ Y - X $**
+
+  - Let $ X = 1010100 $ and $ Y = 1000011 $.
+
+  - 2's complement of $ Y $ is $ 0111101 $.
+  
+  - Add:
+
+    $$1010100 + 0111101 = 10010001$$
+
+  - Discard the end carry:
+
+    $$0010001 \text{ (No end carry, result is positive)}$$
+
+  - For $ Y - X $:
+
+    - 2's complement of $ X $ is $ 0101100 $.
+
+    - Add:
+
+      $$1000011 + 0101100 = 1101111$$
+
+    - No end carry, result is negative. The 2's complement of 1101111 is 0010001:
+
+      $$\text{Answer: } -0010001$$
+
+## Handling Radix Points
+
+When numbers contain a radix point, temporarily remove it to form the $ r $'s or $(r-1)$'s complement. Restore the radix point in the complemented number at the same relative position. 
+
+## Complement of the Complement
+
+The complement of the complement restores the original number. The $ r $'s complement of $ N $ is $ r^n - N $. The complement of the complement is:
+
+$$r^n - (r^n - N) = N$$
+
+## Subtraction of Unsigned Numbers
+
+The direct method of subtraction using the borrow concept is less efficient in digital hardware compared to using complements. By adding the minuend $ M $ to the $ r $'s complement of the subtrahend $ N $, we can simplify subtraction significantly.
+
+### Procedure Summary
+
+1. Add $ M $ to the $ r $'s complement of $ N $.
+2. Discard the end carry if present.
+3. If no end carry, the result is the $ r $'s complement of the difference, with a negative sign.
+
+This method is highly efficient and preferred for binary arithmetic in digital systems.
+

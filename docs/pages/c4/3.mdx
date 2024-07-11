@@ -1,57 +1,134 @@
-# Digital Computers
+# Logic Microoperations
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+Logic microoperations specify binary operations for strings of bits stored in registers. These operations consider each bit of the register separately and treat them as binary variables. For example, the exclusive-OR microoperation with the contents of two registers R1 and R2 is symbolized by the statement:
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+$$ P: R1 \leftarrow R1 \oplus R2 $$
 
-## Binary System
+This specifies a logic microoperation to be executed on the individual bits of the registers provided that the control variable $P = 1$. As a numerical example, assume that each register has four bits. Let the content of $R1$ be 1010 and the content of $R2$ be 1100. The exclusive-OR microoperation stated above symbolizes the following logic computation:
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+- 1010 Content of R1
+- 1100 Content of R2
+- 0110 Content of R1 after $P = 1$
 
-### Binary to Decimal Conversion
+The content of $R1$, after the execution of the microoperation, is equal to the bit-by-bit exclusive-OR operation on pairs of bits in $R2$ and previous values of $R1$. The logic microoperations are seldom used in scientific computations, but they are very useful for bit manipulation of binary data and for making logical decisions.
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+## Special Symbols
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+Special symbols are adopted for the logic microoperations OR, AND, and complement, to distinguish them from the corresponding symbols used to express Boolean functions. The symbol $\vee$ will be used to denote an OR microoperation and the symbol $\wedge$ to denote an AND microoperation. The complement microoperation is the same as the 1's complement and uses a bar on top of the symbol that denotes the register name. 
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+By using different symbols, it is possible to differentiate between a logic microoperation and a control (or Boolean) function. Another reason for adopting two sets of symbols is to be able to distinguish the symbol $+$, when used to symbolize an arithmetic addition, from a logic OR operation. Although the $+$ symbol has two meanings, it is possible to distinguish between them by noting the context in which the symbol occurs. When the symbol $+$ occurs in a microoperation, it denotes an arithmetic addition. When it occurs in a control (or Boolean) function, it denotes an OR operation. For example, in the statement:
 
-\[ = 75 \]
+$$ P + Q: R1 \leftarrow R2 + R3, \quad R4 \leftarrow R5 \vee R6 $$
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+The $+$ between $P$ and $Q$ is an OR operation between two binary variables of a control function. The $+$ between $R2$ and $R3$ specifies an addition microoperation. The OR microoperation is designated by the symbol $\vee$ between registers $R5$ and $R6$.
 
-## Computer System Components
+## List of Logic Microoperations
 
-A computer system is often divided into two main functional entities: hardware and software.
+There are 16 different logic operations that can be performed with two binary variables. These operations can be determined from all possible truth tables obtained with two binary variables. The 16 Boolean functions of two variables $x$ and $y$ are expressed in algebraic form, and the corresponding logic microoperations are derived by replacing variable $x$ with the binary content of register $A$ and variable $y$ with the binary content of register $B$. Each bit of the register is treated as a binary variable and the microoperation is performed on the string of bits stored in the registers.
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+| Boolean Function       | Microoperation         | Description                |
+|------------------------|------------------------|----------------------------|
+| $F_0 = 0$              | $F \leftarrow 0$       | Clear                      |
+| $F_1 = xy$             | $F \leftarrow A \wedge B$ | AND                        |
+| $F_2 = x \bar{y}$      | $F \leftarrow A \wedge \bar{B}$ | AND with NOT B            |
+| $F_3 = x$              | $F \leftarrow A$       | Transfer A                 |
+| $F_4 = \bar{x} y$      | $F \leftarrow \bar{A} \wedge B$ | NOT A AND B             |
+| $F_5 = y$              | $F \leftarrow B$       | Transfer B                 |
+| $F_6 = x \oplus y$     | $F \leftarrow A \oplus B$ | Exclusive-OR              |
+| $F_7 = x \vee y$       | $F \leftarrow A \vee B$ | OR                         |
+| $F_8 = \overline{x \vee y}$ | $F \leftarrow \overline{A \vee B}$ | NOR                |
+| $F_9 = \overline{x \oplus y}$ | $F \leftarrow \overline{A \oplus B}$ | Exclusive-NOR     |
+| $F_{10} = \bar{y}$     | $F \leftarrow \bar{B}$ | Complement B               |
+| $F_{11} = x \vee \bar{y}$ | $F \leftarrow A \vee \bar{B}$ | OR with NOT B          |
+| $F_{12} = \bar{x}$     | $F \leftarrow \bar{A}$ | Complement A               |
+| $F_{13} = \bar{x} \vee y$ | $F \leftarrow \bar{A} \vee B$ | NOT A OR B            |
+| $F_{14} = \overline{xy}$ | $F \leftarrow \overline{A \wedge B}$ | NAND               |
+| $F_{15} = 1$           | $F \leftarrow \text{all 1's}$ | Set all bits to 1         |
 
-### System Software
+## Hardware Implementation
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+The hardware implementation of logic microoperations requires that logic gates be inserted for each bit or pair of bits in the registers to perform the required logic function. Although there are 16 logic microoperations, most computers use only four—AND, OR, XOR (exclusive-OR), and complement—from which all others can be derived.
 
-## Major Parts of Computer Hardware
+A typical stage of a circuit that generates the four basic logic microoperations consists of four gates and a multiplexer. Each of the four logic operations is generated through a gate that performs the required logic. The outputs of the gates are applied to the data inputs of the multiplexer. The two selection inputs $S_1$ and $S_0$ choose one of the data inputs of the multiplexer and direct its value to the output. This stage must be repeated for each bit in the register.
 
-The hardware of a computer is typically divided into three major parts:
+## Applications of Logic Microoperations
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+Logic microoperations are very useful for manipulating individual bits or a portion of a word stored in a register. They can be used to change bit values, delete a group of bits, or insert new bit values into a register. The following examples illustrate some of these operations:
 
-### Distinctions in Computer Hardware
+### Selective-Set
 
-When dealing with computer hardware, three areas are often distinguished:
+The selective-set operation sets to 1 the bits in register $A$ where there are corresponding 1's in register $B$. It does not affect bit positions that have 0's in $B$. For example:
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+- 1010 $A$ before
+- 1100 $B$ (logic operand)
+- 1110 $A$ after
 
-## Overview of the Book
+The OR microoperation can be used to selectively set bits of a register:
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+$$ A \leftarrow A \vee B $$
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+### Selective-Complement
+
+The selective-complement operation complements bits in $A$ where there are corresponding 1's in $B$. It does not affect bit positions that have 0's in $B$. For example:
+
+- 1010 $A$ before
+- 1100 $B$ (logic operand)
+- 0110 $A$ after
+
+The exclusive-OR microoperation can be used to selectively complement bits of a register:
+
+$$ A \leftarrow A \oplus B $$
+
+### Selective-Clear
+
+The selective-clear operation clears to 0 the bits in $A$ where there are corresponding 1's in $B$. For example:
+
+- 1010 $A$ before
+- 1100 $B$ (logic operand)
+- 0010 $A$ after
+
+The AND microoperation with the complement of $B$ can be used to selectively clear bits of a register:
+
+$$ A \leftarrow A \wedge \bar{B} $$
+
+### Mask Operation
+
+The mask operation clears bits in $A$ where there are corresponding 0's in $B$. For example:
+
+- 1010 $A$ before
+- 1100 $B$ (logic operand)
+- 1000 $A$ after masking
+
+The mask operation is an AND microoperation:
+
+$$ A \leftarrow A \wedge B $$
+
+### Insert Operation
+
+The insert operation inserts a new value into a group of bits. This is done by first masking the bits and then ORing them with the required value. For example, to replace the four leftmost bits of an 8-bit register $A$ (01101010) with the value 1001:
+
+1. Mask the four unwanted bits:
+   - 01101010 (A before)
+   - 00001111 (B mask)
+   - 00001010 (A after masking)
+
+2. Insert the new value:
+   - 00001010 (A before)
+   - 10010000 (B insert)
+   - 10011010 (A after insertion)
+
+The insert operation involves both AND and OR microoperations:
+
+$$ A \leftarrow (A \wedge \text{mask}) \vee \text{value} $$
+
+### Clear Operation
+
+The clear operation compares the words in $A$ and $B$ and produces an all 0's result if the two numbers are equal. This operation is achieved by an exclusive-OR microoperation:
+
+- 1010 $A$
+- 1010 $B$
+- 0000 $A \leftarrow A \oplus B$
+
+When $A$ and $B$ are equal, the result of the exclusive-OR operation is an all-0's word. This result can then be checked to determine if the two numbers were equal.
+
+Logic microoperations are fundamental tools in digital logic design, enabling efficient bit manipulation and logical decision-making in various computing tasks.

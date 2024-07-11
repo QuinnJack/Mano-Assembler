@@ -1,57 +1,96 @@
-# Digital Computers
+# Representation of Signed Numbers and Fixed-Point Arithmetic
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+## Signed Number Representation
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+In computing, positive integers including zero can be represented as unsigned numbers. To represent negative integers, however, we need a notation for negative values. In traditional arithmetic, a negative number is indicated by a minus sign and a positive number by a plus sign. Computers, due to hardware limitations, must represent everything with 1's and 0's, including the sign of a number. Consequently, it is customary to represent the sign with a bit placed in the leftmost position of the number. The convention is to make the sign bit equal to 0 for positive and to 1 for negative.
 
-## Binary System
+## Fixed-Point Representation
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+In addition to the sign, a number may have a binary (or decimal) point. The position of the binary point is needed to represent fractions, integers, or mixed integer-fraction numbers. The representation of the binary point in a register is complicated by the fact that it is characterized by a position in the register. There are two ways of specifying the position of the binary point in a register: by giving it a fixed position or by employing a floating-point representation.
 
-### Binary to Decimal Conversion
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+The fixed-point method assumes that the binary point is always fixed in one position. The two positions most widely used are:
+1. A binary point at the extreme left of the register to make the stored number a fraction.
+2. A binary point at the extreme right of the register to make the stored number an integer.
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+In either case, the binary point is not actually present but its presence is assumed from the fact that the number stored in the register is treated as a fraction or as an integer.
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+### Floating-Point Representation
 
-\[ = 75 \]
+The floating-point representation uses a second register to store a number that designates the position of the binary point in the first register.
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+## Integer Representation
 
-## Computer System Components
+When an integer binary number is positive, the sign is represented by 0 and the magnitude by a positive binary number. When the number is negative, the sign is represented by 1 but the rest of the number may be represented in one of three possible ways:
+1. Signed-magnitude representation
+2. Signed-1's complement representation
+3. Signed-2's complement representation
 
-A computer system is often divided into two main functional entities: hardware and software.
+### Signed-Magnitude Representation
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+The signed-magnitude representation of a negative number consists of the magnitude and a negative sign. For example, consider the signed number 14 stored in an 8-bit register:
+- $+14$: $00001110$
+- $-14$: $10001110$
 
-### System Software
+### Signed-1's Complement Representation
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+The signed-1's complement representation of a negative number is obtained by complementing all the bits of its positive value:
+- $+14$: $00001110$
+- $-14$: $11110001$
 
-## Major Parts of Computer Hardware
+### Signed-2's Complement Representation
 
-The hardware of a computer is typically divided into three major parts:
+The signed-2's complement representation is obtained by taking the 2's complement of the positive number, including its sign bit:
+- $+14$: $00001110$
+- $-14$: $11110010$
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+## Arithmetic Operations
 
-### Distinctions in Computer Hardware
+### Addition in Signed-2's Complement System
 
-When dealing with computer hardware, three areas are often distinguished:
+The addition of two numbers in the signed-2's complement system does not require comparison or subtraction, only addition and complementation. The procedure is simple:
+1. Add the two numbers, including their sign bits.
+2. Discard any carry out of the sign (leftmost) bit position.
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+Examples:
+1. $+6 + +13$: 
+   - $00000110 + 00001101 = 00001111$
+2. $+6 + -13$: 
+   - $00000110 + 11110011 = 11111010$
 
-## Overview of the Book
+### Subtraction in Signed-2's Complement System
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+Subtraction of two signed binary numbers when negative numbers are in 2's complement form:
+1. Take the 2's complement of the subtrahend (including the sign bit).
+2. Add it to the minuend (including the sign bit).
+3. Discard any carry out of the sign bit position.
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+Example:
+- $(-6) - (-13)$:
+  - $11111010 - 11110011$ becomes $11111010 + 00001101 = 100000111$ (discard carry) = $00000111$
+
+## Overflow Detection
+
+When adding two n-bit numbers, an overflow occurs if the sum exceeds n bits. In signed addition, an overflow may occur if both numbers are positive or both are negative. Overflow can be detected by checking the carry into and out of the sign bit. If these two carries are not equal, an overflow condition is produced. 
+
+## Decimal Fixed-Point Representation
+
+### Binary-Coded Decimal (BCD)
+
+A 4-bit decimal code requires four flip-flops for each decimal digit. For example, the number 4385 in BCD requires 16 flip-flops:
+- $4385$ in BCD: $0100 0011 1000 0101$
+
+### Signed BCD Representation
+
+The sign of a decimal number is usually represented with four bits to conform with the 4-bit code of the decimal digits. It is customary to designate a plus with four 0's and a minus with the BCD equivalent of 9, which is 1001.
+
+### Arithmetic in BCD
+
+Addition in the signed-10's complement system is done by adding all digits, including the sign digit, and discarding the end carry. For example:
+- $(+375) + (-240)$:
+  - $0 375$: $0000 0011 0111 0101$
+  - $9 760$: $1001 0111 0110 0000$
+  - Sum: $0000 0001 0011 0101$ (end carry discarded) = +$135$
+
+Subtraction of decimal numbers in BCD is done by taking the 10's complement of the subtrahend and adding it to the minuend.
+

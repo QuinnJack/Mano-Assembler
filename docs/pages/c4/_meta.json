@@ -1,6 +1,7 @@
 {
-  "1": "On Computers",
-  "2": "x2",
-  "3": "x3",
-  "4": "x4"
+  "1": "RTL",
+  "2": "Bus and Memory Transfers",
+  "3": "Logic Microoperations",
+  "4": "Shift Microoperations",
+  "5": "ALU"
 }

@@ -1,57 +1,110 @@
-# Digital Computers
+# Bus and Memory Transfers
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+## Common Bus System
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+A typical digital computer comprises many registers, and efficient paths must be provided to transfer information between them. Using separate lines for each register-to-register connection would require an excessive number of wires. Instead, a common bus system provides a more efficient means of transferring information between registers in a multiple-register configuration. 
 
-## Binary System
+A bus structure consists of a set of common lines, one for each bit of a register, through which binary information is transferred one at a time. Control signals determine which register is selected by the bus during each particular register transfer.
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+### Construction Using Multiplexers
 
-### Binary to Decimal Conversion
+One way to construct a common bus system is with multiplexers. The multiplexers select the source register, whose binary information is then placed on the bus. Consider a system with four registers, each containing four bits. The bus consists of four 4x1 multiplexers, each having four data inputs (0 through 3) and two selection inputs ($S_1$ and $S_0$). To avoid complicating diagrams with 16 crossing lines, labels are used to show connections from register outputs to multiplexer inputs. For example, the output bit 1 of register A is connected to input 0 of MUX 1, as indicated by the label $A_1$.
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+Each bit position in the registers is connected to the data inputs of one multiplexer to form a line of the bus. Thus, MUX 0 multiplexes the four 0 bits of the registers, MUX 1 multiplexes the four 1 bits, and so on. The selection lines $S_1$ and $S_0$ are connected to the selection inputs of all four multiplexers. Depending on the combination of $S_1$ and $S_0$, the four bits from one register are transferred to the four-line common bus. 
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+For instance, if $S_1S_0 = 00$, the 0 data inputs of all four multiplexers are selected, applying the contents of register A to the bus. If $S_1S_0 = 01$, register B is selected, and so forth. The function table below shows the register selected by the bus for each combination of selection lines:
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+| $S_1$ | $S_0$ | Register Selected |
+|-------|-------|-------------------|
+|   0   |   0   |         A         |
+|   0   |   1   |         B         |
+|   1   |   0   |         C         |
+|   1   |   1   |         D         |
 
-\[ = 75 \]
+In general, a bus system will multiplex $k$ registers of $n$ bits each to produce an $n$-line common bus. The number of multiplexers required is equal to $n$, the number of bits in each register, and each multiplexer must have $k$ data input lines. For example, a common bus for eight registers of 16 bits each requires 16 multiplexers, each with eight data input lines and three selection lines to multiplex one significant bit from the eight registers.
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+### Transfer from Bus to Registers
 
-## Computer System Components
+Information transfer from a bus to a destination register is accomplished by connecting the bus lines to the inputs of all destination registers and activating the load control of the selected register. Symbolically, bus transfers are denoted as follows:
 
-A computer system is often divided into two main functional entities: hardware and software.
+$$
+\text{BUS} \leftarrow C, \quad R1 \leftarrow \text{BUS}
+$$
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+This indicates that the content of register $C$ is placed on the bus, and then the content of the bus is loaded into register $R1$ by activating its load control input. Alternatively, if the existence of the bus is implied, the transfer can be written directly as:
 
-### System Software
+$$
+R1 \leftarrow C
+$$
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+From this, the designer understands which control signals must be activated to perform the transfer via the bus.
 
-## Major Parts of Computer Hardware
+## Three-State Bus Buffers
 
-The hardware of a computer is typically divided into three major parts:
+A bus system can also be constructed using three-state gates instead of multiplexers. A three-state gate is a digital circuit that has three states: logic 1, logic 0, and high-impedance. The high-impedance state acts as an open circuit, effectively disconnecting the output. This feature allows multiple three-state gate outputs to connect to a common bus line without causing loading effects.
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+### Construction Using Three-State Buffers
 
-### Distinctions in Computer Hardware
+To construct a bus system with three-state buffers, each buffer's output is connected to a single bus line. The control inputs of the buffers determine which input will communicate with the bus line. Only one buffer may be active at any time, while the others are in a high-impedance state.
 
-When dealing with computer hardware, three areas are often distinguished:
+A decoder can ensure that only one buffer is active at a time. When the decoder's enable input is inactive, all its outputs are 0, placing the bus in a high-impedance state. When the enable input is active, one buffer is selected based on the decoder's select inputs.
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+For a common bus with four registers of $n$ bits each using three-state buffers, $n$ circuits with four buffers each are needed. Each group of four buffers receives one significant bit from the four registers. A single decoder selects between the four registers.
 
-## Overview of the Book
+## Memory Transfer
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+The operation of a memory unit involves reading and writing information. A read operation transfers data from a memory word to an external register, while a write operation stores new data into a memory word. A memory word is symbolized by the letter $M$, and its address is specified in square brackets following $M$.
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+### Read Operation
+
+The read operation transfers information from a memory word to a data register (DR). Assuming the address register (AR) contains the address of the memory word, the read operation is represented as:
+
+$$
+\text{Read:} \quad \text{DR} \leftarrow M[\text{AR}]
+$$
+
+This causes the data from the memory word at the address specified by $AR$ to be transferred into $DR$.
+
+### Write Operation
+
+The write operation transfers data from a data register to a memory word. Assuming the data is in register $R1$ and the address is in $AR$, the write operation can be represented as:
+
+$$
+\text{Write:} \quad M[\text{AR}] \leftarrow R1
+$$
+
+This causes the data in $R1$ to be stored into the memory word at the address specified by $AR$.
+
+## Arithmetic Microoperations
+
+Arithmetic microoperations perform arithmetic functions on the data stored in registers. Common arithmetic microoperations include addition, subtraction, increment, and decrement.
+
+### Addition and Subtraction
+
+To implement addition, we use registers that hold data and a digital component, such as a full-adder, that performs the arithmetic addition. A binary adder generates the sum of two binary numbers of any length.
+
+The subtraction operation is conveniently done using complements. Subtracting $B$ from $A$ can be achieved by taking the 2's complement of $B$ and adding it to $A$. The 2's complement is obtained by taking the 1's complement and adding one to the least significant bit. This can be implemented using exclusive-OR gates with full-adders to form a binary adder-subtractor.
+
+### Binary Incrementer
+
+The increment microoperation adds one to the value in a register. This can be implemented with a binary counter or with a combinational circuit using half-adders connected in cascade. For example, a 4-bit binary incrementer adds one to a 4-bit number and generates the incremented output.
+
+### Arithmetic Circuit
+
+A composite arithmetic circuit can implement various arithmetic microoperations using a parallel adder. By controlling the data inputs to the adder, different operations can be performed. A 4-bit arithmetic circuit with multiplexers and full-adders can perform operations such as add, subtract, increment, and decrement by selecting appropriate inputs.
+
+The function table for the arithmetic circuit is as follows:
+
+| $S_1$ | $S_0$ | $C_\text{in}$ | $Y$ | $D = A + Y + C_\text{in}$ | Microoperation             |
+|-------|-------|---------------|-----|---------------------------|----------------------------|
+|   0   |   0   |       0       |  B  | $A + B$                   | Add                        |
+|   0   |   0   |       1       |  B  | $A + B + 1$               | Add with carry             |
+|   0   |   1   |       0       |  $\bar{B}$  | $A + \bar{B} + 1$         | Subtract with borrow       |
+|   0   |   1   |       1       |  $\bar{B}$  | $A + \bar{B} + 1$         | Subtract                   |
+|   1   |   0   |       0       |  0  | $A$                       | Transfer A                 |
+|   1   |   0   |       1       |  0  | $A + 1$                   | Increment A                |
+|   1   |   1   |       0       |  1  | $A + (2\text{'s complement of } 1)$ | Decrement A                |
+|   1   |   1   |       1       |  1  | $A$                       | Transfer A                 |
+
+The arithmetic microoperations are implemented by controlling the data inputs and the carry-in to a binary adder, enabling the execution of various operations such as addition, subtraction, increment, and decrement.
+

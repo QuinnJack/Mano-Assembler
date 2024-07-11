@@ -1,0 +1,83 @@
+# Arithmetic Logic Shift Unit
+
+In modern computer systems, individual registers do not directly perform micro-operations. Instead, these systems utilize multiple storage registers connected to a central operational unit known as the Arithmetic Logic Unit (ALU). The ALU is a combinational circuit that executes arithmetic and logic operations. This configuration allows for the efficient transfer of data between registers via the ALU within a single clock pulse period.
+
+
+To perform a micro-operation, the contents of specific registers are placed in the inputs of the ALU. The ALU processes these inputs to perform the desired operation, and the result is then transferred to a destination register. While shift micro-operations can be handled by a separate unit, they are often integrated into the ALU to streamline operations.
+
+## ALU Design
+
+The ALU integrates arithmetic, logic, and shift circuits to create a versatile operational unit. One stage of an arithmetic logic shift unit is illustrated below. The subscript $ i $ designates a typical stage. Inputs $ A_i $ and $ B_i $ are fed into both the arithmetic and logic units.
+
+Inputs $ S_1 $ and $ S_0 $ determine the specific micro-operation to be executed. A 4x1 multiplexer at the output selects between an arithmetic output ($ E_i $) and a logic output ($ H_i $). This selection is controlled by inputs $ S_3 $ and $ S_2 $. The other two data inputs to the multiplexer are $ A_{i-1} $ for the shift-right operation and $ A_{i+1} $ for the shift-left operation. 
+
+It is important to note that this description pertains to a single stage; the complete ALU circuit must be replicated $ n $ times for an $ n $-bit ALU. The output carry $ C_{i+1} $ of a given arithmetic stage must connect to the input carry $ C_i $ of the next stage. The input carry to the first stage is $ C_{\text{in}} $, which provides a selection variable for arithmetic operations.
+
+## Operations of the ALU
+
+The ALU specified here supports eight arithmetic operations, four logic operations, and two shift operations. These operations are selected using the five variables $ S_3, S_2, S_1, S_0 $, and $ C_{\text{in}} $. The input carry $ C_{\text{in}} $ is used exclusively for selecting arithmetic operations.
+
+### Function Table for the Arithmetic Logic Shift Unit
+
+The function table lists the 14 operations supported by the ALU. The first eight are arithmetic operations selected with $ S_3S_2 = 00 $, as detailed below. The next four are logic operations selected with $ S_3S_2 = 01 $. During logic operations, the input carry is irrelevant and is marked with don't-care (x) values. The final two are shift operations, selected with $ S_3S_2 = 10 $ and $ 11 $. The other three selection inputs do not affect the shift operations.
+
+| S3 | S2 | S1 | S0 | $ C_{\text{in}} $ | Function            | Operation             |
+|----|----|----|----|-----------------|----------------------|----------------------|
+| 0  | 0  | 0  | 0  | 0               | Transfer A           | $ F = A $          |
+| 0  | 0  | 0  | 1  | 0               | Increment A          | $ F = A + 1 $      |
+| 0  | 0  | 1  | 0  | 0               | Addition             | $ F = A + B $      |
+| 0  | 0  | 1  | 1  | 1               | Add with Carry       | $ F = A + B + 1 $  |
+| 0  | 0  | 1  | 0  | 1               | Subtract with Borrow | $ F = A - B - 1 $  |
+| 0  | 0  | 1  | 1  | 0               | Subtraction          | $ F = A - B $      |
+| 0  | 0  | 1  | 0  | 0               | Decrement A          | $ F = A - 1 $      |
+| 0  | 0  | 1  | 1  | 1               | Transfer A           | $ F = A $          |
+| 0  | 1  | 0  | 0  | x               | AND                  | $ F = A \land B $  |
+| 0  | 1  | 0  | 1  | x               | OR                   | $ F = A \lor B $   |
+| 0  | 1  | 1  | 0  | x               | XOR                  | $ F = A \oplus B $ |
+| 0  | 1  | 1  | 1  | x               | Complement A         | $ F = \neg A $     |
+| 1  | 0  | x  | x  | x               | Shift Right          | $ F = \text{shr } A $ |
+| 1  | 1  | x  | x  | x               | Shift Left           | $ F = \text{shl } A $ |
+
+### Detailed Descriptions of Operations
+
+1. **Transfer A**: The contents of register $ A $ are transferred directly to the output $ F $. 
+   $$ F = A $$
+
+2. **Increment A**: The contents of register $ A $ are incremented by 1.
+   $$ F = A + 1 $$
+
+3. **Addition**: The contents of registers $ A $ and $ B $ are added together.
+   $$ F = A + B $$
+
+4. **Add with Carry**: The contents of registers $ A $ and $ B $ are added along with the input carry.
+   $$ F = A + B + 1 $$
+
+5. **Subtract with Borrow**: The contents of register $ B $ are subtracted from $ A $, accounting for an input borrow.
+   $$ F = A - B - 1 $$
+
+6. **Subtraction**: The contents of register $ B $ are subtracted from $ A $.
+   $$ F = A - B $$
+
+7. **Decrement A**: The contents of register $ A $ are decremented by 1.
+   $$ F = A - 1 $$
+
+8. **AND**: A bitwise AND operation is performed between registers $ A $ and $ B $.
+   $$ F = A \land B $$
+
+9. **OR**: A bitwise OR operation is performed between registers $ A $ and $ B $.
+   $$ F = A \lor B $$
+
+10. **XOR**: A bitwise XOR operation is performed between registers $ A $ and $ B $.
+    $$ F = A \oplus B $$
+
+11. **Complement A**: The contents of register $ A $ are bitwise complemented.
+    $$ F = \neg A $$
+
+12. **Shift Right**: The contents of register $ A $ are shifted right.
+    $$ F = \text{shr } A $$
+
+13. **Shift Left**: The contents of register $ A $ are shifted left.
+    $$ F = \text{shl } A $$
+
+
+The integration of arithmetic, logic, and shift operations within a single ALU stage streamlines the micro-operation process, allowing efficient data transfer and processing within a single clock cycle. By utilizing selection variables, a wide range of operations can be performed, making the ALU a versatile and crucial component in modern computing systems.

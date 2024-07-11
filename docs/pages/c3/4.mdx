@@ -1,57 +1,231 @@
-# Digital Computers
+# Representation of Floating-Point Numbers
 
-A digital computer is a digital system that performs various computational tasks. The term "digital" implies that the information within the computer is represented by variables that take a limited number of discrete values. These values are processed internally by components that maintain a finite number of distinct states. For instance, decimal digits (0, 1, 2, ..., 9) provide 10 discrete values. The earliest electronic digital computers, developed in the late 1940s, were primarily used for numerical computations. From this application, the term "digital computer" emerged.
+Floating-point representation is a method used to encode real numbers within the limits of finite precision available in computer systems. This representation divides a number into two main parts: the mantissa and the exponent.
 
-In practice, digital computers function more reliably if only two states are used. Due to the physical limitations of components and because binary logic (i.e., true-or-false, yes-or-no statements) aligns well with human reasoning, digital components are generally constrained to two values, which are binary.
+## Components of Floating-Point Representation
 
-## Binary System
+1. **Mantissa**: The mantissa represents a signed, fixed-point number. It can be a fraction or an integer.
+2. **Exponent**: The exponent determines the position of the radix point (decimal or binary point).
 
-Digital computers use the binary number system, which has two digits: 0 and 1. A binary digit is called a bit. Information is represented in digital computers in groups of bits. Through various coding techniques, groups of bits can represent not only binary numbers but also other discrete symbols, such as decimal digits or letters of the alphabet. By effectively utilizing binary arrangements and coding techniques, groups of bits are employed to develop comprehensive instruction sets for performing diverse types of computations.
+### Example in Decimal
 
-### Binary to Decimal Conversion
+Consider the decimal number +6132.789. In floating-point representation, it can be split into:
 
-In contrast to the common decimal numbers that use the base-10 system, binary numbers use a base-2 system with two digits: 0 and 1. The decimal equivalent of a binary number can be determined by expanding it into a power series with a base of 2. For example, the binary number `1001011` can be converted to a decimal number as follows:
+- **Fraction**: +0.6132789
+- **Exponent**: +04
 
-\[ 1 \times 2^6 + 0 \times 2^5 + 0 \times 2^4 + 1 \times 2^3 + 0 \times 2^2 + 1 \times 2^1 + 1 \times 2^0 \]
+This indicates that the actual decimal point is four positions to the right of the implied decimal point in the fraction. The complete representation in scientific notation is:
 
-\[ = 64 + 0 + 0 + 8 + 0 + 2 + 1 \]
+$$ +0.6132789 \times 10^4 $$
 
-\[ = 75 \]
+### General Form
 
-Thus, the binary number `1001011` represents the decimal number 75. However, the same group of seven bits could represent the letter 'K' when used with a binary code for the alphabet or a control code for specific logic decisions in a digital computer. In essence, groups of bits in a digital computer can represent many different things, similar to how letters in an alphabet construct different languages.
+Floating-point numbers are generally represented in the form:
 
-## Computer System Components
+$$ m \times r^e $$
 
-A computer system is often divided into two main functional entities: hardware and software.
+Where:
+- $ m $ is the mantissa.
+- $ e $ is the exponent.
+- $ r $ is the radix (base of the number system, e.g., 10 for decimal, 2 for binary).
 
-- **Hardware**: Consists of all electronic components and electromechanical devices that make up the physical entity of the device.
-- **Software**: Comprises instructions and data manipulated by the computer to perform various data-processing tasks. A sequence of instructions is known as a program, and the data manipulated by the program is referred to as the database.
+Only the mantissa and the exponent are stored in the register, along with their respective signs. The radix and the assumed position of the radix point are implicitly understood by the processing circuits.
 
-### System Software
+### Binary Floating-Point Representation
 
-System software of a computer includes a collection of programs designed to make the computer more efficient. These programs are referred to as the operating system, distinguishing them from application programs written by users to solve specific problems. For example, a high-level language program written to meet particular data-processing needs is an application program, whereas a compiler translating the high-level language program to machine language is a system program. System software is crucial as it bridges the gap between user needs and hardware capabilities.
+In binary systems, the floating-point representation follows a similar structure but uses base 2. For example, the binary number +1001.11 can be represented as follows:
 
-## Major Parts of Computer Hardware
+- **Fraction**: 01001110 (with an implied binary point after the sign bit)
+- **Exponent**: 000100
 
-The hardware of a computer is typically divided into three major parts:
+The equivalent representation is:
 
-1. **Central Processing Unit (CPU)**: Contains an arithmetic and logic unit for manipulating data, various registers for storing data, and control circuits for fetching and executing instructions.
-2. **Memory**: Stores instructions and data, known as random-access memory (RAM) because the CPU can access any location randomly within a fixed interval.
-3. **Input and Output Processor (IOP)**: Includes electronic circuits for communication and control of information transfer between the computer and the outside world. Input and output devices connected to the computer include keyboards, printers, terminals, magnetic disk drives, and other communication devices.
+$$ m \times 2^e = +(.1001110)_2 \times 2^4 $$
 
-### Distinctions in Computer Hardware
+### Normalization
 
-When dealing with computer hardware, three areas are often distinguished:
+A floating-point number is considered normalized if the most significant digit of the mantissa is nonzero. For instance:
 
-- **Computer Organization**: Concerned with how the hardware components operate and are connected to form the computer system. It examines the organizational structure to ensure the parts function as intended.
-- **Computer Design**: Focuses on the hardware design of the computer. After formulating computer specifications, the designer develops the necessary hardware, determining the components and their connections. This aspect is sometimes referred to as computer implementation.
-- **Computer Architecture**: Involves the structure and behavior of the computer as perceived by the user. It includes information formats, the instruction set, and memory addressing techniques. The architectural design specifies the functional modules, such as processors and memories, and how they integrate into a complete computer system.
+- **Normalized**: 350 (in decimal) or 11010000 (in 8-bit binary after normalization).
+- **Non-normalized**: 00035 (in decimal) or 00011010 (in 8-bit binary).
 
-## Overview of the Book
+To normalize a binary number like 00011010, you would shift the digits three positions to the left, yielding 11010000, and adjust the exponent accordingly by subtracting 3.
 
-This book provides essential knowledge for understanding computer hardware operations. It is structured as follows:
+Normalized numbers maximize the precision of floating-point representation. A zero cannot be normalized and is usually represented by all zeros in both the mantissa and the exponent.
 
-- **Chapters 1-4**: Present the various digital components used in the organization and design of computer systems.
-- **Chapters 5-7**: Cover the steps required to design and program an elementary digital computer.
-- **Chapters 8-9**: Discuss the architecture of the central processing unit.
-- **Chapters 11-12**: Detail the organization and architecture of the input-output processor and memory unit.
+## Floating-Point Arithmetic
+
+Arithmetic operations with floating-point numbers are more complex than those with fixed-point numbers. This complexity arises from the need to align exponents before performing operations and to normalize results after operations. Despite the complexity, floating-point arithmetic is essential for scientific computations due to the vast range of values it can represent. Modern computers and calculators typically have built-in hardware for floating-point arithmetic. For systems without such hardware, software routines are provided to handle these operations.
+
+## Other Binary Codes
+
+### Gray Code
+
+The Gray code, or reflected binary code, is used in various digital systems for minimizing errors during transitions between values. Each subsequent value in Gray code differs from the previous one by only a single bit. This property is particularly useful in analog-to-digital conversion processes, where it reduces ambiguity during state transitions.
+
+### Example of Gray Code
+
+A 4-bit Gray code sequence might look like this:
+
+- 0000 (0)
+- 0001 (1)
+- 0011 (2)
+- 0010 (3)
+- 0110 (4)
+- 0111 (5)
+- 0101 (6)
+- 0100 (7)
+- 1100 (8)
+- 1101 (9)
+- 1111 (10)
+- 1110 (11)
+- 1010 (12)
+- 1011 (13)
+- 1001 (14)
+- 1000 (15)
+
+Gray code is often utilized in systems where error minimization is critical, such as in rotary encoders and digital counters.
+
+### Other Decimal Codes
+
+Digital systems also use various binary codes to represent decimal digits, each with its specific applications and properties. Some common binary codes for decimal digits include:
+
+1. **BCD (Binary-Coded Decimal)**: Directly represents each decimal digit with its binary equivalent.
+2. **2421 Code**: A weighted code where each bit is weighted by 2, 4, 2, and 1 respectively.
+3. **Excess-3 Code**: Derived from BCD by adding 3 (0011) to each binary-coded digit.
+4. **Excess-3 Gray Code**: A variation of Gray code adapted for decimal digits.
+
+### Example of BCD and Excess-3 Codes
+
+- **BCD**:
+  - 0: 0000
+  - 1: 0001
+  - 2: 0010
+  - 3: 0011
+  - 4: 0100
+  - 5: 0101
+  - 6: 0110
+  - 7: 0111
+  - 8: 1000
+  - 9: 1001
+
+- **Excess-3**:
+  - 0: 0011
+  - 1: 0100
+  - 2: 0101
+  - 3: 0110
+  - 4: 0111
+  - 5: 1000
+  - 6: 1001
+  - 7: 1010
+  - 8: 1011
+  - 9: 1100
+
+### Self-Complementing Codes
+
+Some codes, like the 2421 and Excess-3, are self-complementing, meaning the 9's complement of a number is easily obtained by inverting all bits. This property is advantageous for certain arithmetic operations, particularly when using signed-complement representations.
+
+## Alphanumeric Codes
+
+### ASCII
+
+The ASCII (American Standard Code for Information Interchange) is a 7-bit code used to represent text in computers and communication devices. It includes control characters, numerals, uppercase and lowercase letters, and various symbols.
+
+### EBCDIC
+
+EBCDIC (Extended Binary Coded Decimal Interchange Code) is another alphanumeric code used mainly in IBM systems. It uses 8 bits per character, allowing for a larger set of symbols compared to ASCII.
+
+### 6-Bit Codes
+
+For internal processing, some systems use 6-bit codes to represent a reduced set of characters, typically including uppercase letters, digits, and a limited set of special characters. This reduces memory usage, making it suitable for certain data processing applications.
+
+By understanding these various binary and alphanumeric codes, one can better appreciate the methods used for representing and manipulating data in digital systems.
+
+# Error Detection Codes
+
+Binary information transmitted through communication channels is prone to errors due to external noise, which may flip bits from 1 to 0 or vice versa. An error detection code is a binary code that identifies errors during transmission. Although these codes cannot correct the detected errors, they can signal their presence, prompting retransmission or system checks. 
+
+## Parity Bit
+
+The most common error detection code is the parity bit. A parity bit is an additional bit included with a binary message to ensure that the total number of 1s is either odd or even. The procedure for generating parity bits can be summarized as follows:
+
+### Types of Parity
+
+1. **Odd Parity**: The parity bit is chosen so that the total number of 1s, including the parity bit, is odd.
+2. **Even Parity**: The parity bit is chosen so that the total number of 1s, including the parity bit, is even.
+
+For a message consisting of three bits, the possible parity bits are shown below:
+
+| Message (xyz) | P(odd) | P(even) |
+| ------------- | ------ | ------- |
+| 000           | 1      | 0       |
+| 001           | 0      | 1       |
+| 010           | 0      | 1       |
+| 011           | 1      | 0       |
+| 100           | 0      | 1       |
+| 101           | 1      | 0       |
+| 110           | 1      | 0       |
+| 111           | 0      | 1       |
+
+### Parity Bit Generation and Checking
+
+During data transmission, the parity bit is used as follows:
+
+1. **Sending End**: The message is input to a parity generator, which computes the required parity bit.
+2. **Transmission**: The message, including the parity bit, is sent to the receiver.
+3. **Receiving End**: The received bits are input to a parity checker, which verifies the parity. An error is detected if the parity does not match the expected value.
+
+### Parity Bit Example
+
+Consider a 3-bit message transmitted with an odd parity bit. At the sender, an odd-parity bit is generated, and the message is sent. Upon reception, the parity checker examines the parity:
+
+- If the total number of 1s is even, an error is detected (since the original message had odd parity).
+
+### Parity Bit Logic
+
+Parity generation and checking utilize exclusive-OR (XOR) and exclusive-NOR (XNOR) logic gates. The XOR function for three or more variables is an odd function, which is true if and only if an odd number of inputs are 1. 
+
+For even parity, the XOR of the message bits is computed:
+
+$$
+P(\text{even}) = x \oplus y \oplus z
+$$
+
+For odd parity, the XNOR gate complements the XOR result:
+
+$$
+P(\text{odd}) = \overline{x \oplus y \oplus z}
+$$
+
+### Parity Bit Circuit
+
+A typical parity generator and checker circuit is illustrated below. The generator uses one XOR gate and one XNOR gate for odd parity:
+
+1. **Parity Generator**: Computes the parity bit at the sender's end.
+2. **Parity Checker**: Verifies the parity at the receiver's end.
+
+The generator circuit for odd parity consists of an XOR gate followed by an XNOR gate to ensure the parity bit results in an odd number of 1s.
+
+## Error Detection with Parity
+
+The parity method detects the presence of one, three, or any odd number of errors. However, it cannot detect an even number of errors. Despite this limitation, parity bits are a simple and effective means of error detection in many practical applications.
+
+### Example Parity Generation and Checking
+
+Consider a message $xyz$ to be transmitted with odd parity. At the sender:
+
+- Compute $P(\text{odd}) = \overline{x \oplus y \oplus z}$.
+- Transmit $xyzP(\text{odd})$.
+
+At the receiver:
+
+- Check parity using $xyzP(\text{odd})$.
+- An error is detected if the parity of the received bits is even.
+
+This circuit can also be adapted for even parity by using only XOR gates, as even parity does not require complementation.
+
+### Unified Parity Circuit
+
+A unified circuit can be used for both parity generation and checking by permanently setting one input to logic-0 during parity generation. This allows the same hardware to serve dual functions, optimizing resource usage.
+
+In summary, parity bits are a fundamental tool in error detection, offering a balance between simplicity and effectiveness. Despite their inability to correct errors or detect even-numbered errors, they remain widely used due to their low overhead and ease of implementation.
