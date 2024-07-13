@@ -4,23 +4,29 @@ In digital computers, binary information is represented by physical quantities k
 
 Binary logic is the foundation of digital circuit design, dealing with binary variables and logical operations. These operations are performed by logic circuits known as gates. Gates are hardware components that produce binary outputs based on specific input conditions. Each type of gate has a unique graphical symbol and can be described algebraically. The relationship between inputs and outputs for each gate can be represented using a truth table.
 
-Below is a detailed explanation of eight fundamental types of logic gates: AND, OR, NOT, Inverter, Buffer, NAND, NOR, XOR, and XNOR.
+## Fundamental Gates
 
-## AND Gate
+### AND Gate
 
-### Description
+#### Description
 
 The AND gate performs a logical conjunction operation. It produces an output of 1 only if all its inputs are 1. If any input is 0, the output is 0.
 
-### Symbol
+#### Symbol
 
-![AND Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/and_gate.jpg)
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/6/64/AND_ANSI.svg"
+  alt="AND Gate Symbol"
+  width="200"
+/>
 
-### Algebraic Function
+#### Algebraic Functions
 
-$ x = A \cdot B $
+- $ x = A \cdot B $
+- $ x = AB $
+- $ x = A \land B $
 
-### Truth Table
+#### Truth Table
 
 | A   | B   | x   |
 | --- | --- | --- |
@@ -29,26 +35,31 @@ $ x = A \cdot B $
 | 1   | 0   | 0   |
 | 1   | 1   | 1   |
 
-### Characteristics
+#### Characteristics
 
 - AND gates can have more than two inputs.
 - The output is 1 if and only if all inputs are 1.
 
-## OR Gate
+### OR Gate
 
-### Description
+#### Description
 
 The OR gate performs a logical disjunction operation. It produces an output of 1 if any of its inputs are 1. The output is 0 only when all inputs are 0.
 
-### Symbol
+#### Symbol
 
-![OR Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/or_gate.jpg)
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/b/b5/OR_ANSI.svg"
+  alt="OR Gate Symbol"
+  width="200"
+/>
 
-### Algebraic Function
+#### Algebraic Functions
 
-$ x = A + B $
+- $ x = A + B $
+- $ x = A \lor B $
 
-### Truth Table
+#### Truth Table
 
 | A   | B   | x   |
 | --- | --- | --- |
@@ -57,76 +68,94 @@ $ x = A + B $
 | 1   | 0   | 1   |
 | 1   | 1   | 1   |
 
-### Characteristics
+#### Characteristics
 
 - OR gates can have more than two inputs.
 - The output is 1 if any input is 1.
 
-## NOT Gate
+### NOT Gate
 
-### Description
+#### Description
 
 The NOT gate, also known as an inverter, performs a logical negation operation. It inverts the input signal; if the input is 1, the output is 0, and vice versa.
 
-### Symbol
+#### Symbol
 
-![NOT Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/not_gate.jpg)
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/b/bc/NOT_ANSI.svg"
+  alt="NOT Gate Symbol"
+  width="200"
+/>
 
-### Algebraic Function
+#### Algebraic Functions
 
-$ x = \overline A $
+- $ x = \overline{A} $
+- $ x = A' $
+- $ x = \neg A $
 
-### Truth Table
+#### Truth Table
 
 | A   | x   |
 | --- | --- |
 | 0   | 1   |
 | 1   | 0   |
 
-# Characteristics
+#### Characteristics
 
 - The NOT gate has only one input and one output.
 - It is used to complement binary signals.
 
-## Buffer
+### Buffer
 
-### Description
+#### Description
 
 A buffer is a logic gate that outputs the same value as its input. It does not perform any logical operation but is used for signal amplification and isolation.
 
-### Symbol
+#### Symbol
 
-![Buffer Symbol](https://www.tutorialspoint.com/digital_circuits/images/buffer.jpg)
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/7/79/Buffer_ANSI.svg"
+  alt="Buffer Symbol"
+  width="200"
+/>
 
-### Algebraic Function
+#### Algebraic Functions
 
-$ x = A $
+- $ x = A $
 
-### Truth Table
+#### Truth Table
 
 | A   | x   |
 | --- | --- |
 | 0   | 0   |
 | 1   | 1   |
 
-### Characteristics
+#### Characteristics
 
 - Buffers are used to strengthen signals so they can drive more gates.
 - They provide no logical transformation of the input signal.
 
-## NAND Gate
+### NAND Gate
+
+#### Description
 
 The NAND gate is the complement of the AND gate. It produces an output of 0 only if all its inputs are 1. If any input is 0, the output is 1.
 
-### Symbol
+#### Symbol
 
-![NAND Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/nand_gate.jpg)
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/f/f2/NAND_ANSI.svg"
+  alt="NAND Gate Symbol"
+  width="200"
+/>
 
-### Algebraic Function
+#### Algebraic Functions
 
-$ x = \overline A\cdot B $
+- $ x = \overline{A \cdot B} $
+- $ x = \overline{AB} $
+- $ x = \overline{A \land B} $
 
-### Truth Table
+#### Truth Table
 
 | A   | B   | x   |
 | --- | --- | --- |
@@ -135,24 +164,31 @@ $ x = \overline A\cdot B $
 | 1   | 0   | 1   |
 | 1   | 1   | 0   |
 
-### Characteristics
+#### Characteristics
 
 - NAND gates can have more than two inputs.
 - The output is the complement of the AND function.
 
-## NOR Gate
+### NOR Gate
 
-### Description
+#### Description
 
 The NOR gate is the complement of the OR gate. It produces an output of 0 if any of its inputs are 1. The output is 1 only when all inputs are 0.
 
-### Symbol![NOR Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/nor_gate.jpg)
+#### Symbol
 
-### Algebraic Function
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/6/6c/NOR_ANSI.svg"
+  alt="NOR Gate Symbol"
+  width="200"
+/>
 
-$ x = \overline A + B $
+#### Algebraic Functions
 
-### Truth Table
+- $ x = \overline{A + B} $
+- $ x = \overline{A \lor B} $
+
+#### Truth Table
 
 | A   | B   | x   |
 | --- | --- | --- |
@@ -161,27 +197,32 @@ $ x = \overline A + B $
 | 1   | 0   | 0   |
 | 1   | 1   | 0   |
 
-### Characteristics
+#### Characteristics
 
 - NOR gates can have more than two inputs.
 - The output is the complement of the OR function.
 
-## XOR Gate
+### XOR Gate
 
-### Description
+#### Description
 
 The XOR (exclusive-OR) gate produces an output of 1 if the inputs are different. If both inputs are the same, the output is 0.
 
-### Symbol
+#### Symbol
 
-![XOR Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/xor_gate.jpg)
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/0/01/XOR_ANSI.svg"
+  alt="XOR Gate Symbol"
+  width="200"
+/>
 
-### Algebraic Function
+#### Algebraic Functions
 
-$ x = A \oplus B $
-$ = (A \cdot \overline B) + (\overline A \cdot B) $
+- $ x = A \oplus B $
+- $ x = (A \cdot \overline{B}) + (\overline{A} \cdot B) $
+- $ x = (A \land \neg B) \lor (\neg A \land B) $
 
-### Truth Table
+#### Truth Table
 
 | A   | B   | x   |
 | --- | --- | --- |
@@ -190,27 +231,32 @@ $ = (A \cdot \overline B) + (\overline A \cdot B) $
 | 1   | 0   | 1   |
 | 1   | 1   | 0   |
 
-### Characteristics
+#### Characteristics
 
 - XOR gates are often used in arithmetic circuits like adders.
 - It is also known as an odd function gate.
 
-## XNOR Gate
+### XNOR Gate
 
-### Description
+#### Description
 
 The XNOR (exclusive-NOR) gate is the complement of the XOR gate. It produces an output of 1 if the inputs are the same. If the inputs are different, the output is 0.
 
-### Symbol
+#### Symbol
 
-![XNOR Gate Symbol](https://www.tutorialspoint.com/digital_circuits/images/xnor_gate.jpg)
+<img
+  src="https://upload.wikimedia.org/wikipedia/commons/d/d6/XNOR_ANSI.svg"
+  alt="XNOR Gate Symbol"
+  width="200"
+/>
 
-### Algebraic Function
+#### Algebraic Functions
 
-$ x = \overline A \oplus B $
-$ = (A \cdot B) + (\overline A \cdot \overline B) $
+- $ x = \overline{A \oplus B} $
+- $ x = (A \cdot B) + (\overline{A} \cdot \overline{B}) $
+- $ x = (A \land B) \lor (\neg A \land \neg B) $
 
-### Truth Table
+#### Truth Table
 
 | A   | B   | x   |
 | --- | --- | --- |
@@ -219,9 +265,148 @@ $ = (A \cdot B) + (\overline A \cdot \overline B) $
 | 1   | 0   | 0   |
 | 1   | 1   | 1   |
 
-### Characteristics
+#### Characteristics
 
 - XNOR gates are used in equality detectors.
 - The output is 1 when the number of 1's in the input is even.
 
-By understanding these fundamental logic gates, we can design and analyze complex digital circuits that perform a wide range of computational tasks. Each gate's unique properties and behavior make them essential building blocks in digital electronics.
+## Constructing Truth Tables
+
+Truth tables are essential tools for understanding and analyzing digital logic circuits. They provide a comprehensive view of all possible input combinations and their corresponding outputs. Here's how to construct a truth table:
+
+1. Identify all input variables.
+2. Determine the number of rows needed (2^n, where n is the number of input variables).
+3. List all possible input combinations.
+4. Evaluate the output for each input combination.
+5. Fill in the output column(s).
+
+### Example: Constructing a Truth Table for A · B + C
+
+Let's construct a truth table for the expression A · B + C:
+
+1. Inputs: A, B, and C
+2. Number of rows: 2^3 = 8
+3. List input combinations:
+
+| A   | B   | C   |
+| --- | --- | --- |
+| 0   | 0   | 0   |
+| 0   | 0   | 1   |
+| 0   | 1   | 0   |
+| 0   | 1   | 1   |
+| 1   | 0   | 0   |
+| 1   | 0   | 1   |
+| 1   | 1   | 0   |
+| 1   | 1   | 1   |
+
+4. Evaluate the output for each row:
+
+   - First, evaluate A · B
+   - Then, add the result to C
+
+5. Fill in the output column:
+
+| A   | B   | C   | A · B | (A · B) + C |
+| --- | --- | --- | ----- | ----------- |
+| 0   | 0   | 0   | 0     | 0           |
+| 0   | 0   | 1   | 0     | 1           |
+| 0   | 1   | 0   | 0     | 0           |
+| 0   | 1   | 1   | 0     | 1           |
+| 1   | 0   | 0   | 0     | 0           |
+| 1   | 0   | 1   | 0     | 1           |
+| 1   | 1   | 0   | 1     | 1           |
+| 1   | 1   | 1   | 1     | 1           |
+
+This truth table now completely describes the behavior of the circuit for all possible input combinations.
+
+## More Complex Circuits
+
+When dealing with more complex circuits, it's important to break them down into smaller, manageable parts. Here's a step-by-step approach to analyze these circuits:
+
+1. Identify the gates and their connections.
+2. Label intermediate outputs.
+3. Evaluate the circuit stage by stage.
+4. Combine the results to get the final output.
+
+### Example: Analyzing a Complex Circuit
+
+Consider the following circuit:
+
+```
+   A ---[AND]--+
+               |
+   B ---[AND]--+--[OR]--- X
+               |
+   C ---[NOT]--+
+```
+
+To analyze this circuit:
+
+1. Identify gates: Two AND gates, one OR gate, and one NOT gate.
+2. Label intermediate outputs:
+   - Y1 = A · B (output of first AND gate)
+   - Y2 = ¬C (output of NOT gate)
+3. Evaluate stage by stage:
+   - X = Y1 + Y2
+4. Combine results:
+   - X = (A · B) + ¬C
+
+Now we can construct the truth table:
+
+| A   | B   | C   | Y1 (A · B) | Y2 (¬C) | X ((A · B) + ¬C) |
+| --- | --- | --- | ---------- | ------- | ---------------- |
+| 0   | 0   | 0   | 0          | 1       | 1                |
+| 0   | 0   | 1   | 0          | 0       | 0                |
+| 0   | 1   | 0   | 0          | 1       | 1                |
+| 0   | 1   | 1   | 0          | 0       | 0                |
+| 1   | 0   | 0   | 0          | 1       | 1                |
+| 1   | 0   | 1   | 0          | 0       | 0                |
+| 1   | 1   | 0   | 1          | 1       | 1                |
+| 1   | 1   | 1   | 1          | 0       | 1                |
+
+This approach allows us to break down complex circuits into manageable parts and understand their overall behavior.
+
+## NAND Completeness
+
+NAND gates have a special property known as functional completeness. This means that any Boolean function can be implemented using only NAND gates. This property makes the NAND gate a universal gate in digital logic design.
+
+### Implementing Basic Gates with NAND
+
+1. NOT Gate:
+
+   - A NAND gate with both inputs connected together acts as a NOT gate.
+
+   ```
+   A ---[NAND]--- ¬A
+   |
+   +---+
+   ```
+
+2. AND Gate:
+
+   - An AND gate can be created by inverting the output of a NAND gate.
+
+   ```
+   A ---[NAND]---[NAND]--- A · B
+   B ---+
+   ```
+
+3. OR Gate:
+
+   - Using De Morgan's laws, we can create an OR gate with NAND gates.
+
+   ```
+   A ---[NAND]---+
+                 |
+   B ---[NAND]---+---[NAND]--- A + B
+   ```
+
+4. NOR Gate:
+   - A NOR gate can be implemented using NAND gates as follows:
+   ```
+   A ---[NAND]---+
+                 |
+   B ---[NAND]---+---[NAND]---[NAND]--- ¬(A + B)
+   ```
+
+The ability to implement all basic logic functions using only NAND gates demonstrates the gate's versatility and importance in digital circuit design. This property allows for simplified manufacturing processes and reduced costs in integrated circuit production.

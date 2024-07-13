@@ -2,6 +2,100 @@
 
 Boolean algebra is a branch of algebra that deals with binary variables and logic operations. The variables in Boolean algebra are typically designated by letters such as A, B, x, and y. The three fundamental logic operations in Boolean algebra are AND, OR, and complement (NOT). A Boolean function can be expressed algebraically using binary variables, logic operation symbols, parentheses, and the equal sign. For a given set of variable values, the Boolean function evaluates to either 1 (true) or 0 (false).
 
+## Properties of Boolean Algebra
+
+### Commutative Property
+
+**P1a.** $a + b = b + a$
+
+**P1b.** $ab = ba$
+
+Note that the values for both OR and AND are the same for the second and third lines of the truth table. This is known as the commutative property. It seems obvious because it holds for addition and multiplication, which use the same notation. However, it needs to be stated explicitly, because it is not true for all operators in all algebras. (For example, $a - b \neq b - a$ in ordinary algebra. There is no subtraction operation in switching algebra.)
+
+### Associative Property
+
+**P2a.** $a + (b + c) = (a + b) + c$
+
+**P2b.** $a(bc) = (ab)c$
+
+This property, known as the associative law, states that the order in which one does the OR or AND operation doesn’t matter, and thus we can write just $a + b + c$ and $abc$ (without the parentheses). It also enables us to talk of the OR or AND of several things. We can thus extend the definition of OR to:
+
+$a + b + c + d + \cdots$
+
+is 1 if any of the operands ($a, b, c, d, \ldots$) is 1 and is 0 only if all are 0.
+
+and the definition of AND extends to:
+
+$abcd \cdots$
+
+is 1 if all of the operands are 1 and is 0 if any is 0.
+
+### Identity Property
+
+**P3a.** $a \cdot 0 = 0$
+
+**P3b.** $a + 1 = 1$
+
+Properties 3a and 3b follow directly from the first and third lines of the truth tables.
+
+### Null Property
+
+**P4a.** $a \cdot 1 = a$
+
+**P4b.** $a + 0 = a$
+
+Properties 4a and 4b follow from the second and fourth lines of the truth tables.
+
+### Complement Property
+
+**P5a.** $a \cdot \overline{a} = 0$
+
+**P5b.** $a + \overline{a} = 1$
+
+Property 5 follows from the definition of the NOT operation, which states that either $a$ or $\overline{a}$ is always 1, and the other is always 0. Thus, $a \cdot \overline{a}$ must be either $0 \cdot 1$ or $1 \cdot 0$, both of which are 0. Similarly, $a + \overline{a}$ must be either $0 + 1$ or $1 + 0$, both of which are 1.
+
+### Combined Properties
+
+Combining the commutative property (P1a) with the above properties, we also have:
+
+**P3aa.** $0 \cdot a = 0$
+
+**P3bb.** $1 + a = 1$
+
+**P4aa.** $1 \cdot a = a$
+
+**P4bb.** $0 + a = a$
+
+**P5aa.** $\overline{a} \cdot a = 0$
+
+**P5bb.** $\overline{a} + a = 1$
+
+Often, as we manipulate expressions, we will use one of these versions, rather than first interchanging the terms using the commutative law (P1).
+
+### Idempotency Property
+
+**P6a.** $a + a = a$
+
+**P6b.** $a \cdot a = a$
+
+By repeated application of Property 6a, we can see that:
+
+$a + a + a + \cdots + a = a$
+
+### Involution Property
+
+**P7.** $\overline{(\overline{a})} = a$
+
+If $a = 0$, then $\overline{a} = 1$. However, when that is complemented again, that is, $\overline{(\overline{0})} = \overline{1} = 0 = a$. Similarly, if $a = 1$, $\overline{a} = 0$ and $\overline{(\overline{1})} = 1$. Because there are no ANDs, ORs, 0’s, or 1’s, the dual is the same property.
+
+### Distributive Property
+
+**P8a.** $a(b + c) = ab + ac$
+
+**P8b.** $a + (bc) = (a + b)(a + c)$
+
+P8a looks very familiar; we commonly use it with addition and multiplication. In right-to-left order, it is referred to as factoring. On the other hand, P8b is not a property of regular algebra. The simplest way to prove these properties of switching algebra is to produce a truth table for both sides of the equality and show that they are equal.
+
 ## Example Boolean Function
 
 Consider the Boolean function:
@@ -85,6 +179,94 @@ DeMorgan's Theorems are crucial for simplifying expressions involving NOR and NA
 
 1. $ (x + y)' = x' \cdot y' $
 2. $ (x \cdot y)' = x' + y' $
+
+#### Proof of the First Theorem
+
+1. **Expression of the original theorem**:
+   $
+   (x + y)'
+   $
+
+2. **Apply the definition of the complement (NOT operation)**:
+   $
+   (x + y)' = \overline{x + y}
+   $
+
+3. **Using the definition of OR operation**:
+   $
+   \overline{x + y} \text{ means that neither } x \text{ nor } y \text{ is true}
+   $
+
+4. **Expressing in terms of AND operation**:
+   $
+   \overline{x + y} = \overline{x} \cdot \overline{y}
+   $
+
+5. **Using the complement (NOT) of each variable**:
+   $
+   \overline{x} = x' \text{ and } \overline{y} = y'
+   $
+
+6. **Combining these results**:
+   $
+   (x + y)' = x' \cdot y'
+   $
+
+#### Proof of the Second Theorem
+
+1. **Expression of the original theorem**:
+   $
+   (x \cdot y)'
+   $
+
+2. **Apply the definition of the complement (NOT operation)**:
+   $
+   (x \cdot y)' = \overline{x \cdot y}
+   $
+
+3. **Using the definition of AND operation**:
+   $
+   \overline{x \cdot y} \text{ means that at least one of } x \text{ or } y \text{ is false}
+   $
+
+4. **Expressing in terms of OR operation**:
+   $
+   \overline{x \cdot y} = \overline{x} + \overline{y}
+   $
+
+5. **Using the complement (NOT) of each variable**:
+   $
+   \overline{x} = x' \text{ and } \overline{y} = y'
+   $
+
+6. **Combining these results**:
+   $
+   (x \cdot y)' = x' + y'
+   $
+
+#### Verification with Truth Tables
+
+To verify these theorems, we can use truth tables:
+
+**First Theorem:** $(x + y)' = x' \cdot y'$
+
+| $x$ | $y$ | $x + y$ | $(x + y)'$ | $x'$ | $y'$ | $x' \cdot y'$ |
+| :-: | :-: | :-----: | :--------: | :--: | :--: | :-----------: |
+|  0  |  0  |    0    |     1      |  1   |  1   |       1       |
+|  0  |  1  |    1    |     0      |  1   |  0   |       0       |
+|  1  |  0  |    1    |     0      |  0   |  1   |       0       |
+|  1  |  1  |    1    |     0      |  0   |  0   |       0       |
+
+**Second Theorem:** $(x \cdot y)' = x' + y'$
+
+| $x$ | $y$ | $x \cdot y$ | $(x \cdot y)'$ | $x'$ | $y'$ | $x' + y'$ |
+| :-: | :-: | :---------: | :------------: | :--: | :--: | :-------: |
+|  0  |  0  |      0      |       1        |  1   |  1   |     1     |
+|  0  |  1  |      0      |       1        |  1   |  0   |     1     |
+|  1  |  0  |      0      |       1        |  0   |  1   |     1     |
+|  1  |  1  |      1      |       0        |  0   |  0   |     0     |
+
+From the truth tables, we can see that $(x + y)' = x' \cdot y'$ and $(x \cdot y)' = x' + y'$ hold true for all possible values of $x$ and $y$, verifying DeMorgan's Theorems.
 
 These theorems allow the transformation of NOR and NAND gates into equivalent AND-OR gates and vice versa.
 
