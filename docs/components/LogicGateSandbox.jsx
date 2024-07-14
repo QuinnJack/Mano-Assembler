@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "./ui/button";
-import { useConfig } from 'nextra-theme-docs';
-import { useThemeConfig } from 'nextra-theme-docs';
 import { RadioGroup, RadioGroupItem } from './ui/radio';
-import solve from '../lib/kmap-solver';
+import { solve } from './utils/kmap-solver';
 
 const KMapSolver = () => {
   const [variables, setVariables] = useState(2);
   const [form, setForm] = useState('SOP');
   const [kmap, setKmap] = useState(Array(16).fill(0));
   const [simplifiedExpression, setSimplifiedExpression] = useState('');
+  const [groups, setGroups] = useState([]);
   const kmapRef = useRef(null);
   const svgRef = useRef(null);
 
-  var strokeColor = "#D1D5DB";
+  const strokeColor = "#D1D5DB";
 
   useEffect(() => {
     const updateSvgPosition = () => {
@@ -47,27 +46,27 @@ const KMapSolver = () => {
 
   const getLabels = () => {
     switch (variables) {
-      case 2: return { 
-        top: ['0', '1'], 
-        left: ['0', '1'], 
+      case 2: return {
+        top: ['0', '1'],
+        left: ['0', '1'],
         cornerTop: 'A',
         cornerLeft: 'B'
       };
-      case 3: return { 
-        top: ['00', '01', '11', '10'], 
-        left: ['0', '1'], 
+      case 3: return {
+        top: ['00', '01', '11', '10'],
+        left: ['0', '1'],
         cornerTop: 'AB',
         cornerLeft: 'C'
       };
-      case 4: return { 
-        top: ['00', '01', '11', '10'], 
-        left: ['00', '01', '11', '10'], 
+      case 4: return {
+        top: ['00', '01', '11', '10'],
+        left: ['00', '01', '11', '10'],
         cornerTop: 'AB',
         cornerLeft: 'CD'
       };
-      default: return { 
-        top: ['0', '1'], 
-        left: ['0', '1'], 
+      default: return {
+        top: ['0', '1'],
+        left: ['0', '1'],
         cornerTop: 'A',
         cornerLeft: 'B'
       };
@@ -88,17 +87,27 @@ const KMapSolver = () => {
   useEffect(() => {
     if (form === 'SOP') {
       const minterms = kmap
-        .map((value, index) => (value === 1 ? index : -1))
+        .map((value, index) => value === 1 ? index : -1)
         .filter(index => index !== -1);
+
       const dontcares = kmap
-        .map((value, index) => (value === 2 ? index : -1))
+        .map((value, index) => value === 2 ? index : -1)
         .filter(index => index !== -1);
 
       const variablesArr = ['A', 'B', 'C', 'D'].slice(0, variables);
       const result = solve(variablesArr, minterms, dontcares);
+
       setSimplifiedExpression(result.expression);
+      setGroups(result.groups);
     }
   }, [kmap, form, variables]);
+
+  const highlightStyles = [
+    { backgroundColor: 'rgba(255, 182, 193, 0.5)', borderColor: 'rgba(255, 182, 193, 1)' },
+    { backgroundColor: 'rgba(173, 216, 230, 0.5)', borderColor: 'rgba(173, 216, 230, 1)' },
+    { backgroundColor: 'rgba(144, 238, 144, 0.5)', borderColor: 'rgba(144, 238, 144, 1)' },
+    { backgroundColor: 'rgba(255, 255, 224, 0.5)', borderColor: 'rgba(255, 255, 224, 1)' }
+  ];
 
   return (
     <div className="flex p-4 gap-4">
@@ -147,7 +156,7 @@ const KMapSolver = () => {
               gridTemplateRows: `auto repeat(${rows}, 50px)`,
             }}
           >
-            <div style={{ position: 'relative' }}> {/* Top-left cell with diagonal line */}
+            <div style={{ position: 'relative' }}>
               <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%' }}>
                 <svg style={{ width: '100%', height: '100%' }}>
                   <line x1="0" y1="0" x2="100%" y2="100%" stroke={strokeColor} strokeWidth="1" />
@@ -157,34 +166,34 @@ const KMapSolver = () => {
             {labels.top.map((label, i) => (
               <div key={i} style={{ textAlign: 'center', fontSize: '12px', padding: '8px' }}>{label}</div>
             ))}
-            {kmap.slice(0, rows * cols).map((cell, index) => (
-              <React.Fragment key={index}>
-                {index % cols === 0 && (
-                  <div style={{ fontSize: '12px', textAlign: 'right', paddingRight: '8px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                    {labels.left[Math.floor(index / cols)]}
+            {kmap.slice(0, rows * cols).map((cell, index) => {
+              const groupIndex = groups.findIndex(group => group.some(gCell => gCell.decimal === index));
+              const cellStyle = groupIndex !== -1 ? highlightStyles[groupIndex % highlightStyles.length] : {};
+
+              return (
+                <React.Fragment key={index}>
+                  {index % cols === 0 && (
+                    <div style={{ fontSize: '12px', textAlign: 'right', paddingRight: '8px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                      {labels.left[Math.floor(index / cols)]}
+                    </div>
+                  )}
+                  <div
+                    onClick={() => handleCellClick(index)}
+                    className="w-full h-full flex items-center justify-center border cursor-pointer"
+                    style={{
+                      backgroundColor: cellStyle.backgroundColor,
+                      border: groupIndex !== -1 ? `1px solid ${cellStyle.borderColor}` : ''
+                    }}
+                  >
+                    {cell === 0 ? '0' : cell === 1 ? '1' : 'X'}
                   </div>
-                )}
-                <div
-                  onClick={() => handleCellClick(index)}
-                  style={{
-                    width: '100%',
-                    height: '100%', 
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    border: '1px solid #d1d5db',
-                    cursor: 'pointer',
-                    ':hover': { backgroundColor: '#f3f4f6' }
-                  }}
-                >
-                  {cell === 0 ? '0' : cell === 1 ? '1' : 'X'}
-                </div>
-              </React.Fragment>
-            ))}
+                </React.Fragment>
+              );
+            })}
           </div>
         </div>
         <div style={{ marginTop: '16px', fontSize: '16px', fontWeight: 'bold' }}>
-          Simplified Expression: {simplifiedExpression}
+      Simplified Expression: <span className="latex">{`${simplifiedExpression}`}</span>
         </div>
       </div>
     </div>
