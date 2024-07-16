@@ -1,4 +1,5 @@
 # Combinational Circuits
+import Image from 'next/image'
 
 A combinational circuit is a connected arrangement of logic gates with a set of inputs and outputs. At any given time, the binary values of the outputs are a function of the binary combination of the inputs. The block diagram of a combinational circuit is illustrated in the figure below. The `n` binary input variables come from an external source, and the `m` binary output variables are sent to an external destination. Between these inputs and outputs, there is an interconnection of logic gates.
 
@@ -50,7 +51,7 @@ From the truth table, we can derive the Boolean functions for the outputs:
 
 The logic diagram for the half-adder consists of an exclusive-OR (XOR) gate and an AND gate. The XOR gate generates the sum (`S`), and the AND gate generates the carry (`C`).
 
-[Half-adder logic diagram picture](Fig1-16.png)
+<Image src="/adders/Half-Adder.svg" alt="Hello" width={500} height={500} />
 
 ### Example: Full-Adder
 
@@ -82,6 +83,5 @@ Using Karnaugh maps, we can derive the simplified Boolean functions for the outp
 
 The logic diagram of the full-adder consists of two half-adders and an OR gate. When used in subsequent designs, the full-adder (FA) is often represented by a block diagram.
 
-[Full-adder logic diagram](Fig1-18.png)
+<Image src="/adders/Full-Adder.svg" alt="Hello" width={650} height={650} />
 
-Combinational circuits are a fundamental part of digital logic design. They are used for various purposes, including arithmetic operations, data processing, and control decisions. By understanding the principles of truth tables, Boolean functions, and logic diagrams, one can design and analyze combinational circuits effectively.
