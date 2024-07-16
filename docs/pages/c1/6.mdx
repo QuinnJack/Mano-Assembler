@@ -1,5 +1,9 @@
 # Flip-Flops
 
+import Image from 'next/image'
+
+
+
 The digital circuits we have discussed so far are combinational, where the outputs at any given time depend entirely on the inputs present at that time. Although every digital system includes a combinational circuit, most systems also incorporate storage elements. These elements require the system to be described in terms of sequential circuits. The most common type of sequential circuit is the synchronous type. Synchronous sequential circuits use signals that affect the storage elements only at discrete instants of time. Synchronization is achieved through a timing device called a clock pulse generator, which produces a periodic train of clock pulses. These clock pulses are distributed throughout the system in such a way that storage elements are affected only with the arrival of the synchronization pulse.
 
 Clocked synchronous sequential circuits are the most frequently encountered in practice. They are less prone to instability problems and their timing can be easily divided into independent discrete steps, each of which can be considered separately.
@@ -11,6 +15,8 @@ The storage elements employed in clocked sequential circuits are known as flip-f
 ### SR Flip-Flop
 
 The SR (Set-Reset) flip-flop has three inputs: S (set), R (reset), and C (clock). It has an output $Q$ and sometimes a complemented output $\overline{Q}$. The clock input is denoted with an arrowhead-shaped symbol, indicating a dynamic input that responds to a positive transition (from 0 to 1) of the clock signal.
+
+<Image src="/flipflops/SR-FF.svg" alt="Hello" width={500} height={500} />
 
 #### Operation of the SR Flip-Flop
 
@@ -36,6 +42,8 @@ The SR flip-flop should not be pulsed when $S = R = 1$ as it produces an indeter
 
 The D (Data) flip-flop is a modification of the SR flip-flop. It is constructed by adding an inverter between the S and R inputs and assigning a single input D. The D input is sampled during the clock transition from 0 to 1.
 
+<Image src="/flipflops/D-FF.svg" alt="Hello" width={650} height={650} />
+
 #### Operation of the D Flip-Flop
 
 - If $D = 1$, the output of the flip-flop is set to 1.
@@ -57,6 +65,8 @@ This means that the $Q$ output of the flip-flop receives its value from the D in
 
 The JK flip-flop is an improved version of the SR flip-flop, where the indeterminate condition is defined. It has inputs J and K, which behave similarly to the S and R inputs of the SR flip-flop, respectively.
 
+<Image src="/flipflops/JK-FF.svg" alt="Hello" width={650} height={650} />
+
 #### Operation of the JK Flip-Flop
 
 - When $J = 1$ and $K = 0$, the output is set to 1.
@@ -76,6 +86,8 @@ The JK flip-flop is an improved version of the SR flip-flop, where the indetermi
 ### T Flip-Flop
 
 The T (Toggle) flip-flop is derived from the JK flip-flop by connecting the J and K inputs together, providing a single input designated as T.
+
+<Image src="/flipflops/T-FF.svg" alt="Hello" width={900} height={900} />
 
 #### Operation of the T Flip-Flop
 
@@ -100,6 +112,7 @@ The most common type of flip-flop used to synchronize state changes during a clo
 
 - The D input value is transferred to the Q output when the clock makes a positive transition.
 - The output does not change when the clock is at level 1, level 0, or transitions from level 1 to level 0.
+
 
 #### Negative-Edge-Triggered D Flip-Flop
 
