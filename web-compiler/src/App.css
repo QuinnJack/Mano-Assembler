@@ -192,15 +192,15 @@ textarea {
 }
 
 .context {
-  color: #e0a502;
-}
-
-.info {
   color: #4892fa;
 }
 
+.info {
+  color: #ff9500;
+}
+
 .warning {
-  color: #e0a502;
+  color: #fa9880;
 }
 
 .error {
