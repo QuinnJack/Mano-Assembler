@@ -1,4 +1,5 @@
 # Shift Microoperations
+import Image from 'next/image';
 
 Shift microoperations are integral to the serial transfer of data within a computer system. They are employed in conjunction with arithmetic, logic, and other data-processing operations. By shifting the contents of a register either to the left or to the right, data can be transferred and manipulated efficiently.
 
@@ -48,6 +49,8 @@ For efficiency, especially in processors with many registers, a combinational ci
 A combinational circuit shifter can be constructed using multiplexers. For example, a 4-bit shifter has four data inputs ($A_0$ through $A_3$) and four data outputs ($H_0$ through $H_3$). It includes two serial inputs for shift-left (IL) and shift-right (IR) operations. The selection input (S) controls the direction of the shift:
 - When $S = 0$, data is shifted right.
 - When $S = 1$, data is shifted left.
+
+<Image src="/c4/x7.png" alt="Hello" className="dark:invert-[0.93]" width={450} height={450} />
 
 ### Function Table of the Shifter
 

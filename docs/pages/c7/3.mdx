@@ -1,9 +1,9 @@
-# Microprograms
+import Image from 'next/image';
 
+# Microprograms
 Once the configuration of a computer and its microprogrammed control unit is established, the designer's task is to generate the microcode for the control memory. This code generation, called microprogramming, is a process similar to conventional machine language programming. To illustrate this process, we present here a simple digital computer and show how it is microprogrammed.
 
 ## Computer Configuration
-
 The block diagram of the computer consists of two memory units: a main memory for storing instructions and data, and a control memory for storing the microprogram. Four registers are associated with the processor unit and two with the control unit. The processor registers are:
 
 - Program Counter (PC)
@@ -14,6 +14,8 @@ The block diagram of the computer consists of two memory units: a main memory fo
 The control unit has a Control Address Register (CAR) and a Subroutine Register (SBR). The control memory and its registers are organized as a microprogrammed control unit.
 
 The transfer of information among the registers in the processor is done through multiplexers rather than a common bus. DR can receive information from AC, PC, or memory. AR can receive information from PC or DR. PC can receive information only from AR. The arithmetic, logic, and shift unit performs micro-operations with data from AC and DR and places the result in AC. Memory receives its address from AR. Input data written to memory come from DR, and data read from memory can go only to DR.
+
+<Image src="/c7/x3.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 ## Instruction Format
 
@@ -30,7 +32,8 @@ Each computer instruction must be microprogrammed. Only four instructions are co
 
 The microinstruction format for the control memory is divided into four functional parts: three fields (F1, F2, and F3) specify micro-operations for the computer, the CD field selects status bit conditions, the BR field specifies the type of branch to be used, and the AD field contains a branch address. The address field is seven bits wide, since the control memory has 128 words.
 
-Micro-operations are encoded to specify distinct operations, as listed in the table below:
+<Image src="/c7/x4.png" alt="Hello" className="dark:invert-[0.93]" width={400} height={400} />
+<Image src="/c7/x5.png" alt="Hello" className="dark:invert-[0.93]" width={400} height={400} />
 
 ### Microinstruction Fields and Codes
 

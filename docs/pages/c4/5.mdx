@@ -1,4 +1,5 @@
 # Arithmetic Logic Shift Unit
+import Image from 'next/image';
 
 In modern computer systems, individual registers do not directly perform micro-operations. Instead, these systems utilize multiple storage registers connected to a central operational unit known as the Arithmetic Logic Unit (ALU). The ALU is a combinational circuit that executes arithmetic and logic operations. This configuration allows for the efficient transfer of data between registers via the ALU within a single clock pulse period.
 
@@ -8,6 +9,7 @@ To perform a micro-operation, the contents of specific registers are placed in t
 ## ALU Design
 
 The ALU integrates arithmetic, logic, and shift circuits to create a versatile operational unit. One stage of an arithmetic logic shift unit is illustrated below. The subscript $ i $ designates a typical stage. Inputs $ A_i $ and $ B_i $ are fed into both the arithmetic and logic units.
+<Image src="/c4/x8.png" alt="Hello" className="dark:invert-[0.93]" width={550} height={550} />
 
 Inputs $ S_1 $ and $ S_0 $ determine the specific micro-operation to be executed. A 4x1 multiplexer at the output selects between an arithmetic output ($ E_i $) and a logic output ($ H_i $). This selection is controlled by inputs $ S_3 $ and $ S_2 $. The other two data inputs to the multiplexer are $ A_{i-1} $ for the shift-right operation and $ A_{i+1} $ for the shift-left operation. 
 

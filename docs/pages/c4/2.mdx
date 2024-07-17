@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Bus and Memory Transfers
 
 ## Common Bus System
@@ -9,6 +11,8 @@ A bus structure consists of a set of common lines, one for each bit of a registe
 ### Construction Using Multiplexers
 
 One way to construct a common bus system is with multiplexers. The multiplexers select the source register, whose binary information is then placed on the bus. Consider a system with four registers, each containing four bits. The bus consists of four 4x1 multiplexers, each having four data inputs (0 through 3) and two selection inputs ($S_1$ and $S_0$). To avoid complicating diagrams with 16 crossing lines, labels are used to show connections from register outputs to multiplexer inputs. For example, the output bit 1 of register A is connected to input 0 of MUX 1, as indicated by the label $A_1$.
+
+<Image src="/c4/x1.png" alt="Hello" className="dark:invert-[0.93]" width={500} height={500} />
 
 Each bit position in the registers is connected to the data inputs of one multiplexer to form a line of the bus. Thus, MUX 0 multiplexes the four 0 bits of the registers, MUX 1 multiplexes the four 1 bits, and so on. The selection lines $S_1$ and $S_0$ are connected to the selection inputs of all four multiplexers. Depending on the combination of $S_1$ and $S_0$, the four bits from one register are transferred to the four-line common bus. 
 
@@ -42,6 +46,8 @@ From this, the designer understands which control signals must be activated to p
 ## Three-State Bus Buffers
 
 A bus system can also be constructed using three-state gates instead of multiplexers. A three-state gate is a digital circuit that has three states: logic 1, logic 0, and high-impedance. The high-impedance state acts as an open circuit, effectively disconnecting the output. This feature allows multiple three-state gate outputs to connect to a common bus line without causing loading effects.
+
+<Image src="/c4/x2.png" alt="Hello" className="dark:invert-[0.93]" width={500} height={500} />
 
 ### Construction Using Three-State Buffers
 
@@ -77,7 +83,9 @@ This causes the data in $R1$ to be stored into the memory word at the address sp
 
 ## Arithmetic Microoperations
 
-Arithmetic microoperations perform arithmetic functions on the data stored in registers. Common arithmetic microoperations include addition, subtraction, increment, and decrement.
+Arithmetic microoperations perform arithmetic functions on the data stored in registers. Common arithmetic microoperations include addition, subtraction, increment, and decrement. A 4-bit binary adder is shown below.
+
+<Image src="/c4/x3.png" alt="Hello" className="dark:invert-[0.93]" width={500} height={500} />
 
 ### Addition and Subtraction
 
@@ -85,13 +93,19 @@ To implement addition, we use registers that hold data and a digital component, 
 
 The subtraction operation is conveniently done using complements. Subtracting $B$ from $A$ can be achieved by taking the 2's complement of $B$ and adding it to $A$. The 2's complement is obtained by taking the 1's complement and adding one to the least significant bit. This can be implemented using exclusive-OR gates with full-adders to form a binary adder-subtractor.
 
+<Image src="/c4/x4.png" alt="Hello" className="dark:invert-[0.93]" width={500} height={500} />
+
 ### Binary Incrementer
 
 The increment microoperation adds one to the value in a register. This can be implemented with a binary counter or with a combinational circuit using half-adders connected in cascade. For example, a 4-bit binary incrementer adds one to a 4-bit number and generates the incremented output.
 
+<Image src="/c4/x5.png" alt="Hello" className="dark:invert-[0.93]" width={500} height={500} />
+
 ### Arithmetic Circuit
 
 A composite arithmetic circuit can implement various arithmetic microoperations using a parallel adder. By controlling the data inputs to the adder, different operations can be performed. A 4-bit arithmetic circuit with multiplexers and full-adders can perform operations such as add, subtract, increment, and decrement by selecting appropriate inputs.
+
+<Image src="/c4/x6.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 The function table for the arithmetic circuit is as follows:
 

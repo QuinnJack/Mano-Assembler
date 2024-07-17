@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Representation of Floating-Point Numbers
 
 Floating-point representation is a method used to encode real numbers within the limits of finite precision available in computer systems. This representation divides a number into two main parts: the mantissa and the exponent.
@@ -177,9 +179,13 @@ During data transmission, the parity bit is used as follows:
 
 ### Parity Bit Example
 
+
+
 Consider a 3-bit message transmitted with an odd parity bit. At the sender, an odd-parity bit is generated, and the message is sent. Upon reception, the parity checker examines the parity:
 
 - If the total number of 1s is even, an error is detected (since the original message had odd parity).
+
+<Image src="/c3/x1.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 ### Parity Bit Logic
 

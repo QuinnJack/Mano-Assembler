@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Input-Output and Interrupt
 
 A computer system can only perform meaningful tasks if it interacts with the external environment. Instructions and data stored in memory are provided by input devices, and computational results are communicated to the user through output devices. In this section, we will illustrate the fundamental requirements for input and output communication using a terminal unit equipped with a keyboard and a printer. For more extensive details on input-output organization, refer to Chapter 11.
@@ -5,6 +7,7 @@ A computer system can only perform meaningful tasks if it interacts with the ext
 ## Input-Output Configuration
 
 The terminal unit sends and receives serial information, where each piece of information consists of eight bits representing an alphanumeric code. The serial information from the keyboard is shifted into the input register (INPR), while the serial information intended for the printer is stored in the output register (OUTR). These two registers interact serially with a communication interface and in parallel with the Accumulator (AC).
+<Image src="/c5/7/x1.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 ### Input Register (INPR)
 
@@ -13,6 +16,7 @@ The input register (INPR) consists of eight bits that hold alphanumeric input in
 ### Output Register (OUTR)
 
 The output register (OUTR) similarly holds eight bits of information that are intended for the output device. It is controlled by a 1-bit output flag (FGO). Initially, FGO is set to 1, indicating that the output device is ready to receive data. Once data is transferred from the AC to OUTR, FGO is cleared to 0, and it remains cleared until the output device has processed the data and is ready for new data.
+
 
 ### Data Transfer Process
 
@@ -29,6 +33,7 @@ The data transfer process between the input-output device and the computer invol
     - The computer checks the flag bit; if FGO is 1, the information from AC is transferred in parallel to OUTR, and FGO is cleared to 0.
     - The output device processes the data, prints the corresponding character, and upon completion, sets FGO to 1.
     - The computer does not load new data into OUTR until FGO is set to 1.
+
 
 ## Input-Output Instructions
 
@@ -58,6 +63,8 @@ The input-output instructions are:
 - **IOF (Interrupt Enable Off):** Disables the interrupt facility.
   $$ pB_{11}: IEN \leftarrow 0 $$
 
+<Image src="/c5/7/x2.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
+
 ## Program Interrupt
 
 ### Inefficiency of Programmed Control Transfer
@@ -83,6 +90,8 @@ The handling of interrupts can be understood through the following flowchart pro
      - If either flag is set to 1, the interrupt flip-flop (R) is set to 1.
 
 2. At the end of the execute phase, if R is set to 1, the control initiates an interrupt cycle instead of the next instruction cycle.
+
+<Image src="/c5/7/x3.png" alt="Hello" className="dark:invert-[0.93]" width={500} height={500} />
 
 ### Interrupt Cycle Operations
 

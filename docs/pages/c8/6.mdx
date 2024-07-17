@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Reduced Instruction Set Computer (RISC)
 
 The design of the instruction set architecture (ISA) is pivotal in computer architecture. The ISA dictates how machine language programs are constructed and executed. Historically, the complexity of instruction sets has evolved with advancements in digital hardware. Early computers had simple ISAs due to hardware constraints, but as integrated circuits became more cost-effective, ISAs grew in both size and complexity. These complex instruction sets, sometimes exceeding 200 instructions with various data types and addressing modes, are characteristic of Complex Instruction Set Computers (CISC). 
@@ -34,6 +36,8 @@ RISC architectures often use overlapped register windows to optimize procedure c
 
 Each procedure call increments a pointer to activate a new register window, while a return decrements the pointer, reverting to the previous window. Registers within adjacent windows overlap, allowing parameters to be shared seamlessly.
 
+<Image src="/c8/x8.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
+
 ### Example: Berkeley RISC I
 
 The Berkeley RISC I project demonstrated the advantages of RISC architecture. Key features of the Berkeley RISC I include:
@@ -51,6 +55,8 @@ The RISC I uses three primary instruction formats:
 1. **Register Mode**: Specifies two source registers and a destination register.
 2. **Register-Immediate Mode**: One source register, an immediate operand, and a destination register.
 3. **PC-Relative Mode**: Used for branch instructions with a relative address.
+
+<Image src="/c8/x9.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 #### Example Instructions
 

@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Stack Organization
 
 A stack, also known as a last-in, first-out (LIFO) list, is a crucial feature in the CPU of most computers. It stores information in a manner where the last item stored is the first to be retrieved. This can be compared to a stack of trays: the last tray placed on top is the first one to be removed.
@@ -20,6 +22,8 @@ A stack can be implemented as a section of a larger memory or as a collection of
 - The stack pointer (SP) holds the address of the top word in the stack.
 - When items are pushed or popped, SP is incremented or decremented accordingly.
 - SP is a 6-bit register because $2^6 = 64$. Therefore, SP can address from 0 to 63.
+
+<Image src="/c8/x4.png" alt="Hello" className="dark:invert-[0.93]" width={450} height={450} />
 
 ### Example
 
@@ -72,6 +76,8 @@ M[SP] <- DR
 
 Stacks can also be implemented using a section of random-access memory (RAM) rather than dedicated registers. In this case, the stack pointer still manages stack operations, but it points to memory addresses within the assigned stack section.
 
+<Image src="/c8/x5.png" alt="Hello" className="dark:invert-[0.93]" width={450} height={450} />
+
 ### Example
 
 In a memory stack with initial SP value 40, and the stack growing downward:
@@ -123,17 +129,17 @@ Convert the infix expression $ (A + B) \cdot (C - D) $ to postfix:
 
 1. Initialize an empty stack and output list.
 2. Read and process each token:
-    - '(': Push to stack.
-    - 'A': Append to output.
-    - '+': Push to stack.
-    - 'B': Append to output.
-    - ')': Pop and append to output until '(': Output: A B +.
-    - '\cdot': Push to stack.
-    - '(': Push to stack.
-    - 'C': Append to output.
-    - '-': Push to stack.
-    - 'D': Append to output.
-    - ')': Pop and append to output until '(': Output: A B + C D -.
+    - $($: Push to stack.
+    - $A$: Append to output.
+    - $+$: Push to stack.
+    - $B$: Append to output.
+    - $)$: Pop and append to output until $($: Output: A B +.
+    - $\cdot$: Push to stack.
+    - $($: Push to stack.
+    - $C$: Append to output.
+    - $-$: Push to stack.
+    - $D$: Append to output.
+    - $)$: Pop and append to output until $($: Output: A B + C D -.
 3. Pop remaining operators: Output: A B + C D - \cdot.
 
 The postfix expression is $ A B + C D - \cdot $.
@@ -155,15 +161,16 @@ Evaluate the postfix expression $ 3 4 \cdot 5 6 \cdot + $:
 
 1. Initialize an empty stack.
 2. Read and process each token:
-    - '3': Push onto stack.
-    - '4': Push onto stack.
-    - '\cdot': Pop 4 and 3, compute $ 3 \cdot 4 = 12 $, push 12.
-    - '5': Push onto stack.
-    - '6': Push onto stack.
-    - '\cdot': Pop 6 and 5, compute $ 5 \cdot 6 = 30 $, push 30.
-    - '+': Pop 30 and 12, compute $ 12 + 30 = 42 $, push 42.
+    - $3$: Push onto stack.
+    - $4$: Push onto stack.
+    - $\cdot$: Pop 4 and 3, compute $ 3 \cdot 4 = 12 $, push 12.
+    - $5$: Push onto stack.
+    - $6$: Push onto stack.
+    - $\cdot$: Pop 6 and 5, compute $ 5 \cdot 6 = 30 $, push 30.
+    - $+$: Pop 30 and 12, compute $ 12 + 30 = 42 $, push 42.
 3. The final result is 42.
 
+<Image src="/c8/x6.png" alt="Hello" className="dark:invert-[0.93]" width={500} height={500} />
 ### Advantages of RPN and Stacks
 
 1. **Simplicity**: RPN removes the need for parentheses, simplifying the expression.

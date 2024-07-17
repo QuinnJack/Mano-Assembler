@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Instruction Codes
 
 In this section, we introduce a basic computer and demonstrate how its operation can be specified using register transfer statements. The organization of the computer is defined by its internal registers, the timing and control structure, and the set of instructions it uses. The design of the computer is then carried out in detail. Although the basic computer presented here is much smaller compared to commercial computers, it is simple enough to illustrate the design process without excessive complexity.
@@ -15,6 +17,8 @@ A computer instruction is a binary code that specifies a sequence of micro-opera
 An instruction code is a group of bits that instruct the computer to perform a specific operation. It is typically divided into parts, each with its own particular interpretation. The most basic part of an instruction code is the operation code (opcode). The opcode is a group of bits that define operations such as add, subtract, multiply, shift, and complement. The number of bits required for the opcode depends on the total number of operations available in the computer. 
 
 For example, consider a computer with 64 distinct operations. The opcode must consist of at least 6 bits since $2^6 = 64$. If the ADD operation is assigned the bit configuration 110010, the control unit decodes this opcode, reads an operand from memory, and adds the operand to a processor register.
+
+<Image src="/c5/1/x1.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 ### Operation and Micro-operations
 
@@ -41,6 +45,8 @@ Computers with a single-processor register typically label it as the accumulator
 In some cases, it is convenient to use the address bits of an instruction code not as an address but as the actual operand. When the second part of an instruction code specifies an operand, it is an immediate operand. When it specifies the address of an operand, it is a direct address. There is also the possibility of indirect addressing, where the bits in the second part of the instruction designate the address of a memory word that contains the operand's address. A single bit in the instruction code can distinguish between a direct and an indirect address.
 
 For example, consider an instruction code with a 3-bit opcode, a 12-bit address, and an indirect address mode bit designated by I. If I = 0, it is a direct address instruction. If I = 1, it is an indirect address instruction. In the case of a direct address instruction, the operand is located in the specified address in memory. In an indirect address instruction, the address part specifies a memory location that contains the address of the operand.
+
+<Image src="/c5/1/x2.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 #### Effective Address
 

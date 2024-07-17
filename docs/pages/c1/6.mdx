@@ -16,7 +16,7 @@ The storage elements employed in clocked sequential circuits are known as flip-f
 
 The SR (Set-Reset) flip-flop has three inputs: S (set), R (reset), and C (clock). It has an output $Q$ and sometimes a complemented output $\overline{Q}$. The clock input is denoted with an arrowhead-shaped symbol, indicating a dynamic input that responds to a positive transition (from 0 to 1) of the clock signal.
 
-<Image src="/flipflops/SR-FF.svg" alt="Hello" className="dark:invert-[0.93]" width={500} height={500} />
+<Image src="/c1/flipflops/SR-FF.svg" alt="Hello" className="dark:invert-[0.93]" width={500} height={500} />
 
 #### Operation of the SR Flip-Flop
 
@@ -42,7 +42,7 @@ The SR flip-flop should not be pulsed when $S = R = 1$ as it produces an indeter
 
 The D (Data) flip-flop is a modification of the SR flip-flop. It is constructed by adding an inverter between the S and R inputs and assigning a single input D. The D input is sampled during the clock transition from 0 to 1.
 
-<Image src="/flipflops/D-FF.svg" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
+<Image src="/c1/flipflops/D-FF.svg" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 #### Operation of the D Flip-Flop
 
@@ -65,7 +65,7 @@ This means that the $Q$ output of the flip-flop receives its value from the D in
 
 The JK flip-flop is an improved version of the SR flip-flop, where the indeterminate condition is defined. It has inputs J and K, which behave similarly to the S and R inputs of the SR flip-flop, respectively.
 
-<Image src="/flipflops/JK-FF.svg" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
+<Image src="/c1/flipflops/JK-FF.svg" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 #### Operation of the JK Flip-Flop
 
@@ -87,7 +87,7 @@ The JK flip-flop is an improved version of the SR flip-flop, where the indetermi
 
 The T (Toggle) flip-flop is derived from the JK flip-flop by connecting the J and K inputs together, providing a single input designated as T.
 
-<Image src="/flipflops/T-FF.svg" alt="Hello" className="dark:invert-[0.93]" width={900} height={900} />
+<Image src="/c1/flipflops/T-FF.svg" alt="Hello" className="dark:invert-[0.93]" width={900} height={900} />
 
 #### Operation of the T Flip-Flop
 

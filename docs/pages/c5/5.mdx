@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Memory-Reference Instructions
 Memory-reference instructions perform operations that involve accessing and manipulating data stored in memory. These operations are precisely defined using register transfer notation (RTN). Each instruction's execution requires a sequence of microoperations due to the need to read data from memory into a register before processing. This documentation details the function and microoperations of each memory-reference instruction.
 
@@ -87,9 +89,13 @@ $D_6T_6: M[AR] \leftarrow DR, if (DR = 0) then (PC \leftarrow PC + 1), SC \lefta
 ## Control Flowchart
 
 The control flowchart for the execution of memory-reference instructions shows the sequence of microoperations for each instruction. Each path corresponds to a specific instruction code value, and the sequence counter (SC) is cleared to 0 at the end of each instruction to initiate the next instruction cycle.
+<Image src="/c5/6/x2.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 ### Timing Signals and Sequence Counter
 
 The longest instruction, ISZ, requires seven timing signals ($T_0$ to $T_6$). Although only seven timing signals are needed, a 4-bit sequence counter (SC) is used to provide additional signals for other instructions and operations.
+
+
+<Image src="/c5/6/x1.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 

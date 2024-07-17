@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Computer Registers
 
 In a basic computer, instructions are stored sequentially in memory locations and are executed one at a time. The control unit reads an instruction from a specific memory address, executes it, and then moves to the next instruction in sequence. This process requires a counter to calculate the address of the next instruction. Additionally, a register in the control unit is needed to store the instruction code after it is read from memory. Processor registers are also necessary for data manipulation and for holding memory addresses. The configuration of these registers is fundamental to the computer's operation.
@@ -16,6 +18,8 @@ The basic computer has several key registers, each serving a specific function:
 | TR              | Temporary Register    | 16             | Used for holding temporary data during processing                |
 | INPR            | Input Register        | 8              | Receives an 8-bit character from an input device                 |
 | OUTR            | Output Register       | 8              | Holds an 8-bit character to be sent to an output device          |
+
+<Image src="/c5/2/x1.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 ### Memory Organization
 
@@ -50,6 +54,8 @@ The AC register receives inputs from an adder and logic circuit, which has three
 3. Outputs from the INPR for input operations.
 
 The result of an addition operation is transferred to the AC, and the end carry-out is stored in a flip-flop (E). 
+
+<Image src="/c5/2/x2.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 ### Example Micro-operations
 

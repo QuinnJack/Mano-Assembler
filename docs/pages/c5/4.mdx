@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Instruction Cycle
 
 A program residing in the memory unit of the computer consists of a sequence of instructions. The program is executed by the computer through a cycle for each instruction. Each instruction cycle is subdivided into a sequence of subcycles or phases. In the basic computer, each instruction cycle consists of the following phases:
@@ -5,6 +7,8 @@ A program residing in the memory unit of the computer consists of a sequence of 
 1. Fetch an instruction from memory.
 2. Decode the instruction.
 3. Read  $T$. Upon the completion of step 4, the control returns to step 1 to fetch, decode, and execute the next instruction. This process continues indefinitely unless a HALT instruction is encountered.
+
+<Image src="/c5/4/x1.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 ## Fetch and Decode
 
@@ -69,3 +73,4 @@ The control functions and micro-operations for the register-reference instructio
 
 The first seven register-reference instructions perform clear, complement, circular shift, and increment micro-operations on the AC or E registers. The next four instructions cause a skip of the next instruction in sequence when a stated condition is satisfied. The skipping of the instruction is achieved by incrementing PC once again (in addition to it being incremented during the fetch phase at time $T_1$). The condition control statements must be recognized as part of the control conditions. The AC is positive when the sign bit in $AC(15) = 0$; it is negative when $AC(15) = 1$. The content of AC is zero ($AC = 0$) if all the flip-flops of the register are zero. The HLT instruction clears a start-stop flip-flop S and stops the sequence counter from counting. To restore the operation of the computer, the start-stop flip-flop must be set manually.
 
+<Image src="/c5/5/x2.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />

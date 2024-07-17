@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Program Loops In Assembly Language
 
 A program loop is a sequence of instructions that are executed multiple times, each time with a different set of data. In high-level languages like Fortran, loops are specified using constructs such as the `DO` statement. The following example demonstrates a Fortran program that computes the sum of 100 integer numbers:
@@ -94,4 +96,4 @@ Here, ADS is initialized to 0x150, the first operand's address, and NBR to -100,
 ## Indirect Addressing and Pointer Logic
 In the loop body, the ADD PTR I instruction uses indirect addressing to fetch the operand from memory. The pointer is incremented using ISZ PTR to move to the next operand. This ensures that each operand is accessed sequentially.
 
-This example illustrates how high-level loop constructs are translated into low-level assembly instructions. The assembly program leverages pointers and counters to replicate the functionality of the Fortran DO loop, iterating over a set of data and accumulating the results in the accumulator. This approach is fundamental in understanding how high-level abstractions are broken down into machine-level operations.
+This example illustrates how high-level loop constructs are translated into low-level assembly instructions. The assembly program leverages pointers and counters to replicate the functionality of the Fortran DO loop, iterating over a set of data and accumulating the results in the accumulator. 

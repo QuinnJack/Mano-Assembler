@@ -1,7 +1,11 @@
+import Image from 'next/image';
+
 # Design of Control Unit
 
 
 The control unit orchestrates the execution of microinstructions by dividing them into fields, each field defining distinct functions. These fields include control bits for initiating microoperations, special bits for determining the next address, and an address field for branching. The number of control bits can be minimized by grouping mutually exclusive variables into encoded fields, reducing the microinstruction size but necessitating additional hardware and potentially increasing signal propagation delay due to decoding circuits.
+<br> </br>
+<Image src="/c7/x6.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 ## Encoding of Control Bits
 
@@ -22,6 +26,8 @@ The design of the Arithmetic Logic Shift Unit (ALSU) replaces the gate-generated
 ## Microprogram Sequencer
 
 The control unit's core components are the control memory and the microprogram sequencer, which selects the next address. The sequencer is essential for fetching and executing microinstructions, determining the specific address source for the Control Address Register (CAR).
+
+<Image src="/c7/x7.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 ### Structure
 

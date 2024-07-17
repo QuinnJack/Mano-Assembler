@@ -1,4 +1,5 @@
 # Assembler Overview
+import Image from 'next/image';
 
 An assembler is a program that converts a symbolic language program, known as the source program, into its binary machine language equivalent, referred to as the object program. The assembler processes character strings and translates them into a binary format that can be executed by the computer.
 
@@ -45,6 +46,8 @@ During the first pass, the assembler generates a table correlating all user-defi
    - If the line contains an `ORG` pseudoinstruction, LC is set to the value that follows `ORG`.
    - If the line contains an `END` pseudoinstruction, the first pass ends.
 
+<Image src="/c6/4/x1.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
+
 ### Example of Address Symbol Table
 
 For a program with labels such as `MIN`, `SUB`, and `DIF`, the address symbol table might look like this:
@@ -71,6 +74,8 @@ In the second pass, the assembler translates machine instructions using table-lo
 4. **Address Symbol Table**: Generated during the first pass, it maps symbolic addresses to their binary equivalents.
 
 The assembler processes each line of code, referring to these tables to find and convert symbols to their binary equivalents. Instructions are assembled by combining the opcode with the binary address and any necessary bits.
+
+<Image src="/c6/4/x2.png" alt="Hello" className="dark:invert-[0.93]" width={600} height={600} />
 
 ### Error Diagnostics
 

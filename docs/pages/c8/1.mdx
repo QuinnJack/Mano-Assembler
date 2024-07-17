@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 # Central Processing Unit 
 
 The central processing unit (CPU) is the part of the computer that performs the bulk of data processing operations. It is composed of three major components:
@@ -5,6 +7,8 @@ The central processing unit (CPU) is the part of the computer that performs the 
 1. **Register Set**: Stores intermediate data used during the execution of instructions.
 2. **Arithmetic Logic Unit (ALU)**: Performs the required micro-operations for executing the instructions.
 3. **Control Unit**: Supervises the transfer of information among the registers and instructs the ALU on which operation to perform.
+
+<Image src="/c8/x1.png" alt="Hello" className="dark:invert-[0.93]" width={450} height={450} />
 
 ## CPU Functions and Architecture
 
@@ -55,11 +59,18 @@ A 14-bit control word specifies a micro-operation in the CPU. It consists of fou
 - **SELD**: Selects the destination register using the decoder.
 - **OPR**: Specifies the ALU operation.
 
+<Image src="/c8/x3.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
+
 For example, the subtract micro-operation $ R1 \leftarrow R2 - R3 $ is specified by the control word `010 011 001 00101`, derived as follows:
+
+
+<Image src="/c8/x2.png" alt="Hello" className="dark:invert-[0.93]" width={300} height={300} />
+
 - **SELA (R2)**: `010`
 - **SELB (R3)**: `011`
 - **SELD (R1)**: `001`
 - **OPR (SUB)**: `00101`
+
 
 ### Register and ALU Operation Encoding
 
