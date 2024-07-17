@@ -18,7 +18,9 @@ const config: DocsThemeConfig = {
   footer: {
     text: "Created by Quinn Jackson",
   },
-  primaryHue: 34
-};
+  primaryHue: {
+    light: 38,
+    dark: 35
+  }};
 
 export default config;

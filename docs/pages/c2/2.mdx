@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 # Decoders
 
 Discrete quantities of information are represented in digital computers using binary codes. A binary code of $n$ bits can represent up to $2^n$ distinct elements of the coded information. A decoder is a combinational circuit that converts binary information from the $n$ coded inputs to a maximum of $2^n$ unique outputs. If the $n$-bit coded information has unused bit combinations, the decoder may have fewer than $2^n$ outputs.
@@ -11,6 +13,8 @@ Consider a 3-to-8 line decoder, which decodes three data inputs ($A_0$, $A_1$, a
 A common application of this decoder is binary-to-octal conversion. The input variables represent a binary number, and the outputs represent the eight digits of the octal number system. However, a 3-to-8 line decoder can be used for decoding any 3-bit code to provide eight outputs, one for each combination of the binary code.
 
 Commercial decoders often include one or more enable inputs to control the operation of the circuit. The enable input (E) is a control signal that determines whether the decoder is active. The decoder is enabled when E is equal to 1 and disabled when E is equal to 0.
+
+<Image src="/c2/2/3-8-decoder.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 ### Truth Table for 3-to-8 Line Decoder
 
@@ -35,6 +39,7 @@ When the enable input (E) is 0, all outputs are 0, regardless of the values of t
 Some decoders are constructed using NAND gates instead of AND gates. Since a NAND gate produces the AND operation with an inverted output, it can be more economical to generate decoder outputs in their complement form. Below is a 2-to-4 line decoder with an enable input, constructed using NAND gates.
 
 The circuit operates with complemented outputs and a complemented enable input (E). The decoder is enabled when E is 0. Only one output is 0 at any given time, and the other three outputs are 1. The output that is 0 represents the binary number in inputs $A_1$ and $A_0$. The circuit is disabled when E is 1, regardless of the values of the other two inputs.
+<Image src="/c2/2/x1.png" alt="Hello" className="dark:invert-[0.93]" width={400} height={400} />
 
 ### Truth Table for 2-to-4 Line NAND Gate Decoder
 
@@ -53,6 +58,8 @@ When the circuit is disabled, none of the outputs are selected, and all outputs 
 There are situations where a certain size decoder is needed, but only smaller sizes are available. In such cases, it is possible to combine two or more decoders with enable inputs to form a larger decoder. For example, if a 6-to-64 line decoder is needed, it is possible to construct it using four 4-to-16 line decoders.
 
 Consider combining two 2-to-4 line decoders to achieve a 3-to-8 line decoder. The two least significant bits of the input are connected to both decoders. The most significant bit is connected to the enable input of one decoder and through an inverter to the enable input of the other decoder. Each decoder is assumed to be enabled when its E input is 1. When E is 0, the decoder is disabled, and all its outputs are 0. When $A_2 = 0$, the upper decoder is enabled, and the lower decoder is disabled. The outputs of the upper decoder are $D_0$ through $D_3$, depending on the values of $A_1$ and $A_0$. When $A_2 = 1$, the lower decoder is enabled, and the upper decoder is disabled. The outputs of the lower decoder are $D_4$ through $D_7$, representing binary numbers with a 1 in the $A_2$ position.
+
+<Image src="/c2/2/x2.png" alt="Hello" className="dark:invert-[0.93]" width={500} height={500} />
 
 This example demonstrates the usefulness of the enable input in decoders or other combinational logic components. Enable inputs allow for convenient interconnection of multiple circuits to expand the digital component into a similar function with more inputs and outputs.
 

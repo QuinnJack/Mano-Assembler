@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 # Sequential Circuits
 
 A sequential circuit is an interconnection of flip-flops and gates. The gates themselves form a combinational circuit, but when combined with flip-flops, the overall circuit is classified as a sequential circuit. A clocked sequential circuit typically consists of a combinational circuit and one or more clocked flip-flops.
@@ -15,17 +17,20 @@ The block diagram of a clocked sequential circuit can be summarized as follows:
 2. The outputs of the combinational circuit go to external outputs and to the inputs of flip-flops.
 3. The flip-flops store binary data, which are used as inputs to the combinational circuit in the next clock cycle.
 
+
 ### Behavior of Sequential Circuits
 
 The external outputs of a sequential circuit depend on both the external inputs and the current state of the flip-flops. Similarly, the next state of the flip-flops is a function of their present state and the external inputs. Hence, a sequential circuit is specified by a time sequence of external inputs, external outputs, and internal flip-flop binary states.
 
 ## Flip-Flop Input Equations
 
-Consider an example of a sequential circuit with one input variable \( x \), one output variable \( y \), and two clocked D flip-flops. The combinational logic part of the circuit consists of AND gates, OR gates, and inverters. The interconnections among the gates in the combinational circuit can be specified by Boolean expressions called flip-flop input equations.
+Consider an example of a sequential circuit with one input variable $ x $, one output variable $ y $, and two clocked D flip-flops. The combinational logic part of the circuit consists of AND gates, OR gates, and inverters. The interconnections among the gates in the combinational circuit can be specified by Boolean expressions called flip-flop input equations.
+
+<Image src="/c1/7/x0.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 ### Input Equations Example
 
-For the circuit with two D flip-flops \( A \) and \( B \), the input equations are:
+For the circuit with two D flip-flops $ A $ and $ B $, the input equations are:
 
 $$
 D_A = A \cdot x + B \cdot x
@@ -37,12 +42,12 @@ $$
 
 Where:
 
-- \( A \) and \( B \) are the outputs of the two flip-flops.
-- \( x \) is the external input.
+- $ A $ and $ B $ are the outputs of the two flip-flops.
+- $ x $ is the external input.
 
 ### Output Equation
 
-The external output \( y \) is a function of the input variable and the state of the flip-flops. The output equation is:
+The external output $ y $ is a function of the input variable and the state of the flip-flops. The output equation is:
 
 $$
 y = A \cdot x' + B \cdot x'
@@ -50,20 +55,22 @@ $$
 
 ### Deriving Flip-Flop Input Equations
 
-To derive the flip-flop input equations, we inspect the circuit and determine the Boolean functions for the flip-flop inputs. The output of the OR gate is connected to the D input of flip-flop \( A \), giving us the input equation for \( D_A \). Similarly, the output of the AND gate is connected to the D input of flip-flop \( B \), providing the input equation for \( D_B \).
+To derive the flip-flop input equations, we inspect the circuit and determine the Boolean functions for the flip-flop inputs. The output of the OR gate is connected to the D input of flip-flop $ A $, giving us the input equation for $ D_A $. Similarly, the output of the AND gate is connected to the D input of flip-flop $ B $, providing the input equation for $ D_B $.
 
 ## State Table
 
 The behavior of a sequential circuit is determined by its inputs, outputs, and the state of its flip-flops. The state table relates outputs and next states as functions of inputs and present states.
 
+<Image src="/c1/7/x2.png" alt="Hello" className="dark:invert-[0.93]" width={400} height={400} />
+
 ### Example State Table
 
-For the circuit with two D flip-flops \( A \) and \( B \), the state table consists of four sections:
+For the circuit with two D flip-flops $ A $ and $ B $, the state table consists of four sections:
 
-1. **Present State**: The current states of flip-flops \( A \) and \( B \).
-2. **Input**: The value of the input variable \( x \) for each present state.
+1. **Present State**: The current states of flip-flops $ A $ and $ B $.
+2. **Input**: The value of the input variable $ x $ for each present state.
 3. **Next State**: The states of the flip-flops one clock period later.
-4. **Output**: The value of the output variable \( y \) for each present state and input condition.
+4. **Output**: The value of the output variable $ y $ for each present state and input condition.
 
 The state table is derived by listing all possible binary combinations of present states and inputs, and determining the next-state values from the logic diagram or input equations.
 
@@ -91,36 +98,38 @@ The information in a state table can be represented graphically in a state diagr
 - Transitions between states are indicated by directed lines connecting the circles.
 - Each directed line is labeled with the input and output values.
 
-### Example State Diagram
-
 For a sequential circuit, the state diagram can be drawn from the state table, showing transitions based on input values and the corresponding output.
 
 ## Design Example: 2-Bit Binary Counter
 
-We design a clocked sequential circuit that cycles through the states 00, 01, 10, and 11 when an external input \( x \) is 1. The state remains unchanged when \( x = 0 \). This circuit is a 2-bit binary counter.
+We design a clocked sequential circuit that cycles through the states 00, 01, 10, and 11 when an external input $ x $ is 1. The state remains unchanged when $ x = 0 $. This circuit is a 2-bit binary counter.
 
 ### State Diagram for Binary Counter
 
-The state diagram shows the states of the counter following the binary count sequence. The states follow the sequence 00, 01, 10, and 11 when \( x = 1 \). If \( x = 0 \), the state remains unchanged.
+The state diagram shows the states of the counter following the binary count sequence. The states follow the sequence 00, 01, 10, and 11 when $ x = 1 $. If $ x = 0 $, the state remains unchanged.
+
+<Image src="/c1/7/x4.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 ### State Table for Binary Counter
 
-The state table for the binary counter is derived from the state diagram and includes columns for present state, input, next state, and flip-flop inputs. For \( JK \) flip-flops, the excitation table is derived to determine the necessary flip-flop input conditions.
+The state table for the binary counter is derived from the state diagram and includes columns for present state, input, next state, and flip-flop inputs. For $ JK $ flip-flops, the excitation table is derived to determine the necessary flip-flop input conditions.
 
 ### Excitation Table
 
-The excitation table extends the state table to include columns for each flip-flop's inputs (\( J \) and \( K \)). The flip-flop input conditions are determined based on the type of flip-flop used (e.g., \( JK \) flip-flops).
+The excitation table extends the state table to include columns for each flip-flop's inputs ($ J $ and $ K $). The flip-flop input conditions are determined based on the type of flip-flop used (e.g., $ JK $ flip-flops).
+<Image src="/c1/7/x5.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 ### Deriving Flip-Flop Input Equations
 
 Using the excitation table, we derive the simplified Boolean functions for the combinational circuit inputs:
+<Image src="/c1/7/x6.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 $$
-J_A = B \cdot x
+J_A = Bx
 $$
 
 $$
-K_A = B \cdot x
+K_A = Bx
 $$
 
 $$
@@ -133,7 +142,8 @@ $$
 
 ### Logic Diagram
 
-The logic diagram consists of the \( JK \) flip-flops and the combinational circuit derived from the flip-flop input equations. The outputs of the combinational circuit are connected to the inputs of the flip-flops, forming the complete sequential circuit.
+The logic diagram consists of the $ JK $ flip-flops and the combinational circuit derived from the flip-flop input equations. The outputs of the combinational circuit are connected to the inputs of the flip-flops, forming the complete sequential circuit.
+<Image src="/c1/7/x7.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 ## Design Procedure
 

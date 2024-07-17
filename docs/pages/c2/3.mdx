@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 # Multiplexers
 
 A multiplexer, often abbreviated as MUX, is a combinational circuit that selects binary information from one of $2^n$ input data lines and directs it to a single output line. The selection of a particular input data line is controlled by a set of selection inputs. A $2^n$-to-1 multiplexer has $2^n$ input data lines and $n$ selection lines whose bit combinations determine which input data line is selected for the output.
@@ -5,6 +7,8 @@ A multiplexer, often abbreviated as MUX, is a combinational circuit that selects
 ## 4-to-1-Line Multiplexer
 
 Consider a 4-to-1-line multiplexer, which has four input data lines ($I_0, I_1, I_2, I_3$) and two selection lines ($S_1, S_0$). Each input data line is connected to one input of an AND gate. The selection inputs are decoded to select a specific AND gate. The outputs of these AND gates are then connected to a single OR gate to produce the final output.
+
+    <Image src="/c2/3/x1.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 ### Circuit Operation
 
@@ -39,7 +43,7 @@ Multiplexers may have an enable input to control their operation. When the enabl
 
 In some cases, multiple multiplexers are integrated into a single circuit. For example, a quadruple 2-to-1-line multiplexer consists of four 2-to-1 multiplexers. Each multiplexer can select one of two input lines. The selection and enable inputs are common to all multiplexers.
 
-Quadruple 2-to-1-Line Multiplexer Picture
+<Image src="/c2/3/x2.png" alt="Hello" className="dark:invert-[0.93]" width={400} height={400} />
 
 The circuit has four multiplexers, each capable of selecting one of two input lines. Output $Y_0$ can be selected to come from either input $A_0$ or $B_0$. Similarly, output $Y_1$ may have the value of $A_1$ or $B_1$, and so on. One input selection line $S$ selects one of the lines in each of the four multiplexers. The enable input $E$ must be active for normal operation.
 
@@ -55,6 +59,3 @@ The function table for the quadruple 2-to-1-line multiplexer is shown below:
 
 When the enable input $E$ is 1, the circuit operates as expected. If $S = 0$, the four $A$ inputs are directed to the outputs. If $S = 1$, the four $B$ inputs are directed to the outputs. If the enable input $E$ is 0, all outputs are 0 regardless of the value of $S$.
 
-## Summary
-
-Multiplexers are essential components in digital circuits, allowing the selection and routing of binary information from multiple input lines to a single output line. By using selection inputs and, in some cases, enable inputs, multiplexers can be configured to handle various data selection tasks efficiently. Understanding their operation and function tables is crucial for designing and implementing complex digital systems.

@@ -1,3 +1,11 @@
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { useConfig } from 'nextra-theme-docs';
+import Img from '../../components/utils/Img';
+import styles from '../../theme-image.module.css';
+
+
+const 
 # Registers
 
 A **register** is a group of flip-flops where each flip-flop can store one bit of information. An n-bit register has a group of n flip-flops, allowing it to store any binary information of n bits. Registers may also include combinational gates to perform data-processing tasks. Broadly defined, a register consists of a group of flip-flops and gates that control the transitions of these flip-flops. The flip-flops hold the binary information, and the gates manage when and how new information is transferred into the register.
@@ -6,11 +14,13 @@ A **register** is a group of flip-flops where each flip-flop can store one bit o
 
 The simplest register consists solely of flip-flops without any external gates. In a 4-bit register, four D flip-flops are commonly used. The flip-flops are triggered by a common clock input on the rising edge of each pulse, transferring the binary data available at the four inputs into the register. The outputs can be sampled at any time to obtain the stored binary information. The clear input, which is connected to a special terminal in each flip-flop, resets all flip-flops asynchronously when set to 0. This is useful for clearing the register before its clocked operation. The clear input must be maintained at logic 1 during normal operation. Note that the clock signal enables the D input, but the clear input operates independently of the clock.
 
+<Image src="/c2/4/x1.png" alt="Hello" className="dark:invert-[0.93]" className="dark:invert-[0.93]" width={650} height={650}/>
+
 ### Parallel Loading of Registers
 
 The transfer of new information into a register is known as **loading** the register. When all bits of the register are loaded simultaneously with a common clock pulse transition, this is called **parallel loading**. For example, applying a clock transition to the inputs of a 4-bit register will load all four inputs in parallel. To keep the register content unchanged, the clock signal must be inhibited.
 
-## Register with Parallel Load
+<Image src="/c2/4/x2.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 In most digital systems, a master clock generator provides a continuous train of clock pulses to all flip-flops and registers in the system. The master clock acts like a pump that supplies a constant beat to all system parts. A separate control signal decides which specific clock pulse affects a particular register.
 
@@ -28,6 +38,9 @@ The simplest shift register uses only flip-flops. The output of one flip-flop co
 
 To control shifts selectively, the clock can be inhibited from the register input when shifts are not desired. Alternatively, extra circuits can control the shift operation through the D inputs of the flip-flops instead of the clock input.
 
+<Image src="/c2/4/x3.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
+
+
 ## Bidirectional Shift Register with Parallel Load
 
 A **bidirectional shift register** can shift in both directions. It may include input and output terminals for parallel transfer. The most general shift register configuration includes:
@@ -42,6 +55,7 @@ A **bidirectional shift register** can shift in both directions. It may include 
 ### Example: 4-bit Bidirectional Shift Register
 
 Consider a 4-bit bidirectional shift register with parallel load, consisting of D flip-flops and a 4x1 multiplexer for each stage. Two selection inputs ($S_1$ and $S_0$) determine the multiplexer data input for the D flip-flop. The register operates as follows based on the selection inputs:
+<Image src="/c2/4/x4.png" alt="Hello" className="dark:invert-[0.93]" width={650} height={650} />
 
 - $S_1S_0 = 00$: The output of each flip-flop is fed back to its input, causing no change in state.
 - $S_1S_0 = 01$: The register performs a shift-right operation. The serial input data enters the leftmost flip-flop ($A_0$), and the content of each flip-flop is shifted to the right.
