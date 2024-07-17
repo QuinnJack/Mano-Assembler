@@ -1,0 +1,30 @@
+# Multiplication
+ORG 5       ; Origin of program is location 100
+
+LOP, CLE      ; Clear the E register
+LDA Y         ; Load the multiplier into the accumulator
+CIR           ; Circular right shift of the accumulator and E
+STA Y         ; Store the shifted multiplier back in Y
+SZE           ; Skip the next instruction if E is zero
+BUN ONE       ; If E is one, go to label ONE
+BUN ZRO       ; If E is zero, go to label ZRO
+
+ONE, LDA X    ; Load the multiplicand into the accumulator
+ADD P         ; Add the partial product
+STA P         ; Store the new partial product
+
+CLE           ; Clear the E register
+
+ZRO, LDA X    ; Load the multiplicand into the accumulator
+CIL           ; Circular left shift of the accumulator and E
+STA X         ; Store the shifted multiplicand back in X
+ISZ CTR       ; Increment the counter (CTR) and skip next instruction if zero
+BUN LOP       ; If counter is not zero, repeat the loop
+HLT           ; Halt the program
+
+CTR, DEC 8    ; Initialize the counter to the number of bits (8)
+X, HEX 000F   ; Multiplicand (15 in decimal)
+Y, HEX 000B   ; Multiplier (11 in decimal)
+P, HEX 0      ; Initialize partial product to 0
+
+END           ; End of symbolic program

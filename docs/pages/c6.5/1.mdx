@@ -1,0 +1,28 @@
+# Addition
+
+ORG 5          ; Origin of program is location 0
+LDA A          ; Load operand from location A
+ADD B          ; Add operand from location B
+STA C          ; Store sum in location C
+HLT            ; Halt computer
+
+A, DEC 83      ; Decimal operand 83 stored at location A
+B, DEC -23     ; Decimal operand -23 stored at location B
+C, DEC 0       ; Sum stored in location C
+
+END            ; End of symbolic program
+
+# Subtraction
+ORG 5         ; Origin of program is location 100
+LDA SUB       ; Load subtrahend (value to be subtracted) into the accumulator
+CMA           ; Complement the value in the accumulator (two's complement)
+INC           ; Increment the value in the accumulator to complete the two's complement negation
+ADD MIN       ; Add minuend to the value in the accumulator (effectively subtracting the subtrahend from the minuend)
+STA DIF       ; Store the result (difference) in location DIF
+HLT           ; Halt the computer
+
+MIN, DEC 83   ; Define the minuend (83) stored at location MIN
+SUB, DEC -23  ; Define the subtrahend (-23) stored at location SUB
+DIF, HEX 0    ; Define the difference (result) stored at location DIF, initialized to 0
+
+END           ; End of symbolic program

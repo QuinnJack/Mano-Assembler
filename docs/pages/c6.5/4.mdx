@@ -1,0 +1,83 @@
+# Logic
+## AND
+ORG 5       ; Origin of program is location 100
+
+LDA A         ; Load the first operand (A) into the accumulator
+AND B         ; Perform bitwise AND with the second operand (B)
+STA RESULT    ; Store the result in location RESULT
+
+HLT           ; Halt the program
+
+A, HEX XXXX   ; Define the first operand (replace XXXX with the actual hexadecimal value)
+B, HEX XXXX   ; Define the second operand (replace XXXX with the actual hexadecimal value)
+RESULT, HEX 0 ; Define the result storage location, initialized to 0
+
+END           ; End of symbolic program
+
+## OR
+ORG 5       ; Origin of program is location 100
+
+LDA A         ; Load the first operand (A) into the accumulator
+CMA           ; Complement the value in the accumulator to get A'
+STA TMP       ; Store the complemented value in a temporary location (TMP)
+
+LDA B         ; Load the second operand (B) into the accumulator
+CMA           ; Complement the value in the accumulator to get B'
+AND TMP       ; Perform bitwise AND with the value in TMP (A' AND B')
+CMA           ; Complement the result to get (A' AND B')'
+STA RESULT    ; Store the final result in location RESULT
+
+HLT           ; Halt the program
+
+A, HEX 0000   ; Define the first operand 
+B, HEX 1010   ; Define the second operand 
+TMP, HEX 0    ; Define a temporary storage location, initialized to 0
+RESULT, HEX 0 ; Define the result storage location, initialized to 0
+
+END           ; End of symbolic program
+
+## NOT
+
+ORG 5       ; Origin of program is location 100
+
+LDA A         ; Load the operand (A) into the accumulator
+CMA           ; Complement the value in the accumulator to get NOT A
+STA RESULT    ; Store the result in location RESULT
+
+HLT           ; Halt the program
+
+A, HEX XXXX   ; Define the operand (replace XXXX with the actual hexadecimal value)
+RESULT, HEX 0 ; Define the result storage location, initialized to 0
+
+END           ; End of symbolic program
+
+## XOR
+ORG 5       ; Origin of program is location 100
+
+LDA A         ; Load the first operand (A) into the accumulator
+STA TMP1      ; Store the value of A in a temporary location (TMP1)
+
+LDA B         ; Load the second operand (B) into the accumulator
+STA TMP2      ; Store the value of B in a temporary location (TMP2)
+
+LDA TMP1      ; Load the value of A into the accumulator
+CMA           ; Complement the value to get A'
+AND TMP2      ; Perform bitwise AND with B to get A' AND B
+STA TMP3      ; Store the result in a temporary location (TMP3)
+
+LDA TMP2      ; Load the value of B into the accumulator
+CMA           ; Complement the value to get B'
+AND TMP1      ; Perform bitwise AND with A to get B' AND A
+OR TMP3       ; Perform bitwise OR with the previous result to get (A' AND B) OR (B' AND A)
+STA RESULT    ; Store the final result (A XOR B) in location RESULT
+
+HLT           ; Halt the program
+
+A, HEX XXXX   ; Define the first operand (replace XXXX with the actual hexadecimal value)
+B, HEX XXXX   ; Define the second operand (replace XXXX with the actual hexadecimal value)
+TMP1, HEX 0   ; Define a temporary storage location, initialized to 0
+TMP2, HEX 0   ; Define a temporary storage location, initialized to 0
+TMP3, HEX 0   ; Define a temporary storage location, initialized to 0
+RESULT, HEX 0 ; Define the result storage location, initialized to 0
+
+END           ; End of symbolic program

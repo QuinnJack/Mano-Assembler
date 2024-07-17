@@ -1,0 +1,110 @@
+# Miscellaneous Programming in Mano Machine
+
+The program counts the number of 1’s in the number stored in location WRD.
+Since WRD = (62C1)16 = (0110 0010 1100 0001)2 number of 1’s is 6; so CTR will have (0006)16
+
+ORG 5       ; Origin of program is location 100
+
+CLE           ; Clear the E register
+CLA           ; Clear the accumulator
+STA CTR       ; Store the cleared value in CTR (initialize CTR to 0)
+LDA WRD       ; Load the word (62C1) into the accumulator
+SZA           ; Skip the next instruction if the accumulator is zero
+BUN ROT       ; If the accumulator is not zero, branch to ROT
+BUN STP       ; If the accumulator is zero, branch to STP
+
+ROT, CIL      ; Rotate the accumulator left
+SZE           ; Skip the next instruction if E (the least significant bit of the accumulator) is zero
+BUN AGN       ; If E is not zero, branch to AGN
+BUN ROT       ; If E is zero, branch back to ROT
+
+AGN, CLE      ; Clear the E register
+ISZ CTR       ; Increment CTR and skip the next instruction if the result is zero
+SZA           ; Skip the next instruction if the accumulator is zero
+BUN ROT       ; If the accumulator is not zero, branch to ROT
+
+STP, HLT      ; Halt the program
+
+CTR, HEX 0    ; Initialize CTR to 0
+WRD, HEX 62C1 ; Word to be processed (62C1 in hexadecimal)
+
+END           ; End of symbolic program
+
+, that clears to 0 the con- tents of hexadecimal locations 500 through 5FF.
+ORG 5       ; Origin of program is location 100
+
+LDA ADS       ; Load the initial value for the pointer
+STA PTR       ; Store it in PTR
+LDA NBR       ; Load the initial value for the counter
+STA CTR       ; Store it in CTR
+CLA           ; Clear the accumulator
+
+LOP, STA PTR I ; Store the accumulator at the address pointed to by PTR (indirect addressing)
+ISZ PTR       ; Increment the pointer
+ISZ CTR       ; Increment the counter and skip the next instruction if zero
+BUN LOP       ; If counter is not zero, repeat the loop
+HLT           ; Halt the program
+
+ADS, HEX 500  ; Initial value for the pointer (hexadecimal 500)
+PTR, HEX 0    ; Pointer, initially set to 0
+NBR, DEC -256 ; Counter, initially set to -256
+CTR, HEX 0    ; Counter for loop control, initially set to 0
+
+END           ; End of symbolic program
+
+Write a program to multiply two positive numbers by a repeated addition method. 
+
+ORG 5       ; Origin of program is location 100
+
+LDA A         ; Load multiplier
+SZA           ; Skip if accumulator is zero (multiplier is zero)
+BUN NZR       ; If multiplier is not zero, go to NZR
+HLT           ; Halt if multiplier is zero (product is zero in AC)
+
+NZR, STA CTR  ; Store the multiplier (negative A) in the counter
+CLA           ; Clear the accumulator (AC = 0)
+
+LOP, ADD B    ; Add multiplicand to accumulator
+ISZ CTR       ; Increment counter, skip next instruction if zero
+BUN LOP       ; If counter is not zero, repeat the loop
+HLT           ; Halt when counter reaches zero
+
+A, DEC 0      ; Multiplier
+B, DEC 0      ; Multiplicand
+CTR, HEX 0    ; Counter (initialized to 0)
+
+END           ; End of symbolic program
+
+Write a program for the arithmetic shift-left operation. Branch to OVF if an overflow occurs.
+ORG 5       ; Origin of program is location 100
+
+LDA X         ; Load the value from location X into the accumulator
+CLE           ; Clear the E register
+CIL           ; Perform a circular left shift on the accumulator and E
+SZE           ; Skip the next instruction if E is zero
+BUN ONE       ; Branch to ONE if E is one (potential overflow)
+SPA           ; Skip the next instruction if the accumulator is positive
+BUN OVF       ; Branch to OVF if the accumulator is negative (overflow)
+BUN EXT       ; Branch to EXT if no overflow
+
+ONE, SNA      ; Skip the next instruction if the accumulator is negative
+BUN OVF       ; Branch to OVF if the accumulator is negative (overflow)
+
+EXT, HLT      ; Halt the program
+
+OVF, HLT      ; Halt the program at the overflow label
+
+X, DEC 15     ; Value to be shifted (example value)
+
+END           ; End of symbolic program
+
+Write a subroutine to circulate E and AC four times to the right. 1 AC con- tains hexadecimal 079C and E  1, what are the contents of AC and E after the subroutine is executed?   
+
+CR4, HEX 0 
+CIR
+CIR 
+CIR 
+CIR 
+BUN CR4 I
+
+Answer; 079C, 9079

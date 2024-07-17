@@ -1,0 +1,27 @@
+# Input and Output
+
+## Input a character
+
+CIF, SKI          ; Check input flag
+BUN CIF           ; Flag is 0, branch to check again
+INP               ; Flag is 1, input character
+OUT               ; Output the character
+STA CHR           ; Store the input character in location CHR
+HLT               ; Halt the program
+
+CHR, DEC 0        ; Memory location to store the input character
+
+END               ; End of symbolic program
+
+
+## Output a character
+
+LDA CHR          ; Load the character from location CHR into the accumulator
+COF, SKO         ; Check the output flag
+BUN COF          ; Flag is 0, branch to check again
+OUT              ; Flag is 1, output the character
+HLT              ; Halt the program
+
+CHR, HEX 0057    ; Memory location to store the character to be output (ASCII value for 'W')
+
+END              ; End of symbolic program
