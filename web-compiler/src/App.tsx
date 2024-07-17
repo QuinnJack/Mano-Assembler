@@ -15,6 +15,188 @@ logger.info(
   "Hit CTRL + Enter in the editor to load the program into the simulator."
 );
 
+const templatePrograms = {
+  addition: `ORG 5
+LDA A
+ADD B
+STA C
+HLT
+
+A, DEC 1
+B, DEC 2
+C, DEC 0
+
+END`,
+  
+  subtraction: `ORG 5
+LDA SUB
+CMA
+INC
+ADD MIN
+STA DIF
+HLT
+
+MIN, DEC 83
+SUB, DEC -23
+DIF, HEX 0
+
+END`,
+  
+  division: `ORG 5
+LOAD A
+DIVIDE B
+STORE RESULT
+HALT
+
+A, DEC 10
+B, DEC 2
+RESULT, HEX 0
+
+END`,
+
+  add100Numbers: `ORG 5
+LDA ADS
+STA PTR
+LDA NBR
+STA CTR
+CLA
+LOP, ADD PTR
+ISZ PTR
+ISZ CTR
+BUN LOP
+STA SUM
+HLT
+
+ADS, HEX 150
+PTR, HEX 0
+NBR, DEC -100
+CTR, HEX 0
+SUM, HEX 0
+
+ORG 150
+DEC 75
+DEC 23
+
+END`,
+
+  multiplication: `ORG 5
+LOP, CLE
+LDA Y
+CIR
+STA Y
+SZE
+BUN ONE
+BUN ZRO
+
+ONE, LDA X
+ADD P
+STA P
+
+CLE
+
+ZRO, LDA X
+CIL
+STA X
+ISZ CTR
+BUN LOP
+HLT
+
+CTR, DEC 8
+X, HEX 000F
+Y, HEX 000B
+P, HEX 0
+
+END`,
+
+  logicAND: `ORG 5
+LDA A
+AND B
+STA RESULT
+HLT
+
+A, HEX XXXX
+B, HEX XXXX
+RESULT, HEX 0
+
+END`,
+
+  logicOR: `ORG 5
+LDA A
+CMA
+STA TMP
+LDA B
+CMA
+AND TMP
+CMA
+STA RESULT
+HLT
+
+A, HEX 0000
+B, HEX 1010
+TMP, HEX 0
+RESULT, HEX 0
+
+END`,
+
+  logicNOT: `ORG 5
+LDA A
+CMA
+STA RESULT
+HLT
+
+A, HEX XXXX
+RESULT, HEX 0
+
+END`,
+
+  logicXOR: `ORG 5
+LDA A
+STA TMP1
+LDA B
+STA TMP2
+LDA TMP1
+CMA
+AND TMP2
+STA TMP3
+LDA TMP2
+CMA
+AND TMP1
+OR TMP3
+STA RESULT
+HLT
+
+A, HEX XXXX
+B, HEX XXXX
+TMP1, HEX 0
+TMP2, HEX 0
+TMP3, HEX 0
+RESULT, HEX 0
+
+END`,
+
+  repeatedAdditionMultiplication: `ORG 5
+LDA A
+SZA
+BUN NZR
+HLT
+
+NZR, STA CTR
+CLA
+LOP, ADD B
+ISZ CTR
+BUN LOP
+HLT
+
+A, DEC 0
+B, DEC 0
+CTR, HEX 0
+
+END`
+};
+
+
+type ProgramType = keyof typeof templatePrograms;
+
 function App() {
   const [simulatorState, setSimulatorState] = useState(simulator.state());
   const [sourceCode, setSourceCode] = useState("");
@@ -27,6 +209,15 @@ function App() {
       behavior: "smooth",
     });
   }, [logs]);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const programType = urlParams.get("program") as ProgramType | null;
+
+    if (programType && templatePrograms[programType]) {
+      setSourceCode(templatePrograms[programType]);
+    }
+  }, []);
 
   const handleInput = (e: any) => {
     simulator.setInput(e.target.value);
@@ -102,6 +293,7 @@ function App() {
           <textarea
             onKeyDown={handleEditorKeyDown}
             onChange={(e: any) => setSourceCode(e.target.value)}
+            value={sourceCode}
             spellCheck={false}
           ></textarea>
         </fieldset>
